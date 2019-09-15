@@ -1,0 +1,475 @@
+.colorpalettedimas {
+    background-color: rgb(114, 144, 142); /* Dragonfly */
+    background-color: rgb(229, 225, 220); /* Painters White*/
+    background-color: rgb(174, 129, 104); /* Cider Spice */
+    background-color: rgb(114, 117, 79); /* Secret Meadow */
+    background-color: rgb(99, 100, 102); /* Pasangan Painters white */
+    background-color: rgb(181, 204, 24); /* olive */
+    background-color: rgb(27, 28, 29); /* mystic black */
+    background-color: rgb(134, 157, 5); /* dark olive */
+    background-color: rgb(16, 14, 23); /* dark olive */
+    background-color: rgb(237, 20, 91); /* dark olive */
+    background-color: rgb(39, 41, 61); /* dark olive */
+
+    background: linear-gradient(to right, rgba(236,20,92) 0%, rgba(124,49,243) 100% );
+    background: linear-gradient(to right, rgb(28, 224, 213) 0%,  rgb(0, 15, 118) 100%);
+
+    color: rgb(205, 20, 168);
+    color: rgb(255, 31, 210));
+    
+
+    
+    font-family: 'Cinzel', serif;
+    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-family: 'Fredoka One', cursive;
+    font-family: 'Dosis', sans-serif;
+    font-family: 'Manjari', sans-serif;
+    font-family: 'Manjari', sans-serif;
+    font-family: 'Quicksand', sans-serif;
+    font-family: 'Montserrat', sans-serif;
+
+
+    font-size: 20pt;
+    font-weight: '900'
+}
+
+   /*----------------------BUTTON HOME----------------------------- */
+
+.ui.inverted.dimdom.basic.buttons .button,
+.ui.inverted.dimdom.buttons .basic.button,
+.ui.inverted.dimdom.basic.button {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  background-color: transparent;
+  -webkit-box-shadow: 0px 0px 0px 4px rgb(255, 255, 255) inset !important;
+  box-shadow: 0px 0px 0px 4px rgb(255, 255, 255) inset !important;
+  color: rgb(255, 255, 255) !important;
+  font-size: 30px;
+  margin: 4px 2px;
+  border-radius: 40px;
+
+}
+
+.ui.inverted.dimdom.basic.buttons .button:hover,
+.ui.inverted.dimdom.buttons .basic.button:hover,
+.ui.inverted.dimdom.basic.button:hover {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  background-color: transparent;
+  -webkit-box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
+  box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
+  color: rgb(255, 31, 210) !important;
+  font-size: 50px;
+  margin: 4px 2px;
+  
+  transition: 0.8s; 
+
+}
+
+.ui.inverted.dimdom.basic.buttons .button:focus,
+.ui.inverted.dimdom.basic.buttons .button:focus,
+.ui.inverted.dimdom.basic.button:focus {
+  
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  background-color: transparent;
+  -webkit-box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
+  box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
+  color: rgb(255, 31, 210) !important;
+  font-size: 50px;
+  margin: 4px 2px;
+  
+  transition: 0.8s; 
+}
+
+.ui.inverted.dimdom.basic.buttons .active.button,
+.ui.inverted.dimdom.buttons .basic.active.button,
+.ui.inverted.dimdom.basic.active.button {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  background-color: transparent;
+  -webkit-box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
+  box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
+  color: rgb(255, 31, 210) !important;
+  font-size: 50px;
+  margin: 4px 2px;
+  
+  transition: 0.8s; 
+}
+
+.ui.inverted.dimdom.basic.buttons .button:active,
+.ui.inverted.dimdom.buttons .basic.button:active,
+.ui.inverted.dimdom.basic.button:active {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  background-color: transparent;
+  -webkit-box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
+  box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
+  color: rgb(255, 31, 210) !important;
+  font-size: 50px;
+  margin: 4px 2px;
+  
+  transition: 0.8s; 
+}
+
+
+/*---------------------------BUTTON BIASA------------------------*/
+
+
+.ui.inverted.dimdom3.basic.buttons .button,
+.ui.inverted.dimdom3.buttons .basic.button,
+.ui.inverted.dimdom3.basic.button {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 12pt;
+  background-color: transparent;
+  -webkit-box-shadow: 0px 0px 0px 4px rgb(63, 60, 104) inset !important;
+  box-shadow: 0px 0px 0px 4px rgb(63, 60, 104) inset !important;
+  color: rgb(255, 255, 255) !important;
+  border-radius: 12px;
+
+}
+
+.ui.inverted.dimdom3.basic.buttons .button:hover,
+.ui.inverted.dimdom3.buttons .basic.button:hover,
+.ui.inverted.dimdom3.basic.button:hover {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  background-color: transparent;
+  -webkit-box-shadow: 0px 0px 0px 4px rgb(255, 80, 220) inset !important;
+  box-shadow: 0px 0px 0px 4px rgb(255, 80, 220) inset !important;
+  color: rgb(255, 80, 220) !important;
+  transition: 0.3s; 
+
+}
+
+.ui.inverted.dimdom3.basic.buttons .button:focus,
+.ui.inverted.dimdom3.basic.buttons .button:focus,
+.ui.inverted.dimdom3.basic.button:focus {
+  
+  font-family: 'Montserrat', sans-serif;
+  background-color: transparent;
+  -webkit-box-shadow: 0px 0px 0px 4px rgb(255, 31, 210) inset !important;
+  box-shadow: 0px 0px 0px 4px rgb(255, 31, 210) inset !important;
+  color: rgb(255, 31, 210) !important;
+  
+}
+
+.ui.inverted.dimdom3.basic.buttons .active.button,
+.ui.inverted.dimdom3.buttons .basic.active.button,
+.ui.inverted.dimdom3.basic.active.button {
+  font-family: 'Montserrat', sans-serif;
+  background-color: transparent;
+  -webkit-box-shadow: 0px 0px 0px 4px rgba(255, 255, 255, 0,5) inset !important;
+  box-shadow: 0px 0px 0px 4px rgba(98, 98, 98, 0.3) inset !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+ 
+}
+
+.ui.inverted.dimdom3.basic.buttons .button:active,
+.ui.inverted.dimdom3.buttons .basic.button:active,
+.ui.inverted.dimdom3.basic.button:active {
+  font-family: 'Montserrat', sans-serif;
+  background-color: transparent;
+  -webkit-box-shadow: 0px 0px 0px 4px rgba(255, 255, 255, 0,5) inset !important;
+  box-shadow: 0px 0px 0px 4px rgba(98, 98, 98, 0.3) inset !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+ 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ----------- Link ------------*/
+
+
+  .dimdom-grad {
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-weight: 500;
+    background: linear-gradient(to bottom right, rgba(0,253,255,1) 0%, rgba(159,135,255,1) 51%, rgba(255,0,232,1) 100% );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .dimdom-pink {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    color: rgb(255, 255, 255);
+  }
+
+  .dimdom-pink:hover {
+    font-family: 'Montserrat', sans-serif;
+    color: rgb(255, 31, 210);
+    transition: 0.5s;
+  }
+
+  .dimdom-pink-logo {
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-weight: 900;
+    color: rgb(255, 255, 255);
+  }
+
+  .dimdom-pink-logo:hover {
+    font-family: 'Montserrat Alternates', sans-serif;
+    color: rgb(255, 31, 210) !important;
+    transition: 0.5s;
+  }
+
+
+/*-------------------------------------------------------------------------------*/
+
+.dimdom-bottom{
+  border-bottom: 0.1px solid rgb(63, 63, 63);
+}
+
+.dimdom-left-right{
+  border-left: 0.1px solid rgb(63, 63, 63);
+  border-right: 0.1px solid rgb(63, 63, 63);
+}
+
+.dimdom-top{
+  border-top: 0.1px solid rgb(63, 63, 63);
+}
+
+.dimdom-bg {
+  height: 15px;
+  background: linear-gradient(to right, rgb(255, 31, 210) 0%,  rgb(0, 0, 0) 50%, rgb(255, 255, 255) 100%);
+}
+.dimdom-bg-bottom {
+  height: 115px;
+  background: linear-gradient(to right, rgb(255, 31, 210) 0%,  rgb(0, 0, 0) 35%, rgb(0, 0, 0) 65%, rgb(255, 255, 255) 100%);
+}
+
+
+
+div.box-containe div {
+  width: 1350px;
+  height: 550px;
+  line-height: 300px;
+  text-align: center;
+  font-size: 23px;
+  margin: 7px
+}
+
+.monalt900 {
+  font-family: 'Montserrat Alternates', sans-serif;
+  font-weight: 900;
+}
+
+.monalt500 {
+  font-family: 'Montserrat Alternates', sans-serif;
+  font-weight: 500;
+}
+
+.mon500 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+}
+
+.mon600 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+}
+
+.mon700 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+
+.manj700 {
+  font-family: 'Manjari', sans-serif;
+  font-weight: 500;
+
+}
+
+.quic600 {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 600;
+}
+
+.quic700 {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+}
+
+.dimdom-color{
+  color: rgb(255, 31, 210) !important;
+}
+
+.dimdom-pic {
+  background-image: url('./lib/pictures/carousel1b.jpg');
+  background-size: 100%;
+  height: 600px; 
+}
+.dimdom-pic2 {
+  background-color: rgb(33,34,44);
+  background-size: 100%;
+  height: 800px; 
+}
+
+.dimdom-btn {
+  background-color: rgba(0, 0, 0, 0); /* Green */
+  border: white;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 30px;
+}
+
+.card {
+  background-color: rgb(39, 41, 61);
+  border-radius: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*--------------------
+        Inputs
+---------------------*/
+
+.ui.input2 {
+  position: relative;
+  font-weight: normal;
+  font-style: normal;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  color: rgb(255, 255, 255);
+}
+
+.ui.input2 > input {
+  margin: 0em;
+  max-width: 100%;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  outline: none;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  text-align: left;
+  line-height: 1.21428571em;
+  font-family: 'Montserrat', sans-serif;
+  padding: 0.67857143em 1em;
+  background: rgba(255, 255, 255, 0);
+  border: 1px solid rgb(63, 60, 104);
+  color: rgb(255, 255, 255);
+  border-radius: 10px;
+  -webkit-transition: border-color 0.1s ease, -webkit-box-shadow 0.1s ease;
+  transition: border-color 0.1s ease, -webkit-box-shadow 0.1s ease;
+  transition: box-shadow 0.1s ease, border-color 0.1s ease;
+  transition: box-shadow 0.1s ease, border-color 0.1s ease, -webkit-box-shadow 0.1s ease;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  transition: 0.4s
+}
+
+/*--------------------
+      Placeholder
+---------------------*/
+
+/* browsers require these rules separate */
+
+.ui.input2 > input::-webkit-input-placeholder {
+  color: rgba(191, 191, 191, 0.87);
+}
+
+.ui.input2 > input::-moz-placeholder {
+  color: rgba(191, 191, 191, 0.87);
+}
+
+.ui.input2 > input:-ms-input-placeholder {
+  color: rgba(191, 191, 191, 0.87);
+}
+
+/*--------------------
+        Disabled
+---------------------*/
+
+.ui.disabled.input2,
+.ui.input:not(.disabled) input[disabled] {
+  opacity: 0.45;
+}
+
+.ui.disabled.input2 > input,
+.ui.input:not(.disabled) input[disabled] {
+  pointer-events: none;
+}
+
+/*--------------------
+        Active
+---------------------*/
+
+.ui.input2 > input:active,
+.ui.input2.down input {
+  border-color: rgb(255, 80, 220);
+  background: rgba(255, 255, 255, 0);
+  color: rgba(0, 0, 0, 0.87);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  
+}
+
+
+/*--------------------
+        Focus
+---------------------*/
+
+.ui.input2.focus > input,
+.ui.input2 > input:focus {
+  border-color: rgb(255, 80, 220);
+  background: rgba(255, 255, 255, 0);
+  color: rgb(255, 255, 255);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  transition: 0.4s
+}
+
+.ui.input2.focus > input::-webkit-input-placeholder,
+.ui.input2 > input:focus::-webkit-input-placeholder {
+  color: rgba(191, 191, 191, 0.87);
+}
+
+.ui.input2.focus > input::-moz-placeholder,
+.ui.input2 > input:focus::-moz-placeholder {
+  color: rgba(191, 191, 191, 0.87);
+}
+
+.ui.input2.focus > input:-ms-input-placeholder,
+.ui.input2 > input:focus:-ms-input-placeholder {
+  color: rgba(191, 191, 191, 0.87);
+}
+
+
+
+
+
+
+
+
