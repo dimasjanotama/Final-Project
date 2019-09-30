@@ -5,85 +5,107 @@ import {NavLink, Redirect} from 'react-router-dom'
 
 import AbsoluteWrapper from './AbsoluteWrapper'
 import Footer from './Footer'
+import Navbar from './Navbar'
 
+
+
+const urlApi = 'http://localhost:7777/auth/'
 
 class Register extends Component {
 
     state = {
         loading: false,
         error: '',
-        success: ''
+        success: '',
+        username: '',
+        email: '',
+        password: '',
+        namaDepan: '',
+        namaBelakang: '',
+        alamat: '',
+        kelurahan: '',
+        kecamatan: '',
+        kabupaten: '',
+        propinsi: '',
+        kodepos: '',
+        repeatPassword: ''
+        
     }
 
     onRegisterClick = ()=>{
-        //Ambil semua data dari input text
-        let data_username =this.username.value
-        let data_email = this.email.value
-        let data_namaDepan = this.namaDepan.value
-        let data_namaBelakang = this.namaBelakang.value
-        let data_alamat = this.alamat.value
-        let data_kelurahan = this.kelurahan.value
-        let data_kecamatan = this.kecamatan.value
-        let data_kabupaten = this.kabupaten.value
-        let data_propinsi = this.propinsi.value
-        let data_kodepos = this.kodepos.value
-        let data_password = this.password.value
-
-        axios.get(
-            'http://localhost:7777/users',
+        axios.get(urlApi + 'getuser',
             {
                 params: {
-                    username: data_username
+                    username: this.state.username
                 }
             }
         ).then((res)=>{
             // jika data ditemukan user berdasarkan email diketik
-            if(res.data.length>0){
-                this.setState({loading: false, error: `Username "${this.username.value}" sudah digunakan`})
+            if (this.state.password !== this.state.repeatPassword){
+                this.setState({loading: false, error: `Password yang ditulis ulang tidak sama`})
                 setTimeout(
                     () => { this.setState({error: ''}) },
                     3000
                 )
+            } else if(res.data.length>0){
+                this.setState({loading: false, error: `Username "${this.state.username}" sudah digunakan`})
+                setTimeout(
+                    () => { this.setState({error: ''}) },
+                    3000
+                )
+            } else if(this.state.username && this.state.email && this.state.password && this.state.namaDepan &&
+                this.state.namaBelakang && this.state.alamat && this.state.kelurahan && this.state.kecamatan &&
+                this.state.kabupaten && this.state.propinsi && this.state.kodepos && this.state.repeatPassword){
+                    this.cekEmail()
             } else { 
-                axios.get(
-                    'http://localhost:7777/users',
-                {
-                    params: {
-                        email: data_email
-                    }
-                }).then((res)=>{
-                    // jika data ditemukan user berdasarkan email diketik
-                    if(res.data.length>0){
-                        this.setState({loading: false, error: `Email "${this.email.value}" sudah digunakan`})
-                    } else {
-                        axios.post(
-                            'http://localhost:7777/users',
-                            {
-                                username: data_username,
-                                email: data_email,
-                                password: data_password,
-                                namaDepan: data_namaDepan,
-                                namaBelakang : data_namaBelakang,
-                                alamat : data_alamat,
-                                kelurahan : data_kelurahan, 
-                                kecamatan : data_kecamatan, 
-                                kabupaten : data_kabupaten, 
-                                propinsi : data_propinsi,
-                                kodepos : data_kodepos
-                            }
-                        ).then((res)=>{
-                            // Jika berhasil
-                            this.setState({loading: false, success : 'Berhasil registrasi, silahkan Login dahulu'})
-                            console.log(res.data);
-                        })
-                    }
-                } )
-            }
-        })
-        // console.log(data_username, data_email, data_password);
-        //Post data tersebut ke db.json
-        
+                this.setState({loading: false, error: `Semua kolom harus diisi`})
+                setTimeout(
+                () => { this.setState({error: ''}) },
+                3000
+            )
+            }})
+        }
+
+    cekEmail = ()=>{           
+            axios.get(urlApi + 'getuser',
+            {
+                params: {
+                    email: this.state.email
+                }
+            }).then((res)=>{
+                // jika data ditemukan user berdasarkan email diketik
+                if(res.data.length>0){
+                    this.setState({loading: false, error: `Email "${this.state.email}" sudah digunakan`})
+                    setTimeout(
+                        () => { this.setState({error: ''}) },
+                        3000
+                    )
+                } else {
+                    this.postUser()
+                }})
     }
+
+    postUser = ()=>{
+                axios.post(urlApi + 'register',
+                {
+                    username: this.state.username,
+                    email: this.state.email,
+                    password: this.state.password,                     
+                    namaDepan: this.state.namaDepan,
+                    namaBelakang: this.state.namaBelakang,
+                    alamat: this.state.alamat,
+                    kelurahan: this.state.kelurahan,
+                    kecamatan: this.state.kecamatan,
+                    kabupaten: this.state.kabupaten,
+                    propinsi: this.state.propinsi,
+                    kodepos: this.state.kodepos
+                }).then((res)=>{
+                this.setState({loading: false, success : 'Berhasil registrasi, Silahkan cek email anda untuk verifikasi akun'})
+                
+                console.log(res.data);
+            })
+        }
+    
 
     loadingButton = () => {
         if(this.state.loading) {
@@ -99,14 +121,14 @@ class Register extends Component {
         if(this.state.error){
             // notif error, danger
             return (
-                <div className='alert alert-danger mt-4'>
+                <div className='alert alert-danger mt-4 mx-auto'>
                     {this.state.error}
                 </div>
             )
         } else if (this.state.success){
             // notif success, success
             return (
-                <div className='alert alert-success mt-4'>
+                <div className='alert alert-success mt-4 mx-auto'>
                     {this.state.success}
                 </div>
             )
@@ -115,30 +137,14 @@ class Register extends Component {
         }
     }
 
+
     render() {
     if(!this.props.user_name){
         return(
+            
             <AbsoluteWrapper>
-                <div className='container-fluid text-light' style={{ backgroundColor:'rgb(33,34,44)', height:'400px', width:'1200px'}}>
-                <div style={{height: '50px'}}></div>
-                    <div className='row mx-auto align-items-center w-75 text-center' style={{height:'160px'}}>
-                        <div className='col monalt900' style={{fontSize:'80pt'}}>Fxpedia.</div> 
-                        </div>
-                    <div className='mx-auto align-items-center text-center' style={{height:'100px'}}>
-                        
-                        <h1 className='m-0 mon600' style={{fontSize:'30pt'}}>- Market Place -</h1>
-                        <div className='row align-items-center'>
-                            <h1 className='col m-0 text-right mon600' style={{fontSize:'30pt'}}>
-                                Untuk
-                            </h1>
-                            <h1 className='col-3 m-0 mon600 dimdom-color' style={{fontSize:'30pt'}}>Pecinta Efek</h1>
-                            <br/>
-                            <br/>
-                            <h1 className='col m-0 text-left mon600' style={{fontSize:'30pt'}}>Pedal</h1>
-                        </div>
-                    </div>
-                </div>
-                <div className='row align-items-center dimdom-pic2 text-light mon500'>
+                <Navbar/>
+                <div className='row align-items-center text-light mon500 dim-height'>
                     <div className='col-6 mx-auto card'>
                         <div className='card-body'>
                             <div className='card-title'>
@@ -149,10 +155,10 @@ class Register extends Component {
                                 <div className='col card-title pt-4 mb-2'>Email</div>
                                 <div class="w-100"></div>
                                 <div class=" col ui input2">
-                                    <input ref={(input) => {this.username = input}} type="text" placeholder="Username"/>
+                                    <input onChange={(e) => this.setState({username: e.target.value})} type="text" placeholder="Username"/>
                                 </div>                 
                                 <div class=" col ui input2">
-                                    <input ref={(input) => {this.email = input}} type="text" placeholder="Email"/>
+                                    <input onChange={(e) => this.setState({email: e.target.value})} type="text" placeholder="Email"/>
                                 </div>                 
                             </div>
                             <div className='row'>
@@ -160,10 +166,10 @@ class Register extends Component {
                                 <div className='col card-title pt-4 mb-2'>Nama Belakang</div>
                                 <div class="w-100"></div>
                                 <div class=" col ui input2">
-                                    <input ref={(input) => {this.namaDepan = input}} type="text" placeholder="Nama Depan"/>
+                                    <input onChange={(e) => this.setState({namaDepan: e.target.value})} type="text" placeholder="Nama Depan"/>
                                 </div>                 
                                 <div class=" col ui input2">
-                                    <input ref={(input) => {this.namaBelakang = input}} type="text" placeholder="Nama Belakang"/>
+                                    <input onChange={(e) => this.setState({namaBelakang: e.target.value})} type="text" placeholder="Nama Belakang"/>
                                 </div>                 
                             </div>
                             <div className='row'>
@@ -171,10 +177,10 @@ class Register extends Component {
                                 <div className='col-3 card-title pt-4 mb-2'>Kelurahan</div>
                                 <div class="w-100"></div>
                                 <div class="col-9 ui input2">
-                                    <input ref={(input) => {this.alamat = input}} type="text" placeholder="Alamat"/>
+                                    <input onChange={(e) => this.setState({alamat: e.target.value})} type="text" placeholder="Alamat"/>
                                 </div>
                                 <div class="col-3 ui input2">
-                                    <input ref={(input) => {this.kelurahan = input}} type="text" placeholder="Kelurahan"/>
+                                    <input onChange={(e) => this.setState({kelurahan: e.target.value})} type="text" placeholder="Kelurahan"/>
                                 </div>                                  
                             </div>
                             <div className='row'>
@@ -184,24 +190,35 @@ class Register extends Component {
                                 <div className='col card-title pt-4 mb-2'>Kodepos</div>
                                 <div class="w-100"></div>
                                 <div class="col-3 ui input2">
-                                    <input ref={(input) => {this.kecamatan = input}} type="text" placeholder="Kecamatan"/>
+                                    <input onChange={(e) => this.setState({kecamatan: e.target.value})} type="text" placeholder="Kecamatan"/>
                                 </div>                 
                                 <div class="col-3 ui input2">
-                                    <input ref={(input) => {this.kabupaten = input}} type="text" placeholder="Kabupaten"/>
+                                    <input onChange={(e) => this.setState({kabupaten: e.target.value})} type="text" placeholder="Kabupaten"/>
                                 </div>    
                                 <div class="col-3 ui input2">
-                                    <input ref={(input) => {this.propinsi = input}} type="text" placeholder="Propinsi"/>
+                                    <input onChange={(e) => this.setState({propinsi: e.target.value})} type="text" placeholder="Propinsi"/>
                                 </div> 
                                 <div class="col-3 ui input2">
-                                    <input ref={(input) => {this.kodepos = input}} type="text" placeholder="Kodepos"/>
+                                    <input value={this.state.kodepos} 
+                                    onChange={(e) => {
+                                        if (isNaN(e.target.value)){
+                                            this.setState({kodepos: ''})
+                                        } else {
+                                            this.setState({kodepos:e.target.value})
+                                        }}} type="text" placeholder="Kodepos"/>
                                 </div>              
                             </div>
                             <div className='row'>
                                 <div className='col card-title pt-4 mb-2'>Password</div>
+                                <div className='col card-title pt-4 mb-2'>Tulis ulang Password</div>
                                 <div class="w-100"></div>
                                 <div class=" col ui input2">
-                                    <input ref={(input) => {this.password = input}} type="password" placeholder="Tulis password untuk akun anda"/>
-                                </div>                                 
+                                    <input onChange={(e) => this.setState({password: e.target.value})} type="password" placeholder="Tulis password untuk akun anda"/>
+                                </div>
+                                <div class=" col ui input2">
+                                    <input onChange={(e) => this.setState({repeatPassword: e.target.value})} type="password" placeholder="Tulis ulang password anda"/>
+                                </div>
+                                                                 
                             </div>
                             <div className='row pt-5'>
                                 <button onClick={this.onRegisterClick} className='col-4 mx-auto ui inverted basic dimdom3 button '>Daftar</button>
@@ -218,6 +235,7 @@ class Register extends Component {
                         </div>
                     </div>
                 </div>
+              
                 <Footer/>
             </AbsoluteWrapper>
         ) //-----------------------------> kurung tutup return

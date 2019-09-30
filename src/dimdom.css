@@ -10,12 +10,14 @@
     background-color: rgb(16, 14, 23); /* dark olive */
     background-color: rgb(237, 20, 91); /* dark olive */
     background-color: rgb(39, 41, 61); /* dark olive */
+    
 
     background: linear-gradient(to right, rgba(236,20,92) 0%, rgba(124,49,243) 100% );
     background: linear-gradient(to right, rgb(28, 224, 213) 0%,  rgb(0, 15, 118) 100%);
 
     color: rgb(205, 20, 168);
-    color: rgb(255, 31, 210));
+    color: rgb(255, 31, 210);
+    colorinputlabel: rgb(63, 60, 104);
     
 
     
@@ -31,7 +33,7 @@
 
 
     font-size: 20pt;
-    font-weight: '900'
+    font-weight: '900';
 }
 
    /*----------------------BUTTON HOME----------------------------- */
@@ -57,8 +59,8 @@
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   background-color: transparent;
-  -webkit-box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
-  box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
+  -webkit-box-shadow: 0px 0px 0px 0px rgba(255, 31, 210, 0) inset !important;
+  box-shadow: 0px 0px 0px 0px rgba(255, 31, 210, 0) inset !important;
   color: rgb(255, 31, 210) !important;
   font-size: 50px;
   margin: 4px 2px;
@@ -124,10 +126,10 @@
   font-weight: 500;
   font-size: 12pt;
   background-color: transparent;
-  -webkit-box-shadow: 0px 0px 0px 4px rgb(63, 60, 104) inset !important;
-  box-shadow: 0px 0px 0px 4px rgb(63, 60, 104) inset !important;
+  -webkit-box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
+  box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
   color: rgb(255, 255, 255) !important;
-  border-radius: 12px;
+  border-radius: 25px;
 
 }
 
@@ -136,10 +138,10 @@
 .ui.inverted.dimdom3.basic.button:hover {
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;
-  background-color: transparent;
-  -webkit-box-shadow: 0px 0px 0px 4px rgb(255, 80, 220) inset !important;
-  box-shadow: 0px 0px 0px 4px rgb(255, 80, 220) inset !important;
-  color: rgb(255, 80, 220) !important;
+  background-color: rgb(255, 31, 210) !important;
+  -webkit-box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
+  box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
+  color: rgb(255, 255, 255) !important;
   transition: 0.3s; 
 
 }
@@ -149,10 +151,10 @@
 .ui.inverted.dimdom3.basic.button:focus {
   
   font-family: 'Montserrat', sans-serif;
-  background-color: transparent;
-  -webkit-box-shadow: 0px 0px 0px 4px rgb(255, 31, 210) inset !important;
-  box-shadow: 0px 0px 0px 4px rgb(255, 31, 210) inset !important;
-  color: rgb(255, 31, 210) !important;
+  background-color: rgb(255, 31, 210);
+  -webkit-box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
+  box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
+  color: rgb(255, 255, 255) !important;
   
 }
 
@@ -161,8 +163,8 @@
 .ui.inverted.dimdom3.basic.active.button {
   font-family: 'Montserrat', sans-serif;
   background-color: transparent;
-  -webkit-box-shadow: 0px 0px 0px 4px rgba(255, 255, 255, 0,5) inset !important;
-  box-shadow: 0px 0px 0px 4px rgba(98, 98, 98, 0.3) inset !important;
+  -webkit-box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0,5) inset !important;
+  box-shadow: 0px 0px 0px 2px rgba(98, 98, 98, 0.3) inset !important;
   color: rgba(255, 255, 255, 0.8) !important;
  
 }
@@ -172,12 +174,88 @@
 .ui.inverted.dimdom3.basic.button:active {
   font-family: 'Montserrat', sans-serif;
   background-color: transparent;
-  -webkit-box-shadow: 0px 0px 0px 4px rgba(255, 255, 255, 0,5) inset !important;
-  box-shadow: 0px 0px 0px 4px rgba(98, 98, 98, 0.3) inset !important;
+  -webkit-box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0,5) inset !important;
+  box-shadow: 0px 0px 0px 2px rgba(98, 98, 98, 0.3) inset !important;
   color: rgba(255, 255, 255, 0.8) !important;
  
 }
 
+/*---------------------------BUTTON SIDEBAR------------------------*/
+
+.ui.inverted.dimdom4.basic.buttons .button,
+.ui.inverted.dimdom4.buttons .basic.button,
+.ui.inverted.dimdom4.basic.button {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  background-color: transparent;
+  -webkit-box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0) inset !important;
+  box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0) inset !important;
+  color: rgb(255, 255, 255) !important;
+  font-size: 24px;
+  margin: 4px 2px;
+  transition: 0.3s; 
+}
+
+.ui.inverted.dimdom4.basic.buttons .button:hover,
+.ui.inverted.dimdom4.buttons .basic.button:hover,
+.ui.inverted.dimdom4.basic.button:hover {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  background-color: transparent;
+  -webkit-box-shadow: 0px 0px 0px 0px rgba(255, 31, 210, 0) inset !important;
+  box-shadow: 0px 0px 0px 0px rgba(255, 31, 210, 0) inset !important;
+  color: rgb(255, 31, 210) !important;
+  font-size: 50px;
+  
+  transition: 0.3s; 
+
+}
+
+.ui.inverted.dimdom4.basic.buttons .button:focus,
+.ui.inverted.dimdom4.basic.buttons .button:focus,
+.ui.inverted.dimdom4.basic.button:focus {
+  
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  background-color: transparent;
+  -webkit-box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
+  box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
+  color: rgb(255, 31, 210) !important;
+  font-size: 50px;
+  margin: 4px 2px;
+  
+  transition: 0.3s; 
+}
+
+.ui.inverted.dimdom4.basic.buttons .active.button,
+.ui.inverted.dimdom4.buttons .basic.active.button,
+.ui.inverted.dimdom4.basic.active.button {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  background-color: transparent;
+  -webkit-box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
+  box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
+  color: rgb(255, 31, 210) !important;
+  font-size: 50px;
+  margin: 4px 2px;
+  
+  transition: 0.3s;  
+}
+
+.ui.inverted.dimdom4.basic.buttons .button:active,
+.ui.inverted.dimdom4.buttons .basic.button:active,
+.ui.inverted.dimdom4.basic.button:active {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  background-color: transparent;
+  -webkit-box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
+  box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
+  color: rgb(255, 31, 210) !important;
+  font-size: 50px;
+  margin: 4px 2px;
+  
+  transition: 0.3s; 
+}
 
 
 
@@ -218,13 +296,13 @@
   }
 
   .dimdom-pink-logo {
-    font-family: 'Montserrat Alternates', sans-serif;
+    font-family:  'Mansalva', cursive;
     font-weight: 900;
     color: rgb(255, 255, 255);
   }
 
   .dimdom-pink-logo:hover {
-    font-family: 'Montserrat Alternates', sans-serif;
+    font-family:  'Mansalva', cursive;
     color: rgb(255, 31, 210) !important;
     transition: 0.5s;
   }
@@ -247,11 +325,11 @@
 
 .dimdom-bg {
   height: 15px;
-  background: linear-gradient(to right, rgb(255, 31, 210) 0%,  rgb(0, 0, 0) 50%, rgb(255, 255, 255) 100%);
+  background: linear-gradient(to right,rgba(0, 0, 0, 0) 0%, rgb(255, 31, 210) 10%,  rgba(0, 0, 0, 0) 22%);
 }
 .dimdom-bg-bottom {
   height: 115px;
-  background: linear-gradient(to right, rgb(255, 31, 210) 0%,  rgb(0, 0, 0) 35%, rgb(0, 0, 0) 65%, rgb(255, 255, 255) 100%);
+  background: linear-gradient(to right, rgb(255, 255, 255) 0%,  rgb(0, 0, 0) 35%, rgb(0, 0, 0) 65%, rgb(255, 255, 255) 100%);
 }
 
 
@@ -310,15 +388,31 @@ div.box-containe div {
   color: rgb(255, 31, 210) !important;
 }
 
-.dimdom-pic {
-  background-image: url('./lib/pictures/carousel1b.jpg');
-  background-size: 100%;
-  height: 600px; 
-}
 .dimdom-pic2 {
-  background-color: rgb(33,34,44);
-  background-size: 100%;
-  height: 800px; 
+    height: 500px;
+    background-image: url('./lib/pictures/bg-pic.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100%;
+}
+
+.dim-height-home {
+  height: 900px;
+}
+.dim-height {
+  height: 850px;
+}
+.dim-height-nav {
+  height: 836px;
+}
+
+
+#bg-base {
+  height: 1000px;
+  background-image: url('./lib/pictures/bg-pic.png')!important;
+  background-repeat: no-repeat!important;
+  background-attachment: fixed!important;
+  background-size: 100%!important;
 }
 
 .dimdom-btn {
@@ -336,10 +430,76 @@ div.box-containe div {
 }
 
 .card {
-  background-color: rgb(39, 41, 61);
+  background-color: rgba(0, 0, 0, 0.8);
   border-radius: 20px;
 }
 
+.card-nav {
+  background-color: rgba(19, 19, 19, 0.8);
+  border-radius: 10px;
+}
+
+
+
+/* ---------------------ALERT--------------------------- */
+
+.alert {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 3px solid;
+  border-radius: 25px;
+  
+}
+
+.alert-heading {
+  color: inherit;
+}
+
+.alert-link {
+  font-weight: 700;
+  font-family: 'Montserrat'
+}
+
+.alert-dismissible {
+  padding-right: 4rem;
+}
+
+.alert-dismissible .close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.75rem 1.25rem;
+  color: inherit;
+}
+
+.alert-danger {
+  color: #ff3a4a;
+  background-color: transparent;
+  border-color: #ff3a4a;
+}
+
+.alert-danger hr {
+  border-top-color: #ff3a4a;
+}
+
+.alert-danger .alert-link {
+  color: #491217;
+}
+
+.alert-success {
+  color: #00ff3c;
+  background-color: transparent;
+  border-color: #00ff3c;
+}
+
+.alert-success hr {
+  border-top-color: #b1dfbb;
+}
+
+.alert-success .alert-link {
+  color: #0b2e13;
+}
 
 
 
@@ -378,7 +538,7 @@ div.box-containe div {
   font-family: 'Montserrat', sans-serif;
   padding: 0.67857143em 1em;
   background: rgba(255, 255, 255, 0);
-  border: 1px solid rgb(63, 60, 104);
+  border: 1px solid rgb(74, 72, 100);
   color: rgb(255, 255, 255);
   border-radius: 10px;
   -webkit-transition: border-color 0.1s ease, -webkit-box-shadow 0.1s ease;
@@ -467,7 +627,102 @@ div.box-containe div {
 }
 
 
+.fade-in {
+  animation: fadeIn 6s; 
+}
 
+.fade-out {
+  animation: fadeOut 6s; 
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+i.link.icon,
+i.link.icons {
+  cursor: pointer;
+  opacity: 0.8;
+  -webkit-transition: opacity 0.1s ease;
+  transition: opacity 0.1s ease;
+}
+
+i.link.icon:hover,
+i.link.icons:hover {
+  opacity: 1 !important;
+}
+
+i.inverted.bordered.icon,
+i.inverted.dimdom.icon {
+  background-color: rgba(255, 31, 210, 0)!important;
+  color: rgb(255, 31, 210) !important;
+}
+
+
+.ui.icon.input2 > i.icon {
+  cursor: default;
+  position: absolute;
+  line-height: 1;
+  text-align: center;
+  top: 0px;
+  right: 0px;
+  margin: 0em;
+  height: 100%;
+  width: 2.67142857em;
+  opacity: 0.7;
+  background-color: rgb(255, 255, 255) !important;
+  border-radius: 0em 10px 10px 0em;
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+
+.ui.icon.input2 > i.icon:not(.link) {
+  pointer-events: none;
+}
+
+.ui.icon.input2 > input {
+  padding-right: 2.67142857em !important;
+}
+
+.ui.icon.input2 > i.icon:before,
+.ui.icon.input2 > i.icon:after {
+  left: 0;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  width: 100%;
+  margin-top: -0.5em;
+}
+
+.ui.icon.input2 > i.link.icon {
+  
+  cursor: pointer;
+}
+
+.ui.icon.input2 > i.circular.icon {
+  top: 0.35em;
+  right: 0.5em;
+}
+
+.ui.icon.input2 > input:focus ~ i.icon {
+  opacity: 1;
+}
 
 
 

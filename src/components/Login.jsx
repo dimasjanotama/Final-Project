@@ -1,21 +1,63 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {NavLink, Redirect} from 'react-router-dom'
+import {onLoginUser} from '../actions'
 
-import {onLoginUser} from '../actions/index'
 import AbsoluteWrapper from './AbsoluteWrapper'
 import Footer from './Footer'
+import Navbar from './Navbar'
+import axios from 'axios'
 
+const urlApi = 'http://localhost:7777/auth/'
 
 class Login extends Component {
 
-    onLoginClick = () => {
-        // Mengambil data dari textbox
-        let username = this.username.value
-        let password = this.password.value
+    state = {
+        username: '',
+        password: '',
+        error: false,
+        message: '',
+        id: 0
+    }
 
-        // Memanggil action creator
-        this.props.onLoginUser(username, password)
+    onLoginClick = () => {
+        axios.get(urlApi + 'login', {
+            params: {
+                username: this.state.username,
+                password: this.state.password
+            }
+        }).then(res=>{
+            if(res.data.status==='404' || res.data.status==='401'){
+                this.setState({error: true, message: res.data.message})
+                setTimeout(
+                    () => { this.setState({error: false}) },
+                    3000
+                )
+            } else {
+                if(res.data.result[0].isVerified<1) {
+                    this.setState({error: true, message:'Silahkan cek email untuk verifikasi terlebih dahulu'})
+                    setTimeout(
+                        () => { this.setState({error: false}) },
+                        3000
+                    )
+                } else {
+                this.props.onLoginUser(res.data.result[0].id, res.data.result[0].username);
+            }}
+        })
+    }
+
+    notification = ()=>{
+        if(this.state.error){
+            return (
+                <div className='row text-center'>
+                    <div className='col-8 alert alert-danger mt-4 mx-auto'>
+                        {this.state.message}
+                    </div>
+                </div>
+            )
+        } else {
+            return null
+        }
     }
 
 
@@ -23,26 +65,8 @@ class Login extends Component {
     if(!this.props.user_name){
         return(
             <AbsoluteWrapper>
-                <div className='container-fluid text-light' style={{ backgroundColor:'rgb(33,34,44)', height:'400px', width:'1200px'}}>
-                <div style={{height: '50px'}}></div>
-                    <div className='row mx-auto align-items-center w-75 text-center' style={{height:'160px'}}>
-                        <div className='col monalt900' style={{fontSize:'80pt'}}>Fxpedia.</div> 
-                        </div>
-                    <div className='mx-auto align-items-center text-center' style={{height:'100px'}}>
-                        
-                        <h1 className='m-0 mon600' style={{fontSize:'30pt'}}>- Market Place -</h1>
-                        <div className='row align-items-center'>
-                            <h1 className='col m-0 text-right mon600' style={{fontSize:'30pt'}}>
-                                Untuk
-                            </h1>
-                            <h1 className='col-3 m-0 mon600 dimdom-color' style={{fontSize:'30pt'}}>Pecinta Efek</h1>
-                            <br/>
-                            <br/>
-                            <h1 className='col m-0 text-left mon600' style={{fontSize:'30pt'}}>Pedal</h1>
-                        </div>
-                    </div>
-                </div>
-                <div className='row align-items-center dimdom-pic2 text-light mon500'>
+               <Navbar/>
+                <div className='row align-items-center dim-height text-light mon500'>
                     <div className='col-5 mx-auto card'>
                         <div className='card-body'>
                             <div className='card-title'>
@@ -53,10 +77,10 @@ class Login extends Component {
                                 <div className='col card-title pt-4 mb-2'>Password</div>
                                 <div class="w-100"></div>
                                 <div class=" col ui input2">
-                                    <input ref={(input) => {this.username = input}} type="text" placeholder="Username"/>
+                                    <input onChange={(e) => this.setState({username: e.target.value})} type="text" placeholder="Username"/>
                                 </div>                 
                                 <div class=" col ui input2">
-                                    <input ref={(input) => {this.password = input}} type="text" placeholder="Password"/>
+                                    <input onChange={(e) => this.setState({password: e.target.value})} type="text" placeholder="Password"/>
                                 </div>                 
                             </div>
                             <div className='row pt-5'>
@@ -66,11 +90,12 @@ class Login extends Component {
                                 <NavLink className='dimdom-pink' to={'/register'}>  Daftar Disini</NavLink>
                                 </div>
                             </div>
+                            {this.notification()}
+                            
                         </div>
                     </div>
                 </div>
-                
-                <Footer/>
+               <Footer />
             </AbsoluteWrapper>
             
         ) //----------------------------> kurung tutup return
