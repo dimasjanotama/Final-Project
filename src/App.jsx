@@ -11,6 +11,7 @@ import Dashboard from './components/Dashboard'
 
 
 
+
 const App = () => {
         const { location } = useContext(__RouterContext)
         const transitions = useTransition(location, location => location.pathname, {
@@ -30,6 +31,7 @@ const App = () => {
                                 <Route path='/register' component={Register}/>
                                 <Route path='/dashboard' component={Dashboard}/>    
                                 <Route path='/kategori' component={Kategori}/>                                        
+                                                        
                             </Switch>
                         </animated.div>
                     ))}   

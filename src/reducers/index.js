@@ -3,7 +3,8 @@ import { combineReducers } from 'redux'
 
 const init = { 
     id: '',
-    username: ''
+    username: '',
+    show: false
 }
 
 const AuthReducer = (state = init, action) => { 
@@ -14,6 +15,12 @@ const AuthReducer = (state = init, action) => {
         
         case 'LOGOUT_SUCCESS':
             return {...state,id:'', username:''}
+
+        case 'TOGGLE_ON':
+            return {...state, show: true}
+
+        case 'TOGGLE_OFF':
+            return {...state, show: false}
 
         default:
             return state

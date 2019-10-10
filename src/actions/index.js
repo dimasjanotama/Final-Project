@@ -37,3 +37,15 @@ export const onLogoutUser = () => {
     }
 }
 
+export const toggleModalOn = () => {
+    return {
+        type: 'TOGGLE_ON'
+    }
+}
+
+export const toggleModalOff = () => {
+    return {
+        type: 'TOGGLE_OFF'
+    }
+}
+
