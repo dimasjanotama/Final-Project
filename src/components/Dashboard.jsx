@@ -22,7 +22,6 @@ class Dashboard extends Component {
         berat: '',
         kondisi: '',
         deskripsi: '',
-        fotoProduk: '',
         message: '',
         error: '',
         selectedFile: ''
@@ -63,8 +62,6 @@ class Dashboard extends Component {
     }
 
     onTambahClick = () => {
-        console.log(this.state.selectedFile);
-        
         if (this.state.namaProduk && this.state.kategori && this.state.subKategori && 
             this.state.harga && this.state.berat && this.state.kondisi && this.state.deskripsi && this.state.selectedFile){
                 var fd = new FormData()
@@ -78,12 +75,14 @@ class Dashboard extends Component {
                     kondisi: this.state.kondisi,
                     deskripsi: this.state.deskripsi
                 }
+                console.log(this.state.selectedFile, this.state.selectedFile.name);
                 fd.append('aneh', this.state.selectedFile, this.state.selectedFile.name)
                 fd.append('data', JSON.stringify(data))
                 axios.post(urlApi+'uploadproduct', fd)
                 .then(res=>{
                     console.log(res)
                     alert('Berhasil upload produk')
+                    return <Redirect to='/myproduct'/>
                 }).catch(err=>{
                     console.log(err)
                 })
@@ -196,6 +195,7 @@ class Dashboard extends Component {
                             <div class="w-100"></div>
                             <div class="col ui input2">
                                 <select className='form-control' onChange={(e) => this.setState({kondisi: e.target.value})} name="" id="">
+                                    <option selected disabled>Kondisi Barang</option>
                                     <option value="Baru">Baru</option>
                                     <option value="Bekas">Bekas</option>
                                 </select>

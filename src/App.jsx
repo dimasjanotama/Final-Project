@@ -7,6 +7,7 @@ import Register from './components/Register'
 import Navbar from './components/Navbar'
 import Kategori from './components/Kategori'
 import Dashboard from './components/Dashboard'
+import Myproduct from './components/Myproduct'
 
 
 
@@ -31,7 +32,7 @@ const App = () => {
                                 <Route path='/register' component={Register}/>
                                 <Route path='/dashboard' component={Dashboard}/>    
                                 <Route path='/kategori' component={Kategori}/>                                        
-                                                        
+                                <Route path='/myproduct' component={Myproduct}/>                                                 
                             </Switch>
                         </animated.div>
                     ))}   
