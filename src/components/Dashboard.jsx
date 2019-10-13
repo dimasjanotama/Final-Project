@@ -6,6 +6,7 @@ import axios from 'axios'
 
 import Footer from './Footer'
 import Navbar from './Navbar'
+import Myproduct from './Myproduct'
 
 
 const urlApi = 'http://localhost:7777/auth/'
@@ -24,9 +25,24 @@ class Dashboard extends Component {
         deskripsi: '',
         message: '',
         error: '',
-        selectedFile: ''
+        selectedFile: '',
+        products: [],
+        userId : ''
     }
     
+    componentDidMount(){
+        this.setState({userId: this.props.user_id})
+        axios.get(urlApi+'getproduct', {
+            params: {
+                userId : this.state.userId
+            }
+        }).then(res=>{
+            this.setState({products: res.data})
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+    }
 
     showModal = ()=>{
         this.setState({
@@ -103,11 +119,11 @@ class Dashboard extends Component {
                 </div>
             )
         } else if (this.state.kategori === 'myproducts'){
-            return(
-                <div className='card-nav p-3'>
-                    INI MY PRODUCTS
-                </div>
-            )
+            return this.state.products.map((product)=>{
+                return <div className='card p-3'>
+                <Myproduct barang={product} key={product.id}/>
+            </div>
+            })
         } else if (this.state.kategori === 'mycart'){
             return(
                 <div className='card p-3'>
