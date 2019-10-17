@@ -7,7 +7,10 @@ import Register from './components/Register'
 import Navbar from './components/Navbar'
 import Kategori from './components/Kategori'
 import Dashboard from './components/Dashboard'
+import Addproduct from './components/Addproduct'
 import Myproduct from './components/Myproduct'
+import Myproductdetail from './components/Myproductdetail'
+
 
 
 
@@ -30,9 +33,11 @@ const App = () => {
                                 <Route path='/' exact component={Home}/>
                                 <Route path='/login' component={Login}/>
                                 <Route path='/register' component={Register}/>
-                                <Route path='/dashboard' component={Dashboard}/>    
                                 <Route path='/kategori' component={Kategori}/>                                        
+                                <Route path='/dashboard' component={Dashboard}/>
+                                <Route path='/addproduct' component={Addproduct}/>
                                 <Route path='/myproduct' component={Myproduct}/>                                                 
+                                <Route path='/myproductdetail/:id' component={Myproductdetail}/>                                                 
                             </Switch>
                         </animated.div>
                     ))}   

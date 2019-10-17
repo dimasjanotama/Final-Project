@@ -1,22 +1,21 @@
 import React, { Component } from 'react'
-import {Redirect, Link} from 'react-router-dom'
+import {NavLink, Redirect} from 'react-router-dom'
 import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
 import axios from 'axios'
 
+import Footer from './Footer'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
-import Footer from './Footer'
+
+
 
 
 const urlApi = 'http://localhost:7777/auth/'
 
-class Myproduct extends Component {
+class Addproduct extends Component {
 
     state = {
-        products : [],
-        display : '',
-        product : [],
         namaProduk: '',
         kategori: '',
         subKategori: '',
@@ -26,19 +25,7 @@ class Myproduct extends Component {
         deskripsi: '',
         message: '',
         error: '',
-        selectedFile: '',
-        idproduct : '',
-        totalitem : '',
-        currentpage : '',
-        totalpage : ''
-    }
-
-    componentDidMount(){
-        this.setState({
-            display: 'group',
-            currentpage: 1
-        })
-        this.renderProducts()
+        selectedFile: ''
     }
 
     notification = () => {
@@ -53,12 +40,11 @@ class Myproduct extends Component {
         }
     }
 
-    onEditClick = () => {
+    onTambahClick = () => {
         if (this.state.namaProduk && this.state.kategori && this.state.subKategori && 
             this.state.harga && this.state.berat && this.state.kondisi && this.state.deskripsi && this.state.selectedFile){
                 var fd = new FormData()
-                var data = {
-                    id: this.state.idproduct,   
+                var data = {   
                     idUser: this.props.user_id,
                     namaProduk: this.state.namaProduk,
                     kategori: this.state.kategori,
@@ -69,12 +55,12 @@ class Myproduct extends Component {
                     deskripsi: this.state.deskripsi
                 }
                 console.log(this.state.selectedFile, this.state.selectedFile.name);
-                fd.append('anehedit', this.state.selectedFile, this.state.selectedFile.name)
+                fd.append('aneh', this.state.selectedFile, this.state.selectedFile.name)
                 fd.append('data', JSON.stringify(data))
-                axios.post(urlApi+'editproduct', fd)
+                axios.post(urlApi+'uploadproduct', fd)
                 .then(res=>{
                     console.log(res)
-                    alert('Berhasil edit produk')
+                    alert('Berhasil upload produk')
                     return <Redirect to='/myproduct'/>
                 }).catch(err=>{
                     console.log(err)
@@ -85,7 +71,7 @@ class Myproduct extends Component {
                 () => {this.setState({error: ''})},
                 3000
             )
-        }
+            }
     }
 
     displayfilename = ()=>{
@@ -100,166 +86,13 @@ class Myproduct extends Component {
         }
     }
 
-    renderProducts = ()=>{
-        axios.get(urlApi + 'countproducts', {
-            params: {
-                userid: this.props.user_id
-            }
-        }).then(res=>{
-            let activepage = this.state.currentpage
-            let totalitem = res.data[0].totalitem
-            this.setState({totalitem: totalitem})
-            let totalpage = Math.ceil(totalitem/10)
-            this.setState({totalpage: totalpage})
-            console.log(totalitem,totalpage);
-            var indexke = 0
-            if (activepage==1){
-                indexke +=1
-            } else {
-                indexke += (activepage-1)*10 
-            } 
-            axios.get(urlApi + 'paginationproducts', {
-                params: {
-                    userid: this.props.user_id,
-                    indexke: indexke
-                }
-            }).then(res=>{
-                this.setState({products: res.data})
-            })
-        })
-        .catch(err=>{
-            console.log(err);
-        })
-    }
-
-    onDetailClick = (idproduct) => {
-        axios.get(urlApi + 'getproductbyid', {
-            params: {
-                userid: this.props.user_id,
-                idproduct: idproduct
-            }
-        }).then(res=>{
-            this.setState({product: res.data[0]})
-            this.setState({display: 'detail'})           
-            console.log(this.state.product)
-        })
-        .catch(err=>{
-            console.log(err);
-        })
-    }
-
-    onEditClick = (idproduct) => {
-        this.setState({
-            idproduct : idproduct,
-            display : 'edit'
-        })
-    }
-
-    onDeleteClick = (idproduct) => {
-        axios.delete(urlApi+'deleteproduct',{
-            data : {
-                id : idproduct
-            }
-        }
-        ).then(res=>{
-            alert('Berhasil menghapus produk')
-            this.renderProducts()
-        }).catch(err=>{
-            console.log(err);
-        })
-    }
-
-    pagination = (pageNum)=>{
-        this.setState({currentpage: pageNum})
-        this.renderProducts()
-    }
-
-    renderpagination = ()=>{
-        if(this.state.totalpage){
-            let pagination = []
-            for (let i = 1; i < this.state.totalpage+1 ; i++) {
-                pagination.push(i)
-            }
-            console.log(pagination);
-            let hasil = pagination.map((pageNum)=>{
-                return <li class="page-item"><button class="page-link" onClick={()=>{this.pagination(pageNum)}}>{pageNum}</button></li>
-            })
-            return hasil
-        } else {
-            return null
-        }
-    }
-
     renderList = () => {
-        if(this.state.display == 'group'){
-            return (
-                <div className='container'>
-                    <div className='row ml-2 mr-2'>
-                        {this.state.products.map((product)=>{
-                            let {id, namaProduk, kategori, subKategori, harga, berat, kondisi, deskripsi, fotoProduk} = product
-                            let numberWithCommas = (x) => {
-                                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                            }
-                            let harganya = numberWithCommas(harga)
-                            return (
-                                <div className=' ml-2 mr-2 mb-4 col-2 card' >
-                                    <button className='btn mt-3 ml-n2' onClick={()=>{this.onDetailClick(id)}}>
-                                        <img style={{width: '120px'}} src={`http://localhost:7777/files/${fotoProduk}`} alt="fotoproduk"/>
-                                    </button>
-                                    <div className='card-body p-0 pb-3'>
-                                        <button className='btn dimdom-pink mb-2' onClick={()=>{this.onDetailClick(id)}}>{namaProduk}</button>
-                                        <p className='card-text text-center'>Rp. {harganya}</p>
-                                        <button className='ui inverted basic dimdom3 button mb-1 btn-block' onClick={()=>{this.onEditClick(id)}}>Edit</button>
-                                        <button className='ui inverted basic dimdom3 button mb-1 mt-1 btn-block' onClick={()=>{this.onDeleteClick(id)}}>Hapus</button>
-                                    </div>
-                                </div>
-                            ) 
-                        })}
-                        <div class="w-100"></div>
-                        <div className='mx-auto'>
-                            <nav aria-label="Page navigation example">
-                                <p className='text-center'>Page</p>
-                                <ul class="pagination">
-                                    {this.renderpagination()}
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            )
-        } else if(this.state.display == 'detail'){
-            return (
-            <div className='container'>
-                    <div className='card col-10 mx-auto my-3 pb-3'>
-                        <div className='col text-right mt-4 pr-1'>
-                            <i className='times link icon' onClick={()=>this.setState({display: 'group'})}></i>
-                        </div>
-                        <div className='card-header mt-2'>
-                            <h3><b>{this.state.product.namaProduk}</b></h3>
-                        </div>
-                        <div className='card-body pb-1'>
-                            <div className='text-center'>
-                            <img className='card-img-top mb-3' src={`http://localhost:7777/files/${this.state.product.fotoProduk}`} style={{width:'300px'}} alt=""/>
-                            </div>
-                            <h3><b>Description :</b></h3>
-                            <p>{this.state.product.deskripsi}</p>
-                            <h3><b>Harga :</b></h3>
-                            <p>Rp. {this.state.product.harga.toLocaleString('id')}</p>
-                        </div>
-                    </div>
-                </div>
-            )
-        } else {
-            return (
-                <div className='row align-items-center text-light mon500'>
-                    
-                <div className='col-8 mx-auto card'>
-                    <div className='col text-right mt-4 pr-1'>
-                        <i className='times link icon' onClick={()=>this.setState({display: 'group'})}></i>
-                    </div>
+        return (
+            <div className='row align-items-center text-light mon500'>
+                <div className='col-10 mx-auto card'>
                     <div className='card-body'>
                     <div className='card-title subjudul'>
-                        Edit Produk
+                        Tambah Produk
                     </div>
                     <div className='card-title pt-4'>
                         Informasi &#38; Detail Produk
@@ -312,6 +145,7 @@ class Myproduct extends Component {
                     </div>
                     <div className='row'>
                         <div className='col card-title pt-4 mb-2'>Kondisi Barang</div>
+                    
                         <div class="w-100"></div>
                         <div class="col ui input2">
                             <select className='form-control' onChange={(e) => this.setState({kondisi: e.target.value})} name="" id="">
@@ -347,7 +181,7 @@ class Myproduct extends Component {
                     </div>
                     <div className='row text-center pt-5'>
                         <div className='col mx-auto'>
-                            <button onClick={this.onEditClick} className='ui inverted basic dimdom3 button '>Edit</button>
+                            <button onClick={this.onTambahClick} className='ui inverted basic dimdom3 button '>Tambah</button>
                             {this.notification()}
                         </div>
                         <div class="w-100"></div>
@@ -355,9 +189,7 @@ class Myproduct extends Component {
                     </div>
                 </div>
             </div>
-            )
-
-        }
+        )
     }
 
     render() {
@@ -365,9 +197,9 @@ class Myproduct extends Component {
         return(   
             <AbsoluteWrapper>
                 <Navbar/>
-                <div className='row dim-height text-light'> 
+                <div className='row dim-height-addproduct text-light'> 
                     <Sidebar/>
-                    <div className='col-9 mt-3'>
+                    <div className='col-9'>
                         {this.renderList()}
                     </div>
                 </div>
@@ -383,8 +215,9 @@ class Myproduct extends Component {
 const mapStateToProps = (state)=>{
     return {
         user_name: state.auth.username,
+        toggle_show: state.auth.show,
         user_id : state.auth.id
     }
 }
 
-export default connect(mapStateToProps)(Myproduct)
+export default connect(mapStateToProps)(Addproduct)

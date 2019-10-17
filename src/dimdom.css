@@ -407,15 +407,20 @@ div.box-containe div {
   height: 900px;
 }
 .dim-height {
-  height: 850px;
+  height: 1000px;
 }
+
+.dim-height-addproduct {
+  height: 1000px;
+}
+
 .dim-height-nav {
-  height: 836px;
+  height: 986px;
 }
 
 
 #bg-base {
-  height: 1000px;
+  height: 1200px;
   background-image: url('./lib/pictures/bg-pic.png')!important;
   background-repeat: no-repeat!important;
   background-attachment: fixed!important;
@@ -439,6 +444,12 @@ div.box-containe div {
 .card {
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 20px;
+}
+
+.card2 {
+  background-color: rgba(56, 56, 56, 0.472);
+  border-radius: 20px;
+  
 }
 
 .card-nav {
