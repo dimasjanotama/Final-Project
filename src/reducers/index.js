@@ -4,7 +4,7 @@ import { combineReducers } from 'redux'
 const init = { 
     id: '',
     username: '',
-    show: false
+    keywords: ''
 }
 
 const AuthReducer = (state = init, action) => { 
@@ -16,11 +16,11 @@ const AuthReducer = (state = init, action) => {
         case 'LOGOUT_SUCCESS':
             return {...state,id:'', username:''}
 
-        case 'TOGGLE_ON':
-            return {...state, show: true}
+        case 'SEARCH_KEYWORDS':
+            return {...state,keywords: action.payload.keywords}
 
-        case 'TOGGLE_OFF':
-            return {...state, show: false}
+        case 'CLEAR_KEYWORDS_SUCCESS':
+            return {...state,keywords:''}
 
         default:
             return state

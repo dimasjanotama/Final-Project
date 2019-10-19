@@ -9,7 +9,7 @@ import Kategori from './components/Kategori'
 import Dashboard from './components/Dashboard'
 import Addproduct from './components/Addproduct'
 import Myproduct from './components/Myproduct'
-import Myproductdetail from './components/Myproductdetail'
+import Search from './components/Search'
 
 
 
@@ -34,10 +34,10 @@ const App = () => {
                                 <Route path='/login' component={Login}/>
                                 <Route path='/register' component={Register}/>
                                 <Route path='/kategori' component={Kategori}/>                                        
+                                <Route path='/search' component={Search}/>                                        
                                 <Route path='/dashboard' component={Dashboard}/>
                                 <Route path='/addproduct' component={Addproduct}/>
-                                <Route path='/myproduct' component={Myproduct}/>                                                 
-                                <Route path='/myproductdetail/:id' component={Myproductdetail}/>                                                 
+                                <Route path='/myproduct' component={Myproduct}/>                                                                                              
                             </Switch>
                         </animated.div>
                     ))}   

@@ -20,6 +20,7 @@ class Addproduct extends Component {
         kategori: '',
         subKategori: '',
         harga: '',
+        qty: 0,
         berat: '',
         kondisi: '',
         deskripsi: '',
@@ -41,8 +42,15 @@ class Addproduct extends Component {
     }
 
     onTambahClick = () => {
-        if (this.state.namaProduk && this.state.kategori && this.state.subKategori && 
-            this.state.harga && this.state.berat && this.state.kondisi && this.state.deskripsi && this.state.selectedFile){
+        if (parseInt(this.state.qty) < 1) { 
+            this.setState({error: `Kuantitas barang minimal 1`})
+            setTimeout(
+            () => {this.setState({error: ''})},
+            3000
+        )} else if (
+            this.state.namaProduk && this.state.kategori && this.state.subKategori && 
+            this.state.harga && this.state.berat && this.state.kondisi && this.state.deskripsi && this.state.selectedFile &&
+            this.state.qty){
                 var fd = new FormData()
                 var data = {   
                     idUser: this.props.user_id,
@@ -52,7 +60,8 @@ class Addproduct extends Component {
                     harga: this.state.harga,
                     berat: this.state.berat,
                     kondisi: this.state.kondisi,
-                    deskripsi: this.state.deskripsi
+                    deskripsi: this.state.deskripsi,
+                    qty: this.state.qty
                 }
                 console.log(this.state.selectedFile, this.state.selectedFile.name);
                 fd.append('aneh', this.state.selectedFile, this.state.selectedFile.name)
@@ -70,8 +79,7 @@ class Addproduct extends Component {
                 setTimeout(
                 () => {this.setState({error: ''})},
                 3000
-            )
-            }
+            )}
     }
 
     displayfilename = ()=>{
@@ -118,10 +126,11 @@ class Addproduct extends Component {
                         </div>                 
                     </div>
                     <div className='row'>
-                        <div className='col-7 card-title pt-4 mb-2'>Harga (Harga harus kelipatan 100)</div>
-                        <div className='col-5 card-title pt-4 mb-2'>Perkiraan Berat</div>
+                        <div className='col-6 card-title pt-4 mb-2'>Harga (Harga harus kelipatan 100)</div>
+                        <div className='col-2 card-title pt-4 mb-2'>Kuantitas</div>
+                        <div className='col-4 card-title pt-4 mb-2'>Perkiraan Berat</div>
                         <div class="w-100"></div>
-                        <div class="col-7 ui input2">
+                        <div class="col-6 ui input2">
                             <input value={this.state.harga} 
                                 onChange={(e) => {
                                     if (isNaN(e.target.value)){
@@ -130,7 +139,12 @@ class Addproduct extends Component {
                                         this.setState({harga:e.target.value})
                                     }}} type="text" placeholder="Masukkan harga"/>
                         </div>
-                        <div class="col-5 ui right labeled input">
+                        <div class="col-2 ui input">
+                            <input onChange={(e) => {
+                                    this.setState({qty:e.target.value})
+                                    }} type="number" placeholder="qty"/>
+                        </div>  
+                        <div class="col-4 ui right labeled input">
                             <input value={this.state.berat} 
                                 onChange={(e) => {
                                     if (isNaN(e.target.value)){
@@ -215,7 +229,6 @@ class Addproduct extends Component {
 const mapStateToProps = (state)=>{
     return {
         user_name: state.auth.username,
-        toggle_show: state.auth.show,
         user_id : state.auth.id
     }
 }

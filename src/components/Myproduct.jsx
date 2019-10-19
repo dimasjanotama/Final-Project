@@ -21,6 +21,7 @@ class Myproduct extends Component {
         kategori: '',
         subKategori: '',
         harga: '',
+        qty: 0,
         berat: '',
         kondisi: '',
         deskripsi: '',
@@ -53,9 +54,15 @@ class Myproduct extends Component {
         }
     }
 
-    onEditClick = () => {
-        if (this.state.namaProduk && this.state.kategori && this.state.subKategori && 
-            this.state.harga && this.state.berat && this.state.kondisi && this.state.deskripsi && this.state.selectedFile){
+    onSubmitEdit = () => {
+        if (parseInt(this.state.qty) < 1) { 
+            this.setState({error: `Kuantitas barang minimal 1`})
+            setTimeout(
+            () => {this.setState({error: ''})},
+            3000
+        )} else if (this.state.namaProduk && this.state.kategori && this.state.subKategori && 
+            this.state.harga && this.state.berat && this.state.kondisi && this.state.deskripsi && this.state.selectedFile &&
+            this.state.qty){
                 var fd = new FormData()
                 var data = {
                     id: this.state.idproduct,   
@@ -66,7 +73,8 @@ class Myproduct extends Component {
                     harga: this.state.harga,
                     berat: this.state.berat,
                     kondisi: this.state.kondisi,
-                    deskripsi: this.state.deskripsi
+                    deskripsi: this.state.deskripsi,
+                    qty: this.state.qty
                 }
                 console.log(this.state.selectedFile, this.state.selectedFile.name);
                 fd.append('anehedit', this.state.selectedFile, this.state.selectedFile.name)
@@ -113,8 +121,10 @@ class Myproduct extends Component {
             this.setState({totalpage: totalpage})
             console.log(totalitem,totalpage);
             var indexke = 0
-            if (activepage==1){
-                indexke +=1
+            if (totalitem==1 && activepage==1){
+                indexke = 0
+            } else if (activepage==1){
+                indexke += 0
             } else {
                 indexke += (activepage-1)*10 
             } 
@@ -141,7 +151,6 @@ class Myproduct extends Component {
         }).then(res=>{
             this.setState({product: res.data[0]})
             this.setState({display: 'detail'})           
-            console.log(this.state.product)
         })
         .catch(err=>{
             console.log(err);
@@ -180,7 +189,7 @@ class Myproduct extends Component {
             for (let i = 1; i < this.state.totalpage+1 ; i++) {
                 pagination.push(i)
             }
-            console.log(pagination);
+            
             let hasil = pagination.map((pageNum)=>{
                 return <li class="page-item"><button class="page-link" onClick={()=>{this.pagination(pageNum)}}>{pageNum}</button></li>
             })
@@ -196,7 +205,7 @@ class Myproduct extends Component {
                 <div className='container'>
                     <div className='row ml-2 mr-2'>
                         {this.state.products.map((product)=>{
-                            let {id, namaProduk, kategori, subKategori, harga, berat, kondisi, deskripsi, fotoProduk} = product
+                            let {id, namaProduk, kategori, subKategori, harga, berat, kondisi, deskripsi, fotoProduk, qty} = product
                             let numberWithCommas = (x) => {
                                 return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                             }
@@ -239,12 +248,14 @@ class Myproduct extends Component {
                         </div>
                         <div className='card-body pb-1'>
                             <div className='text-center'>
-                            <img className='card-img-top mb-3' src={`http://localhost:7777/files/${this.state.product.fotoProduk}`} style={{width:'300px'}} alt=""/>
+                            <img className='card-img-top mb-3' src={`http://localhost:7777/files/${this.state.product.fotoProduk}`} style={{width:'250px'}} alt=""/>
                             </div>
                             <h3><b>Description :</b></h3>
                             <p>{this.state.product.deskripsi}</p>
                             <h3><b>Harga :</b></h3>
                             <p>Rp. {this.state.product.harga.toLocaleString('id')}</p>
+                            <h3><b>Quantity :</b></h3>
+                            <p>{this.state.product.qty}</p>
                         </div>
                     </div>
                 </div>
@@ -285,10 +296,11 @@ class Myproduct extends Component {
                         </div>                 
                     </div>
                     <div className='row'>
-                        <div className='col-7 card-title pt-4 mb-2'>Harga (Harga harus kelipatan 100)</div>
-                        <div className='col-5 card-title pt-4 mb-2'>Perkiraan Berat</div>
+                        <div className='col-6 card-title pt-4 mb-2'>Harga (Harga harus kelipatan 100)</div>
+                        <div className='col-2 card-title pt-4 mb-2'>Kuantitas</div>
+                        <div className='col-4 card-title pt-4 mb-2'>Perkiraan Berat</div>
                         <div class="w-100"></div>
-                        <div class="col-7 ui input2">
+                        <div class="col-6 ui input2">
                             <input value={this.state.harga} 
                                 onChange={(e) => {
                                     if (isNaN(e.target.value)){
@@ -297,7 +309,12 @@ class Myproduct extends Component {
                                         this.setState({harga:e.target.value})
                                     }}} type="text" placeholder="Masukkan harga"/>
                         </div>
-                        <div class="col-5 ui right labeled input">
+                        <div class="col-2 ui input">
+                            <input onChange={(e) => {
+                                    this.setState({qty:e.target.value})
+                                    }} type="number" placeholder="qty"/>
+                        </div>  
+                        <div class="col-3 ui right labeled input">
                             <input value={this.state.berat} 
                                 onChange={(e) => {
                                     if (isNaN(e.target.value)){
@@ -334,10 +351,6 @@ class Myproduct extends Component {
                             </div>
                         </div>                               
                     </div>
-                    <div className='card-title pt-5'>
-                        Foto Produk
-                    </div>
-                    <div className='dimdom-bottom'></div>
                     <div className='row'>
                         <div className='col pt-3'>
                             <input type="file" ref='fileBtn' onChange={(e) => this.setState({selectedFile : e.target.files[0]})} className='d-none'/>
@@ -347,7 +360,7 @@ class Myproduct extends Component {
                     </div>
                     <div className='row text-center pt-5'>
                         <div className='col mx-auto'>
-                            <button onClick={this.onEditClick} className='ui inverted basic dimdom3 button '>Edit</button>
+                            <button onClick={this.onSubmitEdit} className='ui inverted basic dimdom3 button '>Edit</button>
                             {this.notification()}
                         </div>
                         <div class="w-100"></div>

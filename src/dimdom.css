@@ -355,6 +355,12 @@ div.box-containe div {
   font-weight: 900;
 }
 
+.monalt900p {
+  font-family: 'Montserrat Alternates', sans-serif;
+  font-weight: 900;
+  color: rgb(255, 31, 210);
+}
+
 .monalt500 {
   font-family: 'Montserrat Alternates', sans-serif;
   font-weight: 500;

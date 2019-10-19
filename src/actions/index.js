@@ -37,15 +37,19 @@ export const onLogoutUser = () => {
     }
 }
 
-export const toggleModalOn = () => {
+export const searchKeywords = (keywords) => {
     return {
-        type: 'TOGGLE_ON'
+        type: 'SEARCH_KEYWORDS',
+        payload: {
+            keywords: keywords
+        }
     }
 }
 
-export const toggleModalOff = () => {
+export const clearKeywords = () => {
     return {
-        type: 'TOGGLE_OFF'
+        type: 'CLEAR_KEYWORDS_SUCCESS'
     }
 }
+
 
