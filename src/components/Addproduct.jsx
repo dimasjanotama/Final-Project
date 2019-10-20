@@ -26,7 +26,20 @@ class Addproduct extends Component {
         deskripsi: '',
         message: '',
         error: '',
-        selectedFile: ''
+        selectedFile: '',
+        propinsiUser: ''
+    }
+
+    componentDidMount = ()=>{
+        axios.get(urlApi+'getuserbyid' ,{
+            params : {
+                userid: this.props.user_id
+            }
+        }).then(res=>{
+            this.setState({propinsiUser: res.data[0].propinsi})
+        }).catch(err=>{
+            console.log(err);
+        })
     }
 
     notification = () => {
@@ -61,7 +74,8 @@ class Addproduct extends Component {
                     berat: this.state.berat,
                     kondisi: this.state.kondisi,
                     deskripsi: this.state.deskripsi,
-                    qty: this.state.qty
+                    qty: this.state.qty,
+                    propinsiUser: this.state.propinsiUser
                 }
                 console.log(this.state.selectedFile, this.state.selectedFile.name);
                 fd.append('aneh', this.state.selectedFile, this.state.selectedFile.name)

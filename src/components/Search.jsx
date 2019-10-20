@@ -27,7 +27,8 @@ class Search extends Component {
         product: [],
         selectedId: '',
         toogle: '',
-        orderQty: 0
+        orderQty: 0,
+        propinsiUser: ''
     }
 
     componentDidMount(){
@@ -37,7 +38,17 @@ class Search extends Component {
             namaProduk: this.props.key_words,
             toogle: ''
         })
-        this.onFilterClick()
+        axios.get(urlApi+'getuserbyid' ,{
+            params : {
+                userid: this.props.user_id
+            }
+        }).then(res=>{
+            this.setState({propinsiUser: res.data[0].propinsi})
+            this.onFilterClick()
+        }).catch(err=>{
+            console.log(err);
+            
+        })
     }
 
     onFilterClick = ()=>{
@@ -278,9 +289,11 @@ class Search extends Component {
             if(res.data[0].sudahada>0){
                 let orderQtyNow = parseInt(res.data[0].orderQty) + parseInt(this.state.orderQty)
                 axios.put(urlApi+'addqty',{
-                    orderQty: orderQtyNow,
+                    orderQtyNow: orderQtyNow,
+                    orderQty: this.state.orderQty,
                     idProduct: idProduct,
-                    qty: this.state.qty                     
+                    qty: this.state.qty,
+                    propinsiSeller:this.state.product.propinsiUser            
                 }).then(res=>{
                     alert('Success! Berhasil menambah ke keranjang')
                 }).catch(err=>{
@@ -291,7 +304,9 @@ class Search extends Component {
                 {
                     idProduct: idProduct,
                     idBuyer: this.props.user_id,
-                    idSeller: product.idUser,                     
+                    idSeller: product.idUser,      
+                    propinsiBuyer: this.state.propinsiUser,               
+                    propinsiSeller: this.state.product.propinsiUser,               
                     namaProduk: product.namaProduk,
                     harga: product.harga,
                     berat: product.berat,
