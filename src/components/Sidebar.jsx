@@ -11,7 +11,7 @@ class Sidebar extends Component {
                     <NavLink to='/dashboard' className='ui inverted basic dimdom4 button mt-5'>Dashboard</NavLink>
                     <NavLink to='/addproduct' className='ui inverted basic dimdom4 button'>Add_Product</NavLink>
                     <NavLink to='/myproduct' className='ui inverted basic dimdom4 button'>My_Products</NavLink>
-                    <button onClick={()=> this.setState({kategori: 'mycart'})} className='ui inverted basic dimdom4 button'>My_Cart</button>
+                    <NavLink to='/mycart' className='ui inverted basic dimdom4 button'>My_Cart</NavLink>
                     <button onClick={()=> this.setState({kategori: 'myprofile'})} className='ui inverted basic dimdom4 button'>My_Profile</button>    
                     </div>
                 </div>

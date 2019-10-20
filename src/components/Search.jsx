@@ -26,7 +26,8 @@ class Search extends Component {
         qty: '',
         product: [],
         selectedId: '',
-        toogle: ''
+        toogle: '',
+        orderQty: 0
     }
 
     componentDidMount(){
@@ -195,8 +196,6 @@ class Search extends Component {
                                         <div className='card-body p-0 pb-3'>
                                             <button className='btn dimdom-pink mb-2' onClick={()=>{this.onDetailClick(id)}}>{namaProduk}</button>
                                             <p className='card-text text-center'>Rp. {harga.toLocaleString('id')}</p>
-                                            <p className='card-text text-center'>Quantity : {qty}</p>
-                                            <button className='ui inverted basic dimdom3 button mb-1 btn-block' onClick={()=>{this.onClickBeli(id, product)}}>Beli</button>
                                         </div>
                                     </div>
                                 ) 
@@ -209,10 +208,7 @@ class Search extends Component {
                                         <div className='card-body p-0 pb-3'>
                                             <button className='btn dimdom-pink mb-2' onClick={()=>{this.onDetailClick(id)}}>{namaProduk}</button>
                                             <p className='card-text text-center'>Rp. {harga.toLocaleString('id')}</p>
-                                            <p className='card-text text-center'>Quantity : {qty}</p>
-                                            <input type="number" className='form-control' placeholder='Quantity'/>
-                                            <br/>
-                                            <button className='ui inverted basic dimdom3 button mb-1 btn-block' onClick={()=>{this.onClickAtc(id, product)}}>Add to Cart</button>
+                                            
                                         </div>
                                     </div>
                                 ) 
@@ -242,7 +238,7 @@ class Search extends Component {
                         </div>
                         <div className='card-body pb-1'>
                             <div className='text-center'>
-                            <img className='card-img-top mb-3' src={`http://localhost:7777/files/${this.state.product.fotoProduk}`} style={{width:'300px'}} alt=""/>
+                            <img className='card-img-top mb-3' src={`http://localhost:7777/files/${this.state.product.fotoProduk}`} style={{width:'220px'}} alt=""/>
                             </div>
                             <h3><b>Description :</b></h3>
                             <p>{this.state.product.deskripsi}</p>
@@ -250,6 +246,9 @@ class Search extends Component {
                             <p>Rp. {this.state.product.harga.toLocaleString('id')}</p>
                             <h3><b>Quantity :</b></h3>
                             <p>{this.state.product.qty}</p>
+                            <input onChange={(e) => this.setState({orderQty: e.target.value})} type="number" className='form-control' placeholder='Quantity'/>
+                            <br/>
+                            <button className='ui inverted basic dimdom3 button mb-1 btn-block' onClick={()=>{this.onClickAtc(this.state.product.id, this.state.product)}}>Add to Cart</button>
                         </div>
                     </div>
                 </div>
@@ -257,12 +256,27 @@ class Search extends Component {
         } 
     }
 
-    onClickBeli = (idProduct, product) => {
-        this.setState(
-            {
-                selectedId: idProduct,
-                selectedProductQty: product.qty,
+    onClickAtc = (idProduct, product)=>{
+        if(this.state.orderQty < 1 ){
+            alert('Pembelian minimal 1')
+        } else if (this.state.orderQty > parseInt(product.qty)){
+            alert('Stok produk tidak mencukupi')
+        } else {
+            axios.post(urlApi + 'addtocart',
+                {
+                    idProduct: idProduct,
+                    idBuyer: this.props.user_id,
+                    idSeller: product.idUser,                     
+                    namaProduk: product.namaProduk,
+                    harga: product.harga,
+                    berat: product.berat,
+                    qty: parseInt(product.qty),
+                    orderQty: parseInt(this.state.orderQty),
+                    fotoProduk: product.fotoProduk
+                }).then((res)=>{
+                alert('Sukses! Berhasil ditambahkan ke keranjang')
             })
+        }
     }
 
     render() {

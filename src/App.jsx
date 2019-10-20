@@ -9,6 +9,7 @@ import Kategori from './components/Kategori'
 import Dashboard from './components/Dashboard'
 import Addproduct from './components/Addproduct'
 import Myproduct from './components/Myproduct'
+import Mycart from './components/Mycart'
 import Search from './components/Search'
 
 
@@ -38,6 +39,7 @@ const App = () => {
                                 <Route path='/dashboard' component={Dashboard}/>
                                 <Route path='/addproduct' component={Addproduct}/>
                                 <Route path='/myproduct' component={Myproduct}/>                                                                                              
+                                <Route path='/mycart' component={Mycart}/>                                                                                              
                             </Switch>
                         </animated.div>
                     ))}   

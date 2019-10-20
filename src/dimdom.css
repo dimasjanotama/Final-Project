@@ -392,9 +392,23 @@ div.box-containe div {
   font-weight: 600;
 }
 
+.quic700b {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 14pt;
+ 
+}
+.quic700p {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 14pt;
+  color: rgb(255, 31, 210);
+}
+
 .quic700 {
   font-family: 'Quicksand', sans-serif;
   font-weight: 700;
+
 }
 
 .dimdom-color{
