@@ -27,24 +27,43 @@ class Mycart extends Component {
             }
         }).then(res=>{
             this.setState({user: res.data[0]})
-            axios.get(urlApi+'getcart',{
-                params : {
-                    idBuyer:  this.props.user_id
-                }
-            }).then(res=>{
-                this.setState({carts: res.data})
-                console.log(res.data);
-                
-            })
+            this.getCart()
         }).catch(err=>{
             console.log(err);
             
         })
     }
 
+    getCart = ()=>{
+        axios.get(urlApi+'getcart',{
+            params : {
+                idBuyer:  this.props.user_id
+            }
+        }).then(res=>{
+            this.setState({carts: res.data})
+            console.log(res.data);  
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
+    onDeleteClick = (idcart) => {
+        axios.delete(urlApi+'deletecart',{
+            data : {
+                idCart : idcart
+            }
+        }
+        ).then(res=>{
+            alert('Berhasil menghapus produk')
+            this.getCart()
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
     renderCart = () => {
         let hasil = this.state.carts.map((product)=>{
-            let { namaProduk, harga, orderQty, fotoProduk } = product 
+            let { id, namaProduk, harga, orderQty, fotoProduk } = product 
             let totalHarga = parseInt(harga)*parseInt(orderQty)
             return (
                 <>
@@ -56,7 +75,7 @@ class Mycart extends Component {
                     <div className='col-1 card-title pt-4 mb-2'>{orderQty}</div>
                     <div className='col-2 card-title pt-4 mb-2'>{totalHarga}</div>
                     <div className='col-2 card-title pt-4 mb-2'>
-                        <button className='ui inverted basic dimdom3 button mt-n2'>Hapus</button>
+                        <button onClick={()=>{this.onDeleteClick(id)}} className='ui inverted basic dimdom3 button mt-n2'>Hapus</button>
                     </div>
                 </>
             )

@@ -261,8 +261,33 @@ class Search extends Component {
             alert('Pembelian minimal 1')
         } else if (this.state.orderQty > parseInt(product.qty)){
             alert('Stok produk tidak mencukupi')
+        } else if (this.state.orderQty > parseInt(product.qty)){
+            alert('Stok produk tidak mencukupi')
         } else {
-            axios.post(urlApi + 'addtocart',
+            this.cekQty(idProduct, product)
+        } 
+    }
+
+    cekQty = (idProduct, product)=>{
+        axios.get(urlApi+'cekqty',{
+            params : {
+                idProduct : idProduct,
+                idBuyer: this.props.user_id
+            }
+        }).then(res=>{
+            if(res.data[0].sudahada>0){
+                let orderQtyNow = parseInt(res.data[0].orderQty) + parseInt(this.state.orderQty)
+                axios.put(urlApi+'addqty',{
+                    orderQty: orderQtyNow,
+                    idProduct: idProduct,
+                    qty: this.state.qty                     
+                }).then(res=>{
+                    alert('Success! Berhasil menambah ke keranjang')
+                }).catch(err=>{
+                    console.log(err);
+                })
+            } else {
+                axios.post(urlApi + 'addtocart',
                 {
                     idProduct: idProduct,
                     idBuyer: this.props.user_id,
@@ -276,7 +301,10 @@ class Search extends Component {
                 }).then((res)=>{
                 alert('Sukses! Berhasil ditambahkan ke keranjang')
             })
-        }
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
     }
 
     render() {
