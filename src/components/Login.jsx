@@ -80,7 +80,7 @@ class Login extends Component {
                                     <input onChange={(e) => this.setState({username: e.target.value})} type="text" placeholder="Username"/>
                                 </div>                 
                                 <div class=" col ui input2">
-                                    <input onChange={(e) => this.setState({password: e.target.value})} type="text" placeholder="Password"/>
+                                    <input onChange={(e) => this.setState({password: e.target.value})} type="password" placeholder="Password"/>
                                 </div>                 
                             </div>
                             <div className='row pt-5'>
@@ -100,7 +100,11 @@ class Login extends Component {
             
         ) //----------------------------> kurung tutup return
     } else {
+        if (this.props.user_name == 'Admin') {
+            return <Redirect to='/dashadmin'/>
+        } else {
         return <Redirect to='/dashboard'/>
+        }
     } 
     }
 }

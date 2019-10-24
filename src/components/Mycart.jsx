@@ -41,8 +41,9 @@ class Mycart extends Component {
                 idBuyer:  this.props.user_id
             }
         }).then(res=>{
-            this.setState({carts: res.data})
-            console.log(res.data);  
+            console.log(res.data);
+            
+            this.setState({carts: res.data}) 
         }).catch(err=>{
             console.log(err);
         })
@@ -67,7 +68,7 @@ class Mycart extends Component {
         let hasil = this.state.carts.map((product)=>{
             let { id, namaProduk, harga, orderQty, fotoProduk, propinsiBuyer, propinsiSeller } = product 
             let berat = (product.berat/1000)*orderQty
-            console.log(propinsiBuyer, propinsiSeller);
+           
             
             if(propinsiBuyer==propinsiSeller){
                 var ongkir = 30000*berat
@@ -94,17 +95,40 @@ class Mycart extends Component {
     }
 
     checkOut = () => {
+        var today = new Date()
+        var tomorrow = new Date();
+        tomorrow.setDate(today.getDate()+1) 
+        var year = today.getFullYear()
+        var month = today.getMonth()+1
+        var date = today.getDate()
+        var yearx = tomorrow.getFullYear()
+        var monthx = tomorrow.getMonth()+1
+        var datex = tomorrow.getDate()
+        var tglBeli = `${year}-${month}-${date}`
+        var tglExpired = `${yearx}-${monthx}-${datex}`
         axios.post(urlApi+'addtransaction',{
-            tglPembelian: 'contoh',
-            idBuyer: this.state.carts.idBuyer,
-            idSeller: this.state.carts.idSeller,
+            tglPembelian: tglBeli,
+            tglExpired: tglExpired,
+            idBuyer: this.props.user_id,
             nilaiTransaksi: this.subtotal
         }).then(res=>{
-            alert('Silahkan membayar sesuai petunjuk dibawah, dan lakukan konfirmasi segera dengan mengunggah bukti transfer')
+            axios.delete(urlApi+'deletecartbyuserid',{
+                data : {
+                    idBuyer: this.props.user_id
+                }
+            }
+            ).then(res=>{
+                alert('Silahkan ke menu dashboard, dan lakukan prosedur pembayaran sesuai petunjuk')
+                this.getCart()
+            }).catch(err=>{
+                console.log(err);
+            })
         }).catch(err=>{
             console.log(err);
         })
     }
+
+    addOrder
 
     renderList = () => {
         return (

@@ -28,7 +28,8 @@ class Search extends Component {
         selectedId: '',
         toogle: '',
         orderQty: 0,
-        propinsiUser: ''
+        propinsiUser: '',
+        user: []
     }
 
     componentDidMount(){
@@ -43,6 +44,7 @@ class Search extends Component {
                 userid: this.props.user_id
             }
         }).then(res=>{
+            this.setState({user: res.data[0]})
             this.setState({propinsiUser: res.data[0].propinsi})
             this.onFilterClick()
         }).catch(err=>{
@@ -314,7 +316,26 @@ class Search extends Component {
                     orderQty: parseInt(this.state.orderQty),
                     fotoProduk: product.fotoProduk
                 }).then((res)=>{
-                alert('Sukses! Berhasil ditambahkan ke keranjang')
+                    axios.post(urlApi+'addorder',{
+                        idBuyer: this.props.user_id,
+                        namaBuyer: this.state.user.namaDepan +' '+ this.state.user.namaBelakang,
+                        idSeller: product.idUser,  
+                        alamat: this.state.user.alamat,
+                        kelurahan: this.state.user.kelurahan,
+                        kecamatan: this.state.user.kecamatan,
+                        kabupaten: this.state.user.kabupaten,
+                        propinsi: this.state.user.propinsi,
+                        kodepos: this.state.user.kodepos,
+                        idProduct: idProduct,
+                        namaProduk: product.namaProduk,
+                        orderQty: parseInt(this.state.orderQty),
+                        fotoProduk: product.fotoProduk
+                    }
+                    ).then(res=>{
+                        alert('Sukses! Berhasil ditambahkan ke keranjang')
+                    }).catch(err=>{
+                        console.log(err);
+                    })    
             })
             }
         }).catch(err=>{

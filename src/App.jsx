@@ -7,6 +7,7 @@ import Register from './components/Register'
 import Navbar from './components/Navbar'
 import Kategori from './components/Kategori'
 import Dashboard from './components/Dashboard'
+import DashboardAdmin from './components/DashboardAdmin'
 import Addproduct from './components/Addproduct'
 import Myproduct from './components/Myproduct'
 import Mycart from './components/Mycart'
@@ -37,6 +38,7 @@ const App = () => {
                                 <Route path='/kategori' component={Kategori}/>                                        
                                 <Route path='/search' component={Search}/>                                        
                                 <Route path='/dashboard' component={Dashboard}/>
+                                <Route path='/dashadmin' component={DashboardAdmin}/>
                                 <Route path='/addproduct' component={Addproduct}/>
                                 <Route path='/myproduct' component={Myproduct}/>                                                                                              
                                 <Route path='/mycart' component={Mycart}/>                                                                                              
