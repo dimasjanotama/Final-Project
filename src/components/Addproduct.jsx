@@ -27,7 +27,8 @@ class Addproduct extends Component {
         message: '',
         error: '',
         selectedFile: '',
-        propinsiUser: ''
+        propinsiUser: '',
+        namaSeller: ''
     }
 
     componentDidMount = ()=>{
@@ -37,6 +38,7 @@ class Addproduct extends Component {
             }
         }).then(res=>{
             this.setState({propinsiUser: res.data[0].propinsi})
+            this.setState({namaSeller: res.data[0].username})
         }).catch(err=>{
             console.log(err);
         })
@@ -67,6 +69,7 @@ class Addproduct extends Component {
                 var fd = new FormData()
                 var data = {   
                     idUser: this.props.user_id,
+                    namaSeller: this.state.namaSeller,
                     namaProduk: this.state.namaProduk,
                     kategori: this.state.kategori,
                     subKategori: this.state.subKategori,                     

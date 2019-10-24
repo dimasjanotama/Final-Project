@@ -100,7 +100,7 @@ class DashboardAdmin extends Component {
                         </div>
                         <div className='row card-title'>
                             <div className='col card-title'>
-                                <div class="table-responsive">
+                            <div class="table-responsive">
                             <table class="table table-striped table-dark">
                                 <thead>
                                     <tr>

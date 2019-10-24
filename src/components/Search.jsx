@@ -194,7 +194,7 @@ class Search extends Component {
                     </div>
                     <div className='row ml-2 mr-2'>
                         {this.state.products.map((product)=>{
-                            let {id, namaProduk, kategori, subKategori, berat, kondisi, deskripsi, fotoProduk, qty} = product
+                            let {id, namaSeller, namaProduk, kategori, subKategori, berat, kondisi, deskripsi, fotoProduk, qty} = product
                             let harga = parseInt(product.harga)
                             // let numberWithCommas = (x) => {
                             //     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -206,9 +206,15 @@ class Search extends Component {
                                         <button className='btn mt-3 ml-n2' onClick={()=>{this.onDetailClick(id)}}>
                                             <img style={{width: '120px'}} src={`http://localhost:7777/files/${fotoProduk}`} alt="fotoproduk"/>
                                         </button>
-                                        <div className='card-body p-0 pb-3'>
-                                            <button className='btn dimdom-pink mb-2' onClick={()=>{this.onDetailClick(id)}}>{namaProduk}</button>
-                                            <p className='card-text text-center'>Rp. {harga.toLocaleString('id')}</p>
+                                        <div className='row card-body p-0 pb-3'>
+                                            <div className='col'>
+                                                <button className='btn dimdom-pink mb-2' onClick={()=>{this.onDetailClick(id)}}>{namaProduk}</button>
+                                            </div>
+                                            <div class="w-100"></div>
+                                            <i className='col-5 pr-1 text-right user icon'></i>
+                                            <p className='col pl-0 card-text text-left'>{namaSeller}</p>
+                                            <div class="w-100"></div>
+                                            <p className='col card-text text-center'>Rp. {harga.toLocaleString('id')}</p>
                                         </div>
                                     </div>
                                 ) 

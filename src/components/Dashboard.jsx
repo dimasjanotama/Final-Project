@@ -17,12 +17,15 @@ class Dashboard extends Component {
         bills: [],
         noTransaction : false,
         selectedFile: '',
+        selectedFile2: '',
         noRek: '',
-        namaRek: ''
+        namaRek: '',
+        toogle: ''
     }
 
     componentDidMount(){
         this.getTransaction()
+        this.setState({toogle: 'buyer'})
     }
 
     getTransaction = () => {
@@ -79,7 +82,19 @@ class Dashboard extends Component {
         })
     } 
 
-    notification = ()=>{
+    konfirmasiTerima = (transactionId) =>{
+        axios.put(urlApi + 'receivepacket',{
+            id: transactionId
+        })
+        .then((res)=>{
+        alert('Success')
+        this.getTransaction()
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
+    buyer = ()=>{
         console.log(this.state.noTransaction);
         let batasWaktu = `${this.state.bills.tglExpired}`
         let batas = batasWaktu.substr(0,10)
@@ -112,7 +127,7 @@ class Dashboard extends Component {
                         <th scope="col">Nilai Transaksi</th>
                         <th scope="col">Tgl Pembayaran</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Konfirmasi Terima Barang</th>
+                        <th scope="col">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -122,6 +137,10 @@ class Dashboard extends Component {
                         <th scope="col">{this.state.bills.nilaiTransaksi.toLocaleString('id')}</th>
                         <th scope="col">{tglBayar}</th>
                         <th scope="col">{status}</th>
+                        <th scope="col">
+                          <input onClick={() => {this.konfirmasiTerima(this.state.bills.id)}} type="button" 
+                          className="ui inverted basic dimdom3 button" value="Konfirmasi Terima"/>
+                        </th>
                         </tr>
                     </tbody>
                     </table>
@@ -144,7 +163,7 @@ class Dashboard extends Component {
                             <div className='col card-title pt-4 mb-2'>Status Pembayaran</div>
                             <div class="w-100"></div>   
                             <div className='col card-title pt-4 mb-2 quic700p'>
-                                <img style={{width: '100px'}} src={require('./cimb.jpg')}/>  123456789 an. Fxpedia 
+                                <img style={{width: '100px'}} src={require('../lib/pictures/cimb.jpg')}/>  123456789 an. Fxpedia 
                             </div>
                             <div className='col card-title pt-4 mb-2 quic700p'>{status}</div>   
                         </div>
@@ -188,8 +207,63 @@ class Dashboard extends Component {
             return null
         }}
 
+    seller = () => {
+        return (
+            <div>
+                <div className='card-title subjudul'>
+                    Ada orderan baru, silahkan lakukan pengiriman segera!
+                </div>
+                <div className='row'>
+                    <div className='col card-title pt-4 mb-2'>Total Tagihan</div>
+                    <div className='col card-title pt-4 mb-2'>Unggah bukti pembayaran sebelum Tanggal</div>
+                    <div class="w-100"></div>    
+                    <div className='col card-title pt-4 mb-2 quic700p'>Rp. {this.state.bills.nilaiTransaksi}</div>
+                    <div className='col card-title pt-4 mb-2 quic700p'></div>    
+                    <div class="w-100"></div>          
+                    <div className='col card-title pt-4 mb-2'>Rekening Pembayaran</div>
+                    <div className='col card-title pt-4 mb-2'>Status Pembayaran</div>
+                    <div class="w-100"></div>   
+                    <div className='col card-title pt-4 mb-2 quic700p'>
+                        <img style={{width: '100px'}} src={require('../lib/pictures/cimb.jpg')}/>  123456789 an. Fxpedia 
+                    </div>
+                    <div className='col card-title pt-4 mb-2 quic700p'></div>   
+                </div>
+                <div className='dimdom-bottom pt-4'></div>
+                <div className='card-title subjudul pt-4'>
+                    Konfirmasi pengiriman
+                </div>
+                <div class="row">  
+                    <div className='col card-title pt-4 mb-2'>Masukkan No.resi pengiriman</div>
+                    <div className='col card-title pt-4 mb-2'>Masukkan total harga + biaya pengiriman</div>
+                    <div class="w-100"></div>    
+                    <div className='col ui input2 pt-4 mb-2'>
+                        <input onChange={(e) => this.setState({noResi: e.target.value})} type="text" placeholder="Masukkan No. Resi"/>
+                    </div>
+                    <div className='col ui input2 pt-4 mb-2'>
+                        <input onChange={(e) => this.setState({hakSeller: e.target.value})} type="text" placeholder="Masukkan total harga + ongkir"/>
+                    </div>
+                    <div class="w-100"></div>    
+                    <div className='col card-title pt-4'>
+                        <div class="ui inverted basic dimdom3 buttons">
+                            <input type='button' onClick={() => this.refs.fileBtn2.click()} className='ui inverted basic dimdom3 button' value='Unggah bukti pengiriman'/>
+                            <input onClick={this.onSubmitClick} type="button" className="ui inverted basic dimdom3 button" value="Submit konfirmasi"/>
+                        </div>
+                            <input type="file" ref='fileBtn2' onChange={(e) => this.setState({selectedFile2 : e.target.files[0]})} className='d-none'/>
+                    </div>
+                    <div class="w-100"></div>  
+                    <div className='col card-title'>
+                        {this.displayfilename()}
+                    </div>
+                    <div class="w-100"></div> 
+                    <div className='pt-3'>
+                    </div> 
+                </div> 
+            </div>  
+        )
+    }
+
     renderList = () => {
-        
+        if(this.state.toogle=='buyer'){
         return (
             <div className='row align-items-center text-light quic700'>
                 <div className='col-11 mx-auto card'>
@@ -197,16 +271,33 @@ class Dashboard extends Component {
                         <div className='row card-title'>
                             <div className='col card-title text-right'>
                                 <div class="ui inverted basic dimdom3 buttons">
-                                    <button class="ui inverted basic dimdom3 button">Buyer</button>
-                                    <button class="ui inverted basic dimdom3 button">Seller</button>
+                                    <button onClick={()=>{this.setState({toogle: 'buyer'})}} class="ui inverted basic dimdom3 button">Buyer</button>
+                                    <button onClick={()=>{this.setState({toogle: 'seller'})}} class="ui inverted basic dimdom3 button">Seller</button>
                                 </div>
                             </div>
                         </div>
-                        {this.notification()}
+                        {this.buyer()}
                     </div>
                 </div>
             </div>
-        )
+        )} else {
+            return (
+                <div className='row align-items-center text-light quic700'>
+                    <div className='col-11 mx-auto card'>
+                        <div className='card-body'>
+                            <div className='row card-title'>
+                                <div className='col card-title text-right'>
+                                    <div class="ui inverted basic dimdom3 buttons">
+                                        <button onClick={()=>{this.setState({toogle: 'buyer'})}} class="ui inverted basic dimdom3 button">Buyer</button>
+                                        <button onClick={()=>{this.setState({toogle: 'seller'})}} class="ui inverted basic dimdom3 button">Seller</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {this.seller()}
+                        </div>
+                    </div>
+                </div>
+            )}
     }
 
     render() {
