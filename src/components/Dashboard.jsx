@@ -15,7 +15,9 @@ class Dashboard extends Component {
 
     state = {
         bills: [],
+        orders: [],
         noTransaction : false,
+        noOrder : false,
         selectedFile: '',
         selectedFile2: '',
         noRek: '',
@@ -26,6 +28,7 @@ class Dashboard extends Component {
     componentDidMount(){
         this.getTransaction()
         this.setState({toogle: 'buyer'})
+        this.getOrderlist()
     }
 
     getTransaction = () => {
@@ -40,6 +43,23 @@ class Dashboard extends Component {
                 status: res.data[0].isVerified
             })
             } else {this.setState({noTransaction: true})} 
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
+    getOrderlist = () => {
+        axios.get(urlApi+'getorderlist',{
+            params : {
+                idSeller:  this.props.user_id
+            }
+        }).then(res=>{
+            console.log(res.data[0]);
+            if(res.data[0]){
+            this.setState({
+                orders: res.data
+            })
+            } else {this.setState({noOrder: true})} 
         }).catch(err=>{
             console.log(err);
         })
@@ -95,7 +115,6 @@ class Dashboard extends Component {
     }
 
     buyer = ()=>{
-        console.log(this.state.noTransaction);
         let batasWaktu = `${this.state.bills.tglExpired}`
         let batas = batasWaktu.substr(0,10)
         let tglPembelian = `${this.state.bills.tglPembelian}`
@@ -207,27 +226,59 @@ class Dashboard extends Component {
             return null
         }}
 
+    renderOrderlist=()=>{
+        let hasil = this.state.orders.map((order)=>{
+            return (
+                <tr>
+                    <th scope="col">{order.idTransaction}</th>    
+                    <th scope="col"><img style={{width: '50px'}} src={`http://localhost:7777/files/${order.fotoProduk}`} alt="fotoproduk"/></th>
+                    <th scope="col">{order.namaProduk}</th>
+                    <th scope="col">{order.orderQty}</th>
+                    <th scope="col">{order.harga.toLocaleString('id')}</th>
+                </tr>
+            )
+        })
+        return hasil
+    }
+
     seller = () => {
+        if(!this.state.noOrder){
         return (
             <div>
                 <div className='card-title subjudul'>
-                    Ada orderan baru, silahkan lakukan pengiriman segera!
-                </div>
-                <div className='row'>
-                    <div className='col card-title pt-4 mb-2'>Total Tagihan</div>
-                    <div className='col card-title pt-4 mb-2'>Unggah bukti pembayaran sebelum Tanggal</div>
-                    <div class="w-100"></div>    
-                    <div className='col card-title pt-4 mb-2 quic700p'>Rp. {this.state.bills.nilaiTransaksi}</div>
-                    <div className='col card-title pt-4 mb-2 quic700p'></div>    
-                    <div class="w-100"></div>          
-                    <div className='col card-title pt-4 mb-2'>Rekening Pembayaran</div>
-                    <div className='col card-title pt-4 mb-2'>Status Pembayaran</div>
-                    <div class="w-100"></div>   
-                    <div className='col card-title pt-4 mb-2 quic700p'>
-                        <img style={{width: '100px'}} src={require('../lib/pictures/cimb.jpg')}/>  123456789 an. Fxpedia 
+                    Ada orderan baru, silahkan lakukan pengiriman!
                     </div>
-                    <div className='col card-title pt-4 mb-2 quic700p'></div>   
-                </div>
+                    <div className='row card-title pt-4'>
+                        <div className='col-1 card-title pt-3 pb-1'>
+                            <i className='big map marker alternate icon text-right' style={{color: 'rgb(255, 31, 210)'}}></i>
+                        </div>
+                        <div className='col-8 card-title pt-4 pb-1 pl-0 quic700p text-left'>
+                            Alamat Pengiriman
+                        </div>   
+                    </div>
+                    <div className='dimdom-bottom'></div>
+                    <div className='row'>
+                        <div className='col-3 card-title pt-3 mb-2 quic700b'><b>{this.state.user.namaDepan} {this.state.user.namaBelakang}</b></div>
+                        <div className='col-9 card-title pt-3 mb-2 quic700'>{this.state.user.alamat} {this.state.user.kelurahan}, {this.state.user.kecamatan}, {this.state.user.kabupaten}, {this.state.user.propinsi} {this.state.user.kodepos}
+                        </div>
+                        <div class="w-100"></div>
+                    </div>
+                    <table class="table table-striped table-dark">
+                    <thead>
+                        <tr>
+                        <th scope="col">ID Transaksi</th>    
+                        <th scope="col">Foto</th>
+                        <th scope="col">Produk</th>
+                        <th scope="col">Order Qty</th>
+                        <th scope="col">Harga</th>
+                        </tr>
+                        
+                    </thead>
+                    <tbody>
+                        {this.renderOrderlist()}
+                    </tbody>
+                    </table>
+
                 <div className='dimdom-bottom pt-4'></div>
                 <div className='card-title subjudul pt-4'>
                     Konfirmasi pengiriman
@@ -259,7 +310,9 @@ class Dashboard extends Component {
                     </div> 
                 </div> 
             </div>  
-        )
+        )} else {
+            return null
+        }
     }
 
     renderList = () => {

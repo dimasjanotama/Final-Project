@@ -29,7 +29,8 @@ class Search extends Component {
         toogle: '',
         orderQty: 0,
         propinsiUser: '',
-        user: []
+        user: [],
+        idCart: ''
     }
 
     componentDidMount(){
@@ -312,7 +313,8 @@ class Search extends Component {
                 {
                     idProduct: idProduct,
                     idBuyer: this.props.user_id,
-                    idSeller: product.idUser,      
+                    idSeller: product.idUser,
+                    namaSeller: product.namaSeller,      
                     propinsiBuyer: this.state.propinsiUser,               
                     propinsiSeller: this.state.product.propinsiUser,               
                     namaProduk: product.namaProduk,
@@ -326,6 +328,7 @@ class Search extends Component {
                         idBuyer: this.props.user_id,
                         namaBuyer: this.state.user.namaDepan +' '+ this.state.user.namaBelakang,
                         idSeller: product.idUser,  
+                        namaSeller: product.namaSeller,
                         alamat: this.state.user.alamat,
                         kelurahan: this.state.user.kelurahan,
                         kecamatan: this.state.user.kecamatan,
@@ -335,6 +338,7 @@ class Search extends Component {
                         idProduct: idProduct,
                         namaProduk: product.namaProduk,
                         orderQty: parseInt(this.state.orderQty),
+                        harga: product.harga,
                         fotoProduk: product.fotoProduk
                     }
                     ).then(res=>{
