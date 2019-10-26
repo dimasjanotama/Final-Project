@@ -47,10 +47,11 @@ class Mycart extends Component {
         })
     }
 
-    onDeleteClick = (idcart) => {
+    onDeleteClick = (idCart) => {
         axios.delete(urlApi+'deletecart',{
             data : {
-                idCart : idcart
+                idCart : idCart,
+                idBuyer: this.props.user_id
             }
         }
         ).then(res=>{

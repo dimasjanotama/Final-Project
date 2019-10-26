@@ -29,12 +29,14 @@ class Dashboard extends Component {
         hakSeller: '',
         noRekSeller: '',
         namaRekSeller: '',
-        adaOrder: false
+        adaOrder: false,
+        adaHistory: false
     }
 
     componentDidMount(){
         this.getBuyTransaction()
         this.getSellTransaction()
+        this.getHistory()
         this.setState({toogle: 'buyer'})
     }
 
@@ -82,6 +84,24 @@ class Dashboard extends Component {
             }).catch(err=>{
                 console.log(err);
             })
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
+    getHistory = () => {
+        axios.get(urlApi+'gethistory',{
+            params : {
+                userId:  this.props.user_id
+            }
+        }).then(res=>{
+            if(res.data[0]){
+            this.setState({ 
+                history: res.data,
+                adaHistory: true,
+                loading: false    
+            })
+            } else {}
         }).catch(err=>{
             console.log(err);
         })
@@ -165,8 +185,14 @@ class Dashboard extends Component {
     }
 
     onReceiveConf = (transactionId) =>{
+        var today = new Date()
+        var year = today.getFullYear()
+        var month = today.getMonth()+1
+        var date = today.getDate()
+        var tglTerima = `${year}-${month}-${date}`
         axios.put(urlApi + 'receivepacket',{
-            id: transactionId
+            id: transactionId,
+            tglPenerimaan: tglTerima
         })
         .then((res)=>{
         alert('Konfirmasi Sukses, Dana akan disalurkan ke Seller')
@@ -181,7 +207,10 @@ class Dashboard extends Component {
             let batasWaktu = `${transaction.tglExpired}`
             var batas = batasWaktu.substr(0,10)
             return (
-                <div>       
+                <div>
+                    <div className='card-title subjudul'>
+                        Mohon segera selesaikan pembayaran Anda
+                    </div>       
                     <div className='row'>
                         <div className='col card-title pt-4 mb-2'>Total Tagihan</div>
                         <div className='col card-title pt-4 mb-2'>Unggah bukti pembayaran sebelum Tanggal</div>
@@ -281,19 +310,31 @@ class Dashboard extends Component {
             
     renderOrderlist=()=>{
         let hasil = this.state.orders.map((order)=>{
-            return (
-                <tr>
-                    <th scope="col">{order.idTransaction}</th>    
-                    <th scope="col">{order.namaBuyer}</th>    
-                    <th scope="col">{this.state.orders[0].alamat}, {this.state.orders[0].kelurahan}, {this.state.orders[0].kecamatan}, 
-                    {this.state.orders[0].kabupaten}, {this.state.orders[0].propinsi} {this.state.orders[0].kodepos}</th>    
-                    <th scope="col"><img style={{width: '50px'}} src={`http://localhost:7777/files/${order.fotoProduk}`} alt="fotoproduk"/></th>
-                    <th scope="col">{order.namaProduk}</th>
-                    <th scope="col">{order.orderQty}</th>
-                    <th scope="col">{order.isShipped}</th>
-                    <th scope="col">{order.harga.toLocaleString('id')}</th>
-                </tr>
-            )
+
+            if(order.isDone<1){
+                if(order.isShipped==0) {
+                    var statusPengiriman='Belum dikirim'
+                 } else if (order.isShipped==1) {
+                    var statusPengiriman='Sudah dikirim'
+                } else {
+                    var statusPengiriman='Tidak dikirim'
+                }
+                return (
+                    <tr>
+                        <th scope="col">{order.idTransaction}</th>    
+                        <th scope="col">{order.namaBuyer}</th>    
+                        <th scope="col">{this.state.orders[0].alamat}, {this.state.orders[0].kelurahan}, {this.state.orders[0].kecamatan}, 
+                        {this.state.orders[0].kabupaten}, {this.state.orders[0].propinsi} {this.state.orders[0].kodepos}</th>    
+                        <th scope="col"><img style={{width: '50px'}} src={`http://localhost:7777/files/${order.fotoProduk}`} alt="fotoproduk"/></th>
+                        <th scope="col">{order.namaProduk}</th>
+                        <th scope="col">{order.orderQty}</th>
+                        <th scope="col">{statusPengiriman}</th>
+                        <th scope="col">{order.harga.toLocaleString('id')}</th>
+                    </tr>
+                )
+            } else {
+                return null
+            }
         })
         return hasil
     }
@@ -303,7 +344,7 @@ class Dashboard extends Component {
         return (
             <div>
                 <div className='card-title subjudul'>
-                    Ada orderan baru, silahkan lakukan pengiriman!
+                    Status Pesanan
                     </div>
                     <div className='row card-title pt-4'>
                         <div className='col-1 card-title pt-3 pb-1'>
@@ -379,6 +420,16 @@ class Dashboard extends Component {
         }
     }
 
+    history = () => {
+        if(this.state.adaHistory){
+            return (
+                <div>INI HISTORY</div>
+            )
+        } else {
+            return null
+        }
+    }
+
     renderList = () => {
         if(this.state.toogle=='buyer'){
         return (
@@ -390,17 +441,33 @@ class Dashboard extends Component {
                                 <div class="ui inverted basic dimdom3 buttons">
                                     <button onClick={()=>{this.setState({toogle: 'buyer'})}} class="ui inverted basic dimdom3 button">Buyer</button>
                                     <button onClick={()=>{this.setState({toogle: 'seller'})}} class="ui inverted basic dimdom3 button">Seller</button>
+                                    <button onClick={()=>{this.setState({toogle: 'history'})}} class="ui inverted basic dimdom3 button">History</button>
                                 </div>
                             </div>
-                        </div>
-                        <div className='card-title subjudul'>
-                            Mohon segera selesaikan pembayaran Anda
                         </div>
                         {this.renderUnpaid()}
                         {this.renderPaid()}
                     </div>
                 </div>
             </div>
+        )} else if(this.state.toogle=='seller'){
+            return (
+                <div className='row align-items-center text-light quic700'>
+                    <div className='col-11 mx-auto card'>
+                        <div className='card-body'>
+                            <div className='row card-title'>
+                                <div className='col card-title text-right'>
+                                    <div class="ui inverted basic dimdom3 buttons">
+                                        <button onClick={()=>{this.setState({toogle: 'buyer'})}} class="ui inverted basic dimdom3 button">Buyer</button>
+                                        <button onClick={()=>{this.setState({toogle: 'seller'})}} class="ui inverted basic dimdom3 button">Seller</button>
+                                        <button onClick={()=>{this.setState({toogle: 'history'})}} class="ui inverted basic dimdom3 button">History</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {this.seller()}
+                        </div>
+                    </div>
+                </div>
         )} else {
             return (
                 <div className='row align-items-center text-light quic700'>
@@ -411,14 +478,16 @@ class Dashboard extends Component {
                                     <div class="ui inverted basic dimdom3 buttons">
                                         <button onClick={()=>{this.setState({toogle: 'buyer'})}} class="ui inverted basic dimdom3 button">Buyer</button>
                                         <button onClick={()=>{this.setState({toogle: 'seller'})}} class="ui inverted basic dimdom3 button">Seller</button>
+                                        <button onClick={()=>{this.setState({toogle: 'history'})}} class="ui inverted basic dimdom3 button">History</button>
                                     </div>
                                 </div>
                             </div>
-                            {this.seller()}
+                            {this.history()}
                         </div>
                     </div>
                 </div>
-            )}
+            )   
+        }
     }
 
     render() {

@@ -75,9 +75,11 @@ class DashboardAdmin extends Component {
         })
     }
 
-    onVerifikasi2 = (transactionId)=>{
+    onVerifikasi2 = (transaction)=>{
+        var forBuyer = parseInt(transaction.nilaiTransaksi)-parseInt(transaction.hakSeller)
         axios.put(urlApi + 'shippingverification',{
-            id: transactionId
+            id: transaction.id,
+            hakBuyer: forBuyer
         })
         .then((res)=>{
         alert('Success')
@@ -112,45 +114,51 @@ class DashboardAdmin extends Component {
     }
 
     selesai = (transaction)=>{
-        var forBuyer = parseInt(transaction.nilaiTransaksi)-parseInt(transaction.hakSeller)
+        let tglTerima = `${transaction.tglPenerimaan}`
+        var terima = tglTerima.substr(0,10)
         axios.put(urlApi + 'transactiondone',{
-            id: transaction.id,
-            hakBuyer: forBuyer
+            id: transaction.id
         })
         .then((res)=>{
-            axios.delete(urlApi+'deletetransaction',{
-                data : {
-                    id : transaction.id
-                }
-            }
-            ).then(res=>{
-                this.addHistory(transaction)
+            axios.post(urlApi + 'addhistory',{
+                idTransaction: transaction.id,
+                tglPenerimaan: terima,
+                idBuyer: transaction.idBuyer,
+                namaBuyer: transaction.namaBuyer,
+                idSeller: transaction.idSeller,
+                namaSeller: transaction.namaSeller,
+                nilaiTransaksi: transaction.nilaiTransaksi,
+                hakSeller: transaction.hakSeller,
+                hakBuyer: transaction.hakBuyer 
+            })
+            .then((res)=>{
+                this.deleteTransaction(transaction)
             }).catch(err=>{
                 console.log(err);
-            })
+            })       
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+    
+    deleteTransaction = (transaction)=>{
+        axios.delete(urlApi+'deletetransaction',{
+            data : {
+                id : transaction.id
+            }
+        }
+        ).then(res=>{
+            alert('Success')
+            this.getTransaction3()
         }).catch(err=>{
             console.log(err);
         })
     }
 
     addHistory = (transaction)=>{
-        axios.post(urlApi + 'addhistory',{
-            idTransaction: transaction.id,
-            tglPenerimaan: transaction.tglPenerimaan,
-            idBuyer: transaction.idBuyer,
-            namaBuyer: transaction.namaBuyer,
-            idSeller: transaction.idSeller,
-            namaSeller: transaction.namaSeller,
-            nilaiTransaksi: transaction.nilaiTransaksi,
-            hakSeller: transaction.hakSeller,
-            hakBuyer: transaction.hakBuyer 
-        })
-        .then((res)=>{
-            alert('Success')
-            this.getTransaction3()
-        }).catch(err=>{
-            console.log(err);
-        })
+        let tglTerima = `${transaction.tglPenerimaan}`
+        var terima = tglTerima.substr(0,10)
+        
     }
 
     renderTable = () => {
@@ -204,7 +212,7 @@ class DashboardAdmin extends Component {
                         <td>{transaction.hakSeller.toLocaleString('id')}</td>
                         <td>{transaction.statusNow}</td>
                         <td>
-                            <input onClick={()=>{this.onVerifikasi2(transaction.id)}} className='btn btn-success' type="button" value="Verifikasi"/>
+                            <input onClick={()=>{this.onVerifikasi2(transaction)}} className='btn btn-success' type="button" value="Verifikasi"/>
                             <input onClick={()=>{this.onTolak2(transaction.id)}} className='btn btn-danger mt-1' type="button" value="Tolak"/>
                         </td>
                     </tr>
@@ -241,8 +249,8 @@ class DashboardAdmin extends Component {
                     <td>{(transaction.noRekSeller) ? transaction.noRekSeller : ""}</td>
                     <td>{(transaction.namaRekSeller) ? transaction.namaRekSeller : ""}</td>
                     <td>{hakBuyer.toLocaleString('id')}</td>
-                    <td>{(transaction.noRekBuyer) ? transaction.noRekBuyer : ""}</td>
-                    <td>{(transaction.namaRekBuyer) ? transaction.namaRekBuyer : ""}</td>
+                    <td>{(transaction.noRek) ? transaction.noRek : ""}</td>
+                    <td>{(transaction.NamaRek) ? transaction.NamaRek : ""}</td>
                     <td>{transaction.statusNow}</td>
                     <td>{tglTerima}</td>
                     <td>
