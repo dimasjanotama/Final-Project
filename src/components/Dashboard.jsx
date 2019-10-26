@@ -14,52 +14,74 @@ const urlApi = 'http://localhost:7777/auth/'
 class Dashboard extends Component {
 
     state = {
-        bills: [],
+        unpaid : [],
+        paid: [],
         orders: [],
-        noTransaction : false,
-        noOrder : false,
         selectedFile: '',
         selectedFile2: '',
         noRek: '',
         namaRek: '',
-        toogle: ''
+        toogle: '',
+        loading: true,
+        idBuyTransaction : '',
+        idSellTransaction: '',
+        noResi: '',
+        hakSeller: '',
+        noRekSeller: '',
+        namaRekSeller: '',
+        adaOrder: false
     }
 
     componentDidMount(){
-        this.getTransaction()
+        this.getBuyTransaction()
+        this.getSellTransaction()
         this.setState({toogle: 'buyer'})
-        this.getOrderlist()
     }
 
-    getTransaction = () => {
-        axios.get(urlApi+'gettransaction',{
+    getBuyTransaction = () => {
+        axios.get(urlApi+'getunverifiedtransaction',{
             params : {
                 idBuyer:  this.props.user_id
             }
         }).then(res=>{
-            if(res.data[0]){
-            this.setState({
-                bills: res.data[0],
-                status: res.data[0].isVerified
+            this.setState({ unpaid: res.data })
+            axios.get(urlApi+'getverifiedtransaction',{
+                params : {
+                    idBuyer:  this.props.user_id
+                }
+            }).then(res=>{
+                this.setState({ paid: res.data })
+            }).catch(err=>{
+                console.log(err);
             })
-            } else {this.setState({noTransaction: true})} 
         }).catch(err=>{
             console.log(err);
         })
     }
 
-    getOrderlist = () => {
-        axios.get(urlApi+'getorderlist',{
+    getSellTransaction = () => {
+        axios.get(urlApi+'gettransactionorder',{
             params : {
                 idSeller:  this.props.user_id
             }
         }).then(res=>{
-            console.log(res.data[0]);
-            if(res.data[0]){
-            this.setState({
-                orders: res.data
+
+            this.setState({ adaOrder: true })
+            axios.get(urlApi+'getorderlist',{
+                params : {
+                    idSeller:  this.props.user_id
+                }
+            }).then(res=>{
+                if(res.data[0]){
+                this.setState({
+                    adaorder: true,
+                    orders: res.data,
+                    loading: false
+                })
+                } else {}
+            }).catch(err=>{
+                console.log(err);
             })
-            } else {this.setState({noOrder: true})} 
         }).catch(err=>{
             console.log(err);
         })
@@ -77,14 +99,28 @@ class Dashboard extends Component {
         }
     }
 
-    onSubmitClick = () => {
-        var today = new Date()
-        var year = today.getFullYear()
-        var month = today.getMonth()+1
-        var date = today.getDate()
+    displayfilename2 = ()=>{
+        if (this.state.selectedFile2) {
+            return (
+                <div className='mt-0'>
+                    {this.state.selectedFile2.name}
+                </div>
+            )
+        } else {
+            return null
+        }
+    }
+    
+
+    onPaymentConf = (idTransaction) => {
+        let today = new Date()
+        let year = today.getFullYear()
+        let month = today.getMonth()+1
+        let date = today.getDate()
         var tglPembayaran = `${year}-${month}-${date}`
-        var fd = new FormData()
-        var data = {   
+        let fd = new FormData()
+        let data = {   
+            idBuyTransaction: idTransaction,
             idBuyer: this.props.user_id,
             tglPembayaran: tglPembayaran,
             noRek: this.state.noRek,
@@ -96,43 +132,114 @@ class Dashboard extends Component {
         axios.post(urlApi+'paymentconfirm', fd)
         .then(res=>{
             alert('Konfirmasi berhasi, silahkan tunggu max 1X24 jam untuk verifikasi')
-            this.getTransaction()
+            this.getBuyTransaction()
         }).catch(err=>{
             console.log(err)
         })
     } 
 
-    konfirmasiTerima = (transactionId) =>{
+    onShippingConf = ()=>{
+        let today = new Date()
+        let year = today.getFullYear()
+        let month = today.getMonth()+1
+        let date = today.getDate()
+        var tglPengiriman = `${year}-${month}-${date}`
+        let fd = new FormData()
+        let data = {   
+            idSellTransaction: this.state.idSellTransaction,
+            tglPengiriman: tglPengiriman,
+            noResi: this.state.noResi,
+            hakSeller: this.state.hakSeller,
+            noRekSeller: this.state.noRekSeller,
+            namaRekSeller: this.state.namaRekSeller
+        }
+        fd.append('anehshipping', this.state.selectedFile2, this.state.selectedFile2.name)
+        fd.append('data', JSON.stringify(data))
+        axios.post(urlApi+'shippingconfirm', fd)
+        .then(res=>{
+            alert('Konfirmasi berhasi, silahkan tunggu pembeli mengkonfirmasi penerimaan barang')
+            this.getSellTransaction()
+        }).catch(err=>{
+            console.log(err)
+        })
+    }
+
+    onReceiveConf = (transactionId) =>{
         axios.put(urlApi + 'receivepacket',{
             id: transactionId
         })
         .then((res)=>{
-        alert('Success')
-        this.getTransaction()
+        alert('Konfirmasi Sukses, Dana akan disalurkan ke Seller')
+        this.getBuyTransaction()
         }).catch(err=>{
             console.log(err);
         })
     }
 
-    buyer = ()=>{
-        let batasWaktu = `${this.state.bills.tglExpired}`
-        let batas = batasWaktu.substr(0,10)
-        let tglPembelian = `${this.state.bills.tglPembelian}`
-        let tglBeli = tglPembelian.substr(0,10)
-        let tglPembayaran = `${this.state.bills.tglPembayaran}`
-        let tglBayar = tglPembayaran.substr(0,10)
-        if (this.state.bills.isVerified){
-            var status = 'Sudah Dibayar'
-        } else {
-            if(this.state.bills.buktiPembayaran){
-                var status = 'Proses Verifikasi'
-            } else {
-            var status = 'Belum Dibayar'
-            }
-        } 
-        if (!this.state.noTransaction){
-            if(this.state.status==1) {
-                let status = 'Menunggu Dikirim'
+    renderUnpaid = () => {
+        let hasil = this.state.unpaid.map((transaction)=>{
+            let batasWaktu = `${transaction.tglExpired}`
+            var batas = batasWaktu.substr(0,10)
+            return (
+                <div>       
+                    <div className='row'>
+                        <div className='col card-title pt-4 mb-2'>Total Tagihan</div>
+                        <div className='col card-title pt-4 mb-2'>Unggah bukti pembayaran sebelum Tanggal</div>
+                        <div class="w-100"></div>    
+                        <div className='col card-title pt-4 mb-2 quic700p'>Rp. {transaction.nilaiTransaksi}</div>
+                        <div className='col card-title pt-4 mb-2 quic700p'>{batas}</div>    
+                        <div class="w-100"></div>          
+                        <div className='col card-title pt-4 mb-2'>Rekening Pembayaran</div>
+                        <div className='col card-title pt-4 mb-2'>Status Pembayaran</div>
+                        <div class="w-100"></div>   
+                        <div className='col card-title pt-4 mb-2 quic700p'>
+                            <img style={{width: '100px'}} src={require('../lib/pictures/cimb.jpg')}/>  123456789 an. Fxpedia 
+                        </div>
+                        <div className='col card-title pt-4 mb-2 quic700p'>{transaction.statusNow}</div>   
+                    </div>
+                    <div className='dimdom-bottom pt-4'></div>
+                    <div className='card-title subjudul pt-4'>
+                        Konfirmasi pembayaran
+                    </div>
+                    <div class="row">  
+                        <div className='col card-title pt-4 mb-2'>Masukkan No.rekening yang digunakan saat pembayaran</div>
+                        <div className='col card-title pt-4 mb-2'>Masukkan Nama di No.Rekening</div>
+                        <div class="w-100"></div>    
+                        <div className='col ui input2 pt-4 mb-2'>
+                            <input onChange={(e) => this.setState({noRek: e.target.value})} type="text" placeholder="Masukkan No. Rekening"/>
+                        </div>
+                        <div className='col ui input2 pt-4 mb-2'>
+                            <input onChange={(e) => this.setState({namaRek: e.target.value})} type="text" placeholder="Masukkan Nama di No.Rekening"/>
+                        </div>
+                        <div class="w-100"></div>    
+                        <div className='col card-title pt-4'>
+                            <div class="ui inverted basic dimdom3 buttons">
+                                <input type='button' onClick={() => this.refs.fileBtn.click()} className='ui inverted basic dimdom3 button' value='Unggah bukti pembayaran'/>
+                                <input onClick={()=>{this.onPaymentConf(transaction.id)}} type="button" className="ui inverted basic dimdom3 button" value="Submit konfirmasi"/>
+                            </div>
+                                <input type="file" ref='fileBtn' onChange={(e) => this.setState({selectedFile : e.target.files[0]})} className='d-none'/>
+                        </div>
+                        <div class="w-100"></div>  
+                        <div className='col card-title'>
+                            {this.displayfilename()}
+                        </div>
+                        <div class="w-100"></div> 
+                        <div className='pt-3'>
+                        </div> 
+                    </div> 
+                </div>
+            )
+        })
+        return hasil
+    }
+
+    renderPaid = ()=>{
+        let hasil = this.state.paid.map((transaction)=>{
+            let tglPembelian = `${transaction.tglPembelian}`
+            let tglBeli = tglPembelian.substr(0,10)
+            let tglPembayaran = `${transaction.tglPembayaran}`
+            let tglBayar = tglPembayaran.substr(0,10)
+            if(transaction.statusNow!=='Transaksi selesai'){
                 return (
                     <>
                     <div className='card-title subjudul'>
@@ -151,89 +258,39 @@ class Dashboard extends Component {
                     </thead>
                     <tbody>
                         <tr>
-                        <th scope="col">{this.state.bills.id}</th>    
+                        <th scope="col">{transaction.id}</th>    
                         <th scope="col">{tglBeli}</th>
-                        <th scope="col">{this.state.bills.nilaiTransaksi.toLocaleString('id')}</th>
+                        <th scope="col">{transaction.nilaiTransaksi.toLocaleString('id')}</th>
                         <th scope="col">{tglBayar}</th>
-                        <th scope="col">{status}</th>
+                        <th scope="col">{transaction.statusNow}</th>
                         <th scope="col">
-                          <input onClick={() => {this.konfirmasiTerima(this.state.bills.id)}} type="button" 
-                          className="ui inverted basic dimdom3 button" value="Konfirmasi Terima"/>
+                            <input onClick={() => {this.onReceiveConf(transaction.id)}} type="button" 
+                            className="ui inverted basic dimdom3 button" value="Konfirmasi Terima"/>
                         </th>
                         </tr>
                     </tbody>
                     </table>
                     </>
                 )
-            } else if(this.state.status==0) {
-                return (
-                    <div>
-                        <div className='card-title subjudul'>
-                            Mohon segera selesaikan pembayaran Anda
-                        </div>
-                        <div className='row'>
-                            <div className='col card-title pt-4 mb-2'>Total Tagihan</div>
-                            <div className='col card-title pt-4 mb-2'>Unggah bukti pembayaran sebelum Tanggal</div>
-                            <div class="w-100"></div>    
-                            <div className='col card-title pt-4 mb-2 quic700p'>Rp. {this.state.bills.nilaiTransaksi}</div>
-                            <div className='col card-title pt-4 mb-2 quic700p'>{batas}</div>    
-                            <div class="w-100"></div>          
-                            <div className='col card-title pt-4 mb-2'>Rekening Pembayaran</div>
-                            <div className='col card-title pt-4 mb-2'>Status Pembayaran</div>
-                            <div class="w-100"></div>   
-                            <div className='col card-title pt-4 mb-2 quic700p'>
-                                <img style={{width: '100px'}} src={require('../lib/pictures/cimb.jpg')}/>  123456789 an. Fxpedia 
-                            </div>
-                            <div className='col card-title pt-4 mb-2 quic700p'>{status}</div>   
-                        </div>
-                        <div className='dimdom-bottom pt-4'></div>
-                        <div className='card-title subjudul pt-4'>
-                            Konfirmasi pembayaran
-                        </div>
-                        <div class="row">  
-                            <div className='col card-title pt-4 mb-2'>Masukkan No.rekening yang digunakan saat pembayaran</div>
-                            <div className='col card-title pt-4 mb-2'>Masukkan Nama di No.Rekening</div>
-                            <div class="w-100"></div>    
-                            <div className='col ui input2 pt-4 mb-2'>
-                                <input onChange={(e) => this.setState({noRek: e.target.value})} type="text" placeholder="Masukkan No. Rekening"/>
-                            </div>
-                            <div className='col ui input2 pt-4 mb-2'>
-                                <input onChange={(e) => this.setState({namaRek: e.target.value})} type="text" placeholder="Masukkan Nama di No.Rekening"/>
-                            </div>
-                            <div class="w-100"></div>    
-                            <div className='col card-title pt-4'>
-                                <div class="ui inverted basic dimdom3 buttons">
-                                    <input type='button' onClick={() => this.refs.fileBtn.click()} className='ui inverted basic dimdom3 button' value='Unggah bukti pembayaran'/>
-                                    <input onClick={this.onSubmitClick} type="button" className="ui inverted basic dimdom3 button" value="Submit konfirmasi"/>
-                                </div>
-                                    <input type="file" ref='fileBtn' onChange={(e) => this.setState({selectedFile : e.target.files[0]})} className='d-none'/>
-                            </div>
-                            <div class="w-100"></div>  
-                            <div className='col card-title'>
-                                {this.displayfilename()}
-                            </div>
-                            <div class="w-100"></div> 
-                            <div className='pt-3'>
-                            </div> 
-                            
-                        </div> 
-                    </div>  
-                )
             } else {
                 return null
             }
-            }  else {
-            return null
-        }}
-
+        })
+        return hasil
+    }
+            
     renderOrderlist=()=>{
         let hasil = this.state.orders.map((order)=>{
             return (
                 <tr>
                     <th scope="col">{order.idTransaction}</th>    
+                    <th scope="col">{order.namaBuyer}</th>    
+                    <th scope="col">{this.state.orders[0].alamat}, {this.state.orders[0].kelurahan}, {this.state.orders[0].kecamatan}, 
+                    {this.state.orders[0].kabupaten}, {this.state.orders[0].propinsi} {this.state.orders[0].kodepos}</th>    
                     <th scope="col"><img style={{width: '50px'}} src={`http://localhost:7777/files/${order.fotoProduk}`} alt="fotoproduk"/></th>
                     <th scope="col">{order.namaProduk}</th>
                     <th scope="col">{order.orderQty}</th>
+                    <th scope="col">{order.isShipped}</th>
                     <th scope="col">{order.harga.toLocaleString('id')}</th>
                 </tr>
             )
@@ -242,7 +299,7 @@ class Dashboard extends Component {
     }
 
     seller = () => {
-        if(!this.state.noOrder){
+        if(this.state.adaOrder && this.state.loading==false){
         return (
             <div>
                 <div className='card-title subjudul'>
@@ -250,60 +307,67 @@ class Dashboard extends Component {
                     </div>
                     <div className='row card-title pt-4'>
                         <div className='col-1 card-title pt-3 pb-1'>
-                            <i className='big map marker alternate icon text-right' style={{color: 'rgb(255, 31, 210)'}}></i>
+                            <i className='big info icon text-right' style={{color: 'rgb(255, 31, 210)'}}></i>
                         </div>
                         <div className='col-8 card-title pt-4 pb-1 pl-0 quic700p text-left'>
-                            Alamat Pengiriman
+                            Silahkan kirim produk berikut sesuai ID Transaksi
                         </div>   
                     </div>
                     <div className='dimdom-bottom'></div>
-                    <div className='row'>
-                        <div className='col-3 card-title pt-3 mb-2 quic700b'><b>{this.state.user.namaDepan} {this.state.user.namaBelakang}</b></div>
-                        <div className='col-9 card-title pt-3 mb-2 quic700'>{this.state.user.alamat} {this.state.user.kelurahan}, {this.state.user.kecamatan}, {this.state.user.kabupaten}, {this.state.user.propinsi} {this.state.user.kodepos}
-                        </div>
-                        <div class="w-100"></div>
-                    </div>
-                    <table class="table table-striped table-dark">
+                    <table class="table table-striped table-dark mt-3">
                     <thead>
                         <tr>
                         <th scope="col">ID Transaksi</th>    
+                        <th scope="col">Nama Pembeli</th>    
+                        <th scope="col">Alamat Pengiriman</th>    
                         <th scope="col">Foto</th>
                         <th scope="col">Produk</th>
                         <th scope="col">Order Qty</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Harga</th>
                         </tr>
-                        
                     </thead>
                     <tbody>
-                        {this.renderOrderlist()}
+                    {this.renderOrderlist()}
                     </tbody>
                     </table>
-
                 <div className='dimdom-bottom pt-4'></div>
                 <div className='card-title subjudul pt-4'>
                     Konfirmasi pengiriman
                 </div>
                 <div class="row">  
-                    <div className='col card-title pt-4 mb-2'>Masukkan No.resi pengiriman</div>
-                    <div className='col card-title pt-4 mb-2'>Masukkan total harga + biaya pengiriman</div>
-                    <div class="w-100"></div>    
-                    <div className='col ui input2 pt-4 mb-2'>
+                    <div className='col-2 card-title pt-4 mb-2'>ID Transaksi</div>
+                    <div className='col-3 card-title pt-4 mb-2'>No.resi pengiriman</div>
+                    <div className='col-2 card-title pt-4 mb-2'>Total harga + biaya pengiriman</div>
+                    <div className='col-2 card-title pt-4 mb-2'>No.Rek (Untuk pencairan dana)</div>
+                    <div className='col-3 card-title pt-4 mb-2'>Nama di Rekening</div>
+                    <div class="w-100"></div>   
+                    <div className='col-2 ui input2 pt-4 mb-2'>
+                        <input onChange={(e) => this.setState({idSellTransaction: e.target.value})} type="text" placeholder="ID Transaksi"/>
+                    </div> 
+                    <div className='col-3 ui input2 pt-4 mb-2'>
                         <input onChange={(e) => this.setState({noResi: e.target.value})} type="text" placeholder="Masukkan No. Resi"/>
                     </div>
-                    <div className='col ui input2 pt-4 mb-2'>
+                    <div className='col-2 ui input2 pt-4 mb-2'>
                         <input onChange={(e) => this.setState({hakSeller: e.target.value})} type="text" placeholder="Masukkan total harga + ongkir"/>
+                    </div>
+                    <div className='col-2 ui input2 pt-4 mb-2'>
+                        <input onChange={(e) => this.setState({noRekSeller: e.target.value})} type="text" placeholder="Masukkan no.Rek"/>
+                    </div>
+                    <div className='col-3 ui input2 pt-4 mb-2'>
+                        <input onChange={(e) => this.setState({namaRekSeller: e.target.value})} type="text" placeholder="Masukkan nama di Rekenening"/>
                     </div>
                     <div class="w-100"></div>    
                     <div className='col card-title pt-4'>
                         <div class="ui inverted basic dimdom3 buttons">
                             <input type='button' onClick={() => this.refs.fileBtn2.click()} className='ui inverted basic dimdom3 button' value='Unggah bukti pengiriman'/>
-                            <input onClick={this.onSubmitClick} type="button" className="ui inverted basic dimdom3 button" value="Submit konfirmasi"/>
+                            <input onClick={this.onShippingConf} type="button" className="ui inverted basic dimdom3 button" value="Submit konfirmasi"/>
                         </div>
                             <input type="file" ref='fileBtn2' onChange={(e) => this.setState({selectedFile2 : e.target.files[0]})} className='d-none'/>
                     </div>
                     <div class="w-100"></div>  
                     <div className='col card-title'>
-                        {this.displayfilename()}
+                        {this.displayfilename2()}
                     </div>
                     <div class="w-100"></div> 
                     <div className='pt-3'>
@@ -329,7 +393,11 @@ class Dashboard extends Component {
                                 </div>
                             </div>
                         </div>
-                        {this.buyer()}
+                        <div className='card-title subjudul'>
+                            Mohon segera selesaikan pembayaran Anda
+                        </div>
+                        {this.renderUnpaid()}
+                        {this.renderPaid()}
                     </div>
                 </div>
             </div>

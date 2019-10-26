@@ -108,8 +108,10 @@ class Mycart extends Component {
             tglPembelian: tglBeli,
             tglExpired: tglExpired,
             idBuyer: this.props.user_id,
+            namaBuyer: this.state.user.username,
             nilaiTransaksi: this.subtotal,
-            idSeller: this.state.carts[0].idSeller
+            idSeller: this.state.carts[0].idSeller,
+            namaSeller: this.state.carts[0].namaSeller
         }).then(res=>{
             axios.delete(urlApi+'deletecartbyuserid',{
                 data : {
@@ -127,7 +129,7 @@ class Mycart extends Component {
         })
     }
 
-    addOrder
+
 
     renderList = () => {
         return (
