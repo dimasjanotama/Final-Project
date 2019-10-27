@@ -16,6 +16,7 @@ class Dashboard extends Component {
     state = {
         unpaid : [],
         paid: [],
+        orderTransactions: [],
         orders: [],
         selectedFile: '',
         selectedFile2: '',
@@ -29,7 +30,6 @@ class Dashboard extends Component {
         hakSeller: '',
         noRekSeller: '',
         namaRekSeller: '',
-        adaOrder: false,
         adaHistory: false
     }
 
@@ -68,7 +68,7 @@ class Dashboard extends Component {
             }
         }).then(res=>{
 
-            this.setState({ adaOrder: true })
+            this.setState({ orderTransactions: res.data })
             axios.get(urlApi+'getorderlist',{
                 params : {
                     idSeller:  this.props.user_id
@@ -262,6 +262,19 @@ class Dashboard extends Component {
         return hasil
     }
 
+    buyer = ()=>{
+        if(!this.state.paid[0] && !this.state.unpaid[0]){
+            return (
+                <div className='card-title subjudul'>
+                    Belum ada pembelian
+                </div>
+            )
+        } else {
+            this.renderPaid()
+            this.renderUnpaid()
+        }
+    }
+
     renderPaid = ()=>{
         let hasil = this.state.paid.map((transaction)=>{
             let tglPembelian = `${transaction.tglPembelian}`
@@ -340,7 +353,7 @@ class Dashboard extends Component {
     }
 
     seller = () => {
-        if(this.state.adaOrder && this.state.loading==false){
+        if(this.state.orderTransactions[0] && this.state.loading==false){
         return (
             <div>
                 <div className='card-title subjudul'>
@@ -416,18 +429,106 @@ class Dashboard extends Component {
                 </div> 
             </div>  
         )} else {
-            return null
+            return (
+                <div className='card-title subjudul'>
+                    Belum ada orderan
+                </div>
+            )
         }
     }
 
     history = () => {
         if(this.state.adaHistory){
             return (
-                <div>INI HISTORY</div>
+                <div>
+                    <div className='card-title subjudul pb-4'>
+                        History Transaksi
+                    </div>
+                    <div className='dimdom-bottom'></div>
+                    <div className='row justify-content-center'>
+                        <div className='col-8'>
+                            {this.renderHistory()}
+                        </div>
+                    </div>
+                    <div className='dimdom-bottom pt-4'></div>
+                    <div class="w-100"></div> 
+                    <div className='pt-3'></div> 
+                </div>
             )
         } else {
-            return null
+            return (
+                <div className='card-title subjudul'>
+                    Belum ada history tansaksi
+                </div>
+            )
         }
+    }
+
+    renderHistory = ()=>{
+        let hasil = this.state.history.map((transaction)=>{
+            let tanggal = `${transaction.tanggal}`
+            let tgl = tanggal.substr(0,10)
+            if (transaction.idBuyer==this.props.user_id){
+                return (
+                    <>
+                    <div className='row mt-4'>
+                        <div className='col-1'>
+                            <i className='handshake outline big icon'></i>
+                        </div>
+                        <div className='col mt-1' style={{fontSize:'15pt'}}>Tanggal {tgl}</div>
+                    </div>
+                    <div className='row mt-1'>
+                        <div className='col-1'></div>
+                        <div className='col' style={{fontSize:'14pt'}}>Transaksi dengan <span className='badge badge-primary'>{transaction.namaSeller}</span></div>
+                    </div>
+                    <div className='row mt-1'>
+                        <div className='col-1'></div>
+                        <div className='col'>Pembelian</div>
+                        <div className='col-3 text-right'>
+                            <span className='badge badge-danger' style={{fontSize:'11pt'}}>Rp {transaction.nilaiTransaksi.toLocaleString('id')}</span>
+                        </div>
+                    </div>
+                    <div className='row mt-1'>
+                        <div className='col-1'></div>
+                        <div className='col'>Kembalian sisa biaya ongkir</div>
+                        <div className='col-3 text-right'>
+                            <span className='badge badge-success' style={{fontSize:'11pt'}}>Rp {transaction.hakBuyer.toLocaleString('id')}</span>
+                        </div>
+                    </div>
+                    <div className='row mt-1'>
+                        <div className='col-1'></div>
+                        <div className='col'>Total Pengeluaran</div>
+                        <div className='col-3 text-right'>
+                            <span className='badge badge-danger' style={{fontSize:'11pt'}}>Rp {transaction.hakSeller.toLocaleString('id')}</span>
+                        </div>
+                    </div>
+                    </>
+                )
+            } else {
+                return (
+                    <>
+                    <div className='row mt-4'>
+                        <div className='col-1'>
+                            <i className='handshake outline big icon'></i>
+                        </div>
+                        <div className='col mt-1' style={{fontSize:'15pt'}}>Tanggal {tgl}</div>
+                    </div>
+                    <div className='row mt-1'>
+                        <div className='col-1'></div>
+                        <div className='col' style={{fontSize:'14pt'}}>Transaksi dengan <span className='badge badge-primary'>{transaction.namaBuyer}</span></div>
+                    </div>
+                    <div className='row mt-1'>
+                        <div className='col-1'></div>
+                        <div className='col'>Penjualan + ganti ongkir</div>
+                        <div className='col-3 text-right'>
+                            <span className='badge badge-success' style={{fontSize:'11pt'}}>Rp {transaction.hakSeller}</span>
+                        </div>
+                    </div>
+                    </>
+                )
+            }
+        })
+        return hasil
     }
 
     renderList = () => {
@@ -445,8 +546,7 @@ class Dashboard extends Component {
                                 </div>
                             </div>
                         </div>
-                        {this.renderUnpaid()}
-                        {this.renderPaid()}
+                        {this.buyer()}
                     </div>
                 </div>
             </div>

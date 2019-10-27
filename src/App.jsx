@@ -12,6 +12,7 @@ import Addproduct from './components/Addproduct'
 import Myproduct from './components/Myproduct'
 import Mycart from './components/Mycart'
 import Search from './components/Search'
+import Myprofile from './components/Myprofile'
 
 
 
@@ -42,6 +43,7 @@ const App = () => {
                                 <Route path='/addproduct' component={Addproduct}/>
                                 <Route path='/myproduct' component={Myproduct}/>                                                                                              
                                 <Route path='/mycart' component={Mycart}/>                                                                                              
+                                <Route path='/myprofile' component={Myprofile}/>                                                                                              
                             </Switch>
                         </animated.div>
                     ))}   

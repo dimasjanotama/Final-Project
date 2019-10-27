@@ -3,6 +3,8 @@ import {NavLink, Redirect} from 'react-router-dom'
 import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
 import axios from 'axios'
+import alertify from 'alertifyjs';
+
 
 import Footer from './Footer'
 import Navbar from './Navbar'
@@ -86,7 +88,8 @@ class Addproduct extends Component {
                 axios.post(urlApi+'uploadproduct', fd)
                 .then(res=>{
                     console.log(res)
-                    alert('Berhasil upload produk')
+                    alertify.alert('Keterangan', 'Sukses! Berhasil menambahkan product', function(){ 
+                        alertify.message('Done')})
                     return <Redirect to='/myproduct'/>
                 }).catch(err=>{
                     console.log(err)

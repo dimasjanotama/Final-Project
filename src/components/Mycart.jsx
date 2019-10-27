@@ -150,7 +150,7 @@ class Mycart extends Component {
                     </div>
                     <div className='dimdom-bottom'></div>
                     <div className='row'>
-                        <div className='col-3 card-title pt-3 mb-2 quic700b'><b>{this.state.user.namaDepan} {this.state.user.namaBelakang}</b></div>
+                        <div className='col-3 card-title pt-3 mb-2 quic700b'><b>{this.state.user.namaDepan} {this.state.user.namaBelakang} {this.state.user.noTelp}</b></div>
                         <div className='col-9 card-title pt-3 mb-2 quic700'>{this.state.user.alamat} {this.state.user.kelurahan}, {this.state.user.kecamatan}, {this.state.user.kabupaten}, {this.state.user.propinsi} {this.state.user.kodepos}
                         </div>
                         <div class="w-100"></div>

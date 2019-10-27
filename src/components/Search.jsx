@@ -203,19 +203,19 @@ class Search extends Component {
                             // let harganya = numberWithCommas(harga)
                             if(id !== this.state.selectedId){
                                 return (
-                                    <div className='mt-3 ml-2 mr-2 mb-4 col-2 card' >
-                                        <button className='btn mt-3 ml-n2' onClick={()=>{this.onDetailClick(id)}}>
-                                            <img style={{width: '120px'}} src={`http://localhost:7777/files/${fotoProduk}`} alt="fotoproduk"/>
-                                        </button>
+                                    <div class="card ml-2 mr-2 mt-5" style={{width: "12rem"}}>
+                                        <img class="card-img-top" src={`http://localhost:7777/files/${fotoProduk}`} alt="fotoproduk"/>
                                         <div className='row card-body p-0 pb-3'>
                                             <div className='col'>
-                                                <button className='btn dimdom-pink mb-2' onClick={()=>{this.onDetailClick(id)}}>{namaProduk}</button>
+                                                <button className='btn dimdom-pink mb-2 text-left' onClick={()=>{this.onDetailClick(id)}}>{namaProduk}</button>
                                             </div>
                                             <div class="w-100"></div>
-                                            <i className='col-5 pr-1 text-right user icon'></i>
-                                            <p className='col pl-0 card-text text-left'>{namaSeller}</p>
+                                            <i className='ml-3 col-2 pr-1 text-left user icon'></i>
+                                            <p className='col pl-0 card-text'>{namaSeller}</p>
                                             <div class="w-100"></div>
-                                            <p className='col card-text text-center'>Rp. {harga.toLocaleString('id')}</p>
+                                            <p className='col ml-3 card-text quic700' style={{fontSize:'14pt'}} >
+                                                <span className='text-light'>Rp. {harga.toLocaleString('id')}</span>
+                                            </p>
                                         </div>
                                     </div>
                                 ) 

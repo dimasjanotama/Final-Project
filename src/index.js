@@ -10,6 +10,12 @@ import reducers from './reducers/index'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './dimdom.css'
 import './lib/semantic/semantic.min.css'
+import 'alertifyjs/build/css/alertify.min.css'
+import 'alertifyjs/build/css/themes/semantic.min.css'
+import 'alertifyjs/build/css/themes/default.min.css'
+
+
+
 
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

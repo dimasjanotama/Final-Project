@@ -8,7 +8,7 @@ import Footer from './Footer'
 import Navbar from './Navbar'
 
 
-
+// 701ca464c7e78ef9dfd477f0e978c3a0
 const urlApi = 'http://localhost:7777/auth/'
 
 class Register extends Component {
@@ -28,6 +28,7 @@ class Register extends Component {
         kabupaten: '',
         propinsi: '',
         kodepos: '',
+        pulau: '',
         repeatPassword: ''
         
     }
@@ -86,25 +87,34 @@ class Register extends Component {
     }
 
     postUser = ()=>{
-                axios.post(urlApi + 'register',
-                {
-                    username: this.state.username,
-                    email: this.state.email,
-                    password: this.state.password,                     
-                    namaDepan: this.state.namaDepan,
-                    namaBelakang: this.state.namaBelakang,
-                    alamat: this.state.alamat,
-                    kelurahan: this.state.kelurahan,
-                    kecamatan: this.state.kecamatan,
-                    kabupaten: this.state.kabupaten,
-                    propinsi: this.state.propinsi,
-                    kodepos: this.state.kodepos
-                }).then((res)=>{
-                this.setState({loading: false, success : 'Berhasil registrasi, Silahkan cek email anda untuk verifikasi akun'})
-                
-                console.log(res.data);
-            })
-        }
+
+        var today = new Date()
+        var year = today.getFullYear()
+        var month = today.getMonth()+1
+        var date = today.getDate()
+        var tglGabung = `${year}-${month}-${date}`
+        axios.post(urlApi + 'register',
+        {
+            username: this.state.username,
+            email: this.state.email,
+            password: this.state.password,                     
+            namaDepan: this.state.namaDepan,
+            namaBelakang: this.state.namaBelakang,
+            noTelp: this.state.noTelp,
+            alamat: this.state.alamat,
+            kelurahan: this.state.kelurahan,
+            kecamatan: this.state.kecamatan,
+            kabupaten: this.state.kabupaten,
+            propinsi: this.state.propinsi,
+            pulau: this.state.pulau,
+            kodepos: this.state.kodepos,
+            tglDaftar: tglGabung 
+        }).then((res)=>{
+        this.setState({loading: false, success : 'Berhasil registrasi, Silahkan cek email anda untuk verifikasi akun'})
+        
+        console.log(res.data);
+        })
+    }
     
 
     loadingButton = () => {
@@ -164,12 +174,16 @@ class Register extends Component {
                             <div className='row'>
                                 <div className='col card-title pt-4 mb-2'>Nama Depan</div>
                                 <div className='col card-title pt-4 mb-2'>Nama Belakang</div>
+                                <div className='col card-title pt-4 mb-2'>No. HP</div>
                                 <div class="w-100"></div>
                                 <div class=" col ui input2">
                                     <input onChange={(e) => this.setState({namaDepan: e.target.value})} type="text" placeholder="Nama Depan"/>
                                 </div>                 
                                 <div class=" col ui input2">
                                     <input onChange={(e) => this.setState({namaBelakang: e.target.value})} type="text" placeholder="Nama Belakang"/>
+                                </div>                 
+                                <div class=" col ui input2">
+                                    <input onChange={(e) => this.setState({noTelp: e.target.value})} type="text" placeholder="Nama Belakang"/>
                                 </div>                 
                             </div>
                             <div className='row'>
@@ -209,9 +223,13 @@ class Register extends Component {
                                 </div>              
                             </div>
                             <div className='row'>
+                                <div className='col card-title pt-4 mb-2'>Pulau</div>
                                 <div className='col card-title pt-4 mb-2'>Password</div>
                                 <div className='col card-title pt-4 mb-2'>Tulis ulang Password</div>
                                 <div class="w-100"></div>
+                                <div class=" col ui input2">
+                                    <input onChange={(e) => this.setState({pulau: e.target.value})} type="text" placeholder="Pulau"/>
+                                </div>
                                 <div class=" col ui input2">
                                     <input onChange={(e) => this.setState({password: e.target.value})} type="password" placeholder="Tulis password untuk akun anda"/>
                                 </div>

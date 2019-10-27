@@ -12,7 +12,7 @@ class Sidebar extends Component {
                     <NavLink to='/addproduct' className='ui inverted basic dimdom4 button'>Add_Product</NavLink>
                     <NavLink to='/myproduct' className='ui inverted basic dimdom4 button'>My_Products</NavLink>
                     <NavLink to='/mycart' className='ui inverted basic dimdom4 button'>My_Cart</NavLink>
-                    <button onClick={()=> this.setState({kategori: 'myprofile'})} className='ui inverted basic dimdom4 button'>My_Profile</button>    
+                    <NavLink to='/myprofile' className='ui inverted basic dimdom4 button'>My_Profile</NavLink>    
                     </div>
                 </div>
             </div>

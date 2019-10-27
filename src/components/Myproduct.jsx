@@ -222,13 +222,13 @@ class Myproduct extends Component {
                             }
                             let harganya = numberWithCommas(harga)
                             return (
-                                <div className=' ml-2 mr-2 mb-4 col-2 card' >
-                                    <button className='btn mt-3 ml-n2' onClick={()=>{this.onDetailClick(id)}}>
-                                        <img style={{width: '120px'}} src={`http://localhost:7777/files/${fotoProduk}`} alt="fotoproduk"/>
-                                    </button>
-                                    <div className='card-body p-0 pb-3'>
-                                        <button className='btn dimdom-pink mb-2' onClick={()=>{this.onDetailClick(id)}}>{namaProduk}</button>
-                                        <p className='card-text text-center'>Rp. {harganya}</p>
+                                <div class="card ml-2 mr-2" style={{width: "12rem"}}>
+                                    <img src={`http://localhost:7777/files/${fotoProduk}`} class="card-img-top" alt="fotoproduk"/>
+                                    <div class="card-body">
+                                        <button className='btn dimdom-pink mb-2 text-left' onClick={()=>{this.onDetailClick(id)}}>{namaProduk}</button>
+                                        <p className='card-text text-center quic700' style={{fontSize:'14pt'}} >
+                                            <span className='text-light'>Rp. {harganya}</span>
+                                        </p>
                                         <button className='ui inverted basic dimdom3 button mb-1 btn-block' onClick={()=>{this.onEditClick(id)}}>Edit</button>
                                         <button className='ui inverted basic dimdom3 button mb-1 mt-1 btn-block' onClick={()=>{this.onDeleteClick(id)}}>Hapus</button>
                                     </div>
