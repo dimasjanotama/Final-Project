@@ -143,7 +143,6 @@ class Myprofile extends Component {
     updateFoto = ()=>{
         var fd = new FormData()
         var data = this.props.user_id
-        console.log(this.state.selectedFile, this.state.selectedFile.name);
         fd.append('anehfoto', this.state.selectedFile, this.state.selectedFile.name)
         fd.append('data', data)
         axios.post(urlApi+'updatefoto', fd)
@@ -159,8 +158,6 @@ class Myprofile extends Component {
     profile = () => {
         var { username, email, namaDepan, namaBelakang, noTelp, alamat, kelurahan, kecamatan, kabupaten, propinsi, tglDaftar, fotoProfil } = this.state.profile
         var tglGabung = tglDaftar
-        console.log(fotoProfil);
-        
         return (
             <div>
                 <div className='card-title subjudul'>
@@ -327,6 +324,119 @@ class Myprofile extends Component {
                 )
     }
 
+    onUpdateClick = ()=>{
+        axios.get(urlApi + 'getuser',
+            {
+                params: {
+                    username: this.state.username
+                }
+            }
+        ).then((res)=>{
+            // jika data ditemukan user berdasarkan email diketik
+            if (this.state.newPassword !== this.state.repeatNewPassword){
+                this.setState({loading: false, error: `Password yang ditulis ulang tidak sama`})
+                setTimeout(
+                    () => { this.setState({error: ''}) },
+                    3000
+                )
+            } else if(res.data[0] && this.state.username!==this.props.user_name){
+                this.setState({loading: false, error: `Username "${this.state.username}" sudah digunakan`})
+                setTimeout(
+                    () => { this.setState({error: ''}) },
+                    3000
+                )
+            } else if(this.state.noTelp.length<10 || this.state.noTelp.length>12){
+                this.setState({loading: false, error: `No HP minimal 10 digit dan maksimal 12 digit`})
+                setTimeout(
+                    () => { this.setState({error: ''}) },
+                    3000
+                )
+            } else if(this.state.newPassword.length<3){
+                console.log(this.state.newPassword);
+                this.setState({loading: false, error: `Password minimal 3 karakter huruf/angka`})
+                setTimeout(
+                    () => { this.setState({error: ''})},
+                    3000
+                )
+            } else if(this.state.username && this.state.email && this.state.newPassword && this.state.namaDepan &&
+                this.state.namaBelakang && this.state.noTelp && this.state.alamat && this.state.kelurahan && this.state.kecamatan &&
+                this.state.kabupaten && this.state.propinsi && this.state.kodepos && this.state.pulau && this.state.repeatNewPassword){
+                    this.cekEmail()
+            } else { 
+                this.setState({loading: false, error: `Semua kolom harus diisi`})
+                setTimeout(
+                () => { this.setState({error: ''}) },
+                3000
+            )}
+        })
+    }
+
+    cekEmail = ()=>{           
+        axios.get(urlApi + 'getuser',
+        {
+            params: {
+                email: this.state.email
+            }
+        }).then((res)=>{
+            // jika data ditemukan user berdasarkan email diketik
+            if(res.data[0] && this.state.email!==this.state.profile.email){
+                this.setState({loading: false, error: `Email "${this.state.email}" sudah digunakan`})
+                setTimeout(
+                    () => { this.setState({error: ''}) },
+                    3000
+                )
+            } else {
+                this.updateUser()
+            }
+        })alxka
+    }
+
+    updateUser = ()=>{
+        axios.put(urlApi + 'updateprofile',
+        {
+            username: this.state.username,
+            email: this.state.email,
+            password: this.state.newPassword,                     
+            namaDepan: this.state.namaDepan,
+            namaBelakang: this.state.namaBelakang,
+            noTelp: this.state.noTelp,
+            alamat: this.state.alamat,
+            kelurahan: this.state.kelurahan,
+            kecamatan: this.state.kecamatan,
+            kabupaten: this.state.kabupaten,
+            propinsi: this.state.propinsi,
+            pulau: this.state.pulau,
+            kodepos: this.state.kodepos,
+            userId: this.props.user_id
+        }).then(res=>{
+            this.getProfile()
+            alertify.alert('Keterangan', 'Sukses! Berhasil update profile')
+            this.setState({toogle: 'profile'})
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
+    notification = ()=>{
+        if(this.state.error){
+            // notif error, danger
+            return (
+                <div className='alert alert-danger mt-4 mx-auto'>
+                    {this.state.error}
+                </div>
+            )
+        } else if (this.state.success){
+            // notif success, success
+            return (
+                <div className='alert alert-success mt-4 mx-auto'>
+                    {this.state.success}
+                </div>
+            )
+        } else {
+            return null
+        }
+    }
+
     renderList = () => {
         if(this.state.toogle==='profile'){
         return (
@@ -463,10 +573,10 @@ class Myprofile extends Component {
                                 </select>  
                             </div>
                             <div class=" col-5 ui input2">
-                                <input onChange={(e) => this.setState({password: e.target.value})} type="password" placeholder="Tulis password untuk akun anda"/>
+                                <input onChange={(e) => this.setState({newPassword: e.target.value})} type="password" placeholder="Tulis password untuk akun anda"/>
                             </div>
                             <div class=" col-5 ui input2">
-                                <input onChange={(e) => this.setState({repeatPassword: e.target.value})} type="password" placeholder="Tulis ulang password anda"/>
+                                <input onChange={(e) => this.setState({repeatNewPassword: e.target.value})} type="password" placeholder="Tulis ulang password anda"/>
                             </div>
                         </div>
                         <div class="w-100"></div>    
@@ -474,8 +584,7 @@ class Myprofile extends Component {
                         <div className='row pt-5'>
                             <button onClick={this.onUpdateClick} className='col-4 mx-auto ui inverted basic dimdom3 button '>Update Profile</button>
                             <div class="w-100"></div>
-                            
-                            {/* {this.notification()} */}
+                            {this.notification()}
                             </div>
                         </div>
                     </div>
