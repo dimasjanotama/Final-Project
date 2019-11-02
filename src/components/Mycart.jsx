@@ -3,6 +3,7 @@ import {NavLink, Redirect} from 'react-router-dom'
 import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
 import axios from 'axios'
+import moment from 'moment'
 
 import Footer from './Footer'
 import Navbar from './Navbar'
@@ -65,13 +66,13 @@ class Mycart extends Component {
     renderCart = () => {
         this.subtotal = 0
         let hasil = this.state.carts.map((product)=>{
-            let { id, namaProduk, harga, orderQty, fotoProduk, propinsiBuyer, propinsiSeller } = product 
+            let { id, namaProduk, harga, orderQty, fotoProduk, pulauBuyer, pulauSeller } = product 
             let berat = (product.berat/1000)*orderQty
            
             
-            if(propinsiBuyer==propinsiSeller){
-                var ongkir = 30000*berat
-            } else { var ongkir = 60000*berat}
+            if(pulauBuyer==pulauSeller){
+                var ongkir = 50000*berat
+            } else { var ongkir = 160000*berat}
             let totalHarga = (parseInt(harga)*parseInt(orderQty))+ongkir
             this.subtotal += totalHarga   
             return (
@@ -95,19 +96,10 @@ class Mycart extends Component {
 
     checkOut = () => {
         var today = new Date()
-        var tomorrow = new Date();
-        tomorrow.setDate(today.getDate()+1) 
-        var year = today.getFullYear()
-        var month = today.getMonth()+1
-        var date = today.getDate()
-        var yearx = tomorrow.getFullYear()
-        var monthx = tomorrow.getMonth()+1
-        var datex = tomorrow.getDate()
-        var tglBeli = `${year}-${month}-${date}`
-        var tglExpired = `${yearx}-${monthx}-${datex}`
+        console.log(moment().format('YYYY-MM-DD')+' '+ moment().format('kk:mm:ss'));
+        console.log(moment().add(1, 'd').format('YYYY-MM-DD')+' '+ moment().format('kk:mm:ss'));
         axios.post(urlApi+'addtransaction',{
-            tglPembelian: tglBeli,
-            tglExpired: tglExpired,
+           
             idBuyer: this.props.user_id,
             namaBuyer: this.state.user.username,
             nilaiTransaksi: this.subtotal,
@@ -133,6 +125,7 @@ class Mycart extends Component {
 
 
     renderList = () => {
+        if(this.state.carts[0]){
         return (
             <div className='row align-items-center text-light quic700'>
                 <div className='col-11 mx-auto card'>
@@ -194,6 +187,19 @@ class Mycart extends Component {
                 </div>
             </div>
         )
+        } else {
+            return (
+                <div className='row align-items-center text-light quic700'>
+                    <div className='col-11 mx-auto card'>
+                        <div className='card-body'>
+                            <div className='card-title subjudul'>
+                                Cart masih kosong
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
     }
 
     render() {

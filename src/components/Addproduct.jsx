@@ -4,6 +4,7 @@ import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import alertify from 'alertifyjs';
+import moment from 'moment'
 
 
 import Footer from './Footer'
@@ -18,6 +19,7 @@ const urlApi = 'http://localhost:7777/auth/'
 class Addproduct extends Component {
 
     state = {
+        redirect: false,
         namaProduk: '',
         kategori: '',
         subKategori: '',
@@ -29,7 +31,7 @@ class Addproduct extends Component {
         message: '',
         error: '',
         selectedFile: '',
-        propinsiUser: '',
+        pulauUser: '',
         namaSeller: ''
     }
 
@@ -39,7 +41,7 @@ class Addproduct extends Component {
                 userid: this.props.user_id
             }
         }).then(res=>{
-            this.setState({propinsiUser: res.data[0].propinsi})
+            this.setState({pulauUser: res.data[0].pulau})
             this.setState({namaSeller: res.data[0].username})
         }).catch(err=>{
             console.log(err);
@@ -80,17 +82,16 @@ class Addproduct extends Component {
                     kondisi: this.state.kondisi,
                     deskripsi: this.state.deskripsi,
                     qty: this.state.qty,
-                    propinsiUser: this.state.propinsiUser
+                    pulauUser: this.state.pulauUser
                 }
                 console.log(this.state.selectedFile, this.state.selectedFile.name);
                 fd.append('aneh', this.state.selectedFile, this.state.selectedFile.name)
                 fd.append('data', JSON.stringify(data))
                 axios.post(urlApi+'uploadproduct', fd)
                 .then(res=>{
-                    console.log(res)
                     alertify.alert('Keterangan', 'Sukses! Berhasil menambahkan product', function(){ 
                         alertify.message('Done')})
-                    return <Redirect to='/myproduct'/>
+                        this.setState({redirect:true})
                 }).catch(err=>{
                     console.log(err)
                 })
@@ -197,7 +198,7 @@ class Addproduct extends Component {
                         <div class=" col ui form">
                             <div class="field">
                                 <label>Text</label>
-                                <textarea rows='4' onChange={(e) => this.setState({deskripsi: e.target.value})} type="text" placeholder="Tulis deskripsi efek anda">
+                                <textarea className='form-control' rows='4' onChange={(e) => this.setState({deskripsi: e.target.value})} placeholder="Tulis deskripsi efek anda">
                                 </textarea>
                             </div>
                         </div>                               
@@ -227,6 +228,9 @@ class Addproduct extends Component {
     }
 
     render() {
+        if(this.state.redirect){
+            return <Redirect to='/myproduct'/>
+        }
         if(this.props.user_name){
         return(   
             <AbsoluteWrapper>

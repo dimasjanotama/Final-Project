@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import {NavLink, Redirect} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
+import { clickSeller } from '../actions'
 import axios from 'axios'
 
 import Navbar from './Navbar'
@@ -14,6 +15,7 @@ const urlApi = 'http://localhost:7777/auth/'
 class Search extends Component {
 
     state = {
+        redirect: false,
         display : '',
         currentpage : '',
         products : [],
@@ -28,7 +30,7 @@ class Search extends Component {
         selectedId: '',
         toogle: '',
         orderQty: 0,
-        propinsiUser: '',
+        pulauUser: '',
         user: [],
         idCart: ''
     }
@@ -43,10 +45,10 @@ class Search extends Component {
         axios.get(urlApi+'getuserbyid' ,{
             params : {
                 userid: this.props.user_id
-            }
+            }           
         }).then(res=>{
             this.setState({user: res.data[0]})
-            this.setState({propinsiUser: res.data[0].propinsi})
+            this.setState({pulauUser: res.data[0].pulau})
             this.onFilterClick()
         }).catch(err=>{
             console.log(err);
@@ -195,7 +197,7 @@ class Search extends Component {
                     </div>
                     <div className='row ml-2 mr-2'>
                         {this.state.products.map((product)=>{
-                            let {id, namaSeller, namaProduk, kategori, subKategori, berat, kondisi, deskripsi, fotoProduk, qty} = product
+                            let {id, idUser, namaSeller, namaProduk, kategori, subKategori, berat, kondisi, deskripsi, fotoProduk, qty} = product
                             let harga = parseInt(product.harga)
                             // let numberWithCommas = (x) => {
                             //     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -211,7 +213,9 @@ class Search extends Component {
                                             </div>
                                             <div class="w-100"></div>
                                             <i className='ml-3 col-2 pr-1 text-left user icon'></i>
-                                            <p className='col pl-0 card-text'>{namaSeller}</p>
+                                            <p className='col pl-0 card-text'>
+                                                <Link to='/otherprofile' onClick={()=>{this.props.clickSeller(idUser)}} className="dimdom-pink col mt-2">{namaSeller}</Link>
+                                            </p>
                                             <div class="w-100"></div>
                                             <p className='col ml-3 card-text quic700' style={{fontSize:'14pt'}} >
                                                 <span className='text-light'>Rp. {harga.toLocaleString('id')}</span>
@@ -228,7 +232,6 @@ class Search extends Component {
                                         <div className='card-body p-0 pb-3'>
                                             <button className='btn dimdom-pink mb-2' onClick={()=>{this.onDetailClick(id)}}>{namaProduk}</button>
                                             <p className='card-text text-center'>Rp. {harga.toLocaleString('id')}</p>
-                                            
                                         </div>
                                     </div>
                                 ) 
@@ -302,9 +305,10 @@ class Search extends Component {
                     orderQty: this.state.orderQty,
                     idProduct: idProduct,
                     qty: this.state.qty,
-                    propinsiSeller:this.state.product.propinsiUser            
+                    pulauSeller:this.state.product.pulauUser            
                 }).then(res=>{
                     alert('Success! Berhasil menambah ke keranjang')
+                    this.setState({redirect:true})
                 }).catch(err=>{
                     console.log(err);
                 })
@@ -315,8 +319,8 @@ class Search extends Component {
                     idBuyer: this.props.user_id,
                     idSeller: product.idUser,
                     namaSeller: product.namaSeller,      
-                    propinsiBuyer: this.state.propinsiUser,               
-                    propinsiSeller: this.state.product.propinsiUser,               
+                    pulauBuyer: this.state.pulauUser,               
+                    pulauSeller: product.pulauUser,               
                     namaProduk: product.namaProduk,
                     harga: product.harga,
                     berat: product.berat,
@@ -329,6 +333,8 @@ class Search extends Component {
                         namaBuyer: this.state.user.namaDepan +' '+ this.state.user.namaBelakang,
                         idSeller: product.idUser,  
                         namaSeller: product.namaSeller,
+                        pulauBuyer: this.state.pulauUser,               
+                        pulauSeller: product.pulauUser, 
                         alamat: this.state.user.alamat,
                         kelurahan: this.state.user.kelurahan,
                         kecamatan: this.state.user.kecamatan,
@@ -339,10 +345,12 @@ class Search extends Component {
                         namaProduk: product.namaProduk,
                         orderQty: parseInt(this.state.orderQty),
                         harga: product.harga,
+                        berat: product.berat,
                         fotoProduk: product.fotoProduk
                     }
                     ).then(res=>{
                         alert('Sukses! Berhasil ditambahkan ke keranjang')
+                        this.setState({redirect:true})
                     }).catch(err=>{
                         console.log(err);
                     })    
@@ -354,6 +362,9 @@ class Search extends Component {
     }
 
     render() {
+        if(this.state.redirect){
+            return <Redirect to='/mycart'/>
+        }
         if(this.props.user_name){
         return(   
             <AbsoluteWrapper>
@@ -427,4 +438,4 @@ const mapStateToProps = (state)=>{
     }
 }
 
-export default connect(mapStateToProps)(Search)
+export default connect(mapStateToProps,{clickSeller})(Search)

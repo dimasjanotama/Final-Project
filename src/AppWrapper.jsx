@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Route, BrowserRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import App from './App'
-import { keepLogin } from './actions'
+import { keepLogin, keepClickSeller , keepDetail} from './actions'
 
 class AppWrapper extends Component {
 
@@ -12,8 +12,16 @@ class AppWrapper extends Component {
 
     componentDidMount() {
         let userStorage = JSON.parse(localStorage.getItem('userData','userCart')) 
+        let otherIdStorage = JSON.parse(localStorage.getItem('otherId')) 
+        let transactionIdStorage = JSON.parse(localStorage.getItem('transactionId')) 
         if(userStorage){
             this.props.keepLogin(userStorage)
+        } 
+        if(otherIdStorage){
+            this.props.keepClickSeller(otherIdStorage)
+        }
+        if(transactionIdStorage){
+            this.props.keepDetail(transactionIdStorage)
         }
         this.setState({check: true})
     }
@@ -31,4 +39,4 @@ class AppWrapper extends Component {
 }
 }
 
-export default connect(null, {keepLogin})(AppWrapper)
+export default connect(null, {keepLogin,keepClickSeller, keepDetail})(AppWrapper)

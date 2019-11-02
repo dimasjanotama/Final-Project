@@ -4,7 +4,9 @@ import { combineReducers } from 'redux'
 const init = { 
     id: '',
     username: '',
-    keywords: ''
+    keywords: '',
+    otherId: '',
+    transactionId: ''
 }
 
 const AuthReducer = (state = init, action) => { 
@@ -21,6 +23,12 @@ const AuthReducer = (state = init, action) => {
 
         case 'CLEAR_KEYWORDS_SUCCESS':
             return {...state,keywords:''}
+
+        case 'CLICK_SELLER_SUCCESS':
+            return {...state,otherId: action.payload.otherId}
+
+        case 'CLICK_DETAIL_TRANSAKSI':
+            return {...state,transactionId: action.payload.idTransaksi}
 
         default:
             return state

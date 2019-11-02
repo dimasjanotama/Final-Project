@@ -3,6 +3,7 @@ import {NavLink, Redirect} from 'react-router-dom'
 import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
 import axios from 'axios'
+import alertify from 'alertifyjs'
 import Navbar from './Navbar'
 
 const moment = require('moment')
@@ -68,7 +69,8 @@ class DashboardAdmin extends Component {
             id: transactionId
         })
         .then((res)=>{
-        alert('Success')
+            alertify.alert('Keterangan', 'Verifikasi Sukses', function(){ 
+                alertify.message(`Transaction ID ${transactionId} is verified`)})
         this.getTransaction()
         }).catch(err=>{
             console.log(err);
@@ -82,7 +84,8 @@ class DashboardAdmin extends Component {
             hakBuyer: forBuyer
         })
         .then((res)=>{
-        alert('Success')
+            alertify.alert('Keterangan', 'Verifikasi Sukses', function(){ 
+                alertify.message(`Transaction ID ${transaction.id} is verified`)})
         this.getTransaction2()
         }).catch(err=>{
             console.log(err);
@@ -148,7 +151,8 @@ class DashboardAdmin extends Component {
             }
         }
         ).then(res=>{
-            alert('Success')
+            alertify.alert('Keterangan', 'Verifikasi Sukses', function(){ 
+                alertify.message(`Transaction ID ${transaction.id} is all DONE`)})
             this.getTransaction3()
         }).catch(err=>{
             console.log(err);

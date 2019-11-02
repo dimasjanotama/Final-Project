@@ -212,6 +212,7 @@ class Myproduct extends Component {
 
     renderList = () => {
         if(this.state.display == 'group'){
+            if(this.state.products[0]){
             return (
                 <div className='container'>
                     <div className='row ml-2 mr-2'>
@@ -247,6 +248,19 @@ class Myproduct extends Component {
                     </div>
                 </div>
             )
+            } else {
+                return (
+                <div className='row align-items-center text-light quic700'>
+                    <div className='col-11 mx-auto card'>
+                        <div className='card-body'>
+                            <div className='card-title subjudul'>
+                                Anda belum memiliki produk untuk dijual
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                )
+            }
         } else if(this.state.display == 'detail'){
             return (
             <div className='container'>

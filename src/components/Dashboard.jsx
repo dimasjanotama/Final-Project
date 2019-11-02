@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
-import {NavLink, Redirect} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
 import axios from 'axios'
+import alertify from 'alertifyjs'
 
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 import Footer from './Footer'
+import {clickSeller, detailTransaksi} from '../actions'
 
 
 const urlApi = 'http://localhost:7777/auth/'
@@ -151,7 +153,8 @@ class Dashboard extends Component {
         fd.append('data', JSON.stringify(data))
         axios.post(urlApi+'paymentconfirm', fd)
         .then(res=>{
-            alert('Konfirmasi berhasi, silahkan tunggu max 1X24 jam untuk verifikasi')
+            alertify.alert('Keterangan', 'Konfirmasi berhasil! silahkan tunggu max 1X24 jam untuk verifikasi', function(){ 
+                alertify.message('Done')})
             this.getBuyTransaction()
         }).catch(err=>{
             console.log(err)
@@ -177,32 +180,57 @@ class Dashboard extends Component {
         fd.append('data', JSON.stringify(data))
         axios.post(urlApi+'shippingconfirm', fd)
         .then(res=>{
-            alert('Konfirmasi berhasi, silahkan tunggu pembeli mengkonfirmasi penerimaan barang')
+            alertify.alert('Keterangan', 'Konfirmasi berhasi, silahkan tunggu pembeli mengkonfirmasi penerimaan barang', function(){ 
+                alertify.message('Done')})
             this.getSellTransaction()
         }).catch(err=>{
             console.log(err)
         })
     }
 
-    onReceiveConf = (transactionId) =>{
+    onReceiveConf = (transaction) =>{
         var today = new Date()
         var year = today.getFullYear()
         var month = today.getMonth()+1
         var date = today.getDate()
         var tglTerima = `${year}-${month}-${date}`
         axios.put(urlApi + 'receivepacket',{
-            id: transactionId,
+            id: transaction.id,
             tglPenerimaan: tglTerima
         })
         .then((res)=>{
-        alert('Konfirmasi Sukses, Dana akan disalurkan ke Seller')
-        this.getBuyTransaction()
+        alertify.alert('Keterangan', 'Konfirmasi Sukses, Dana akan disalurkan ke Seller', function(){ 
+            alertify.message('Done')})
+        alertify.confirm('We need your feedback!','Apakah anda puas bertransaksi dengan Seller ini?',
+            function(){
+                axios.put(urlApi+'feedbackpositif',
+                {
+                    idSeller: transaction.idSeller
+                }).then(res=>{
+                    alertify.success('Terimakasih atas feedback anda');
+                    this.getBuyTransaction()
+                }).catch(err=>{
+                    console.log();
+                })
+            },
+            function(){
+                axios.put(urlApi+'feedbacknegatif',
+                {
+                    idSeller: transaction.idSeller
+                }).then(res=>{
+                    alertify.error('Terimakasih atas feedback anda');
+                    this.getBuyTransaction()
+                }).catch(err=>{
+                    console.log(err);
+                })
+            }).set('labels', {ok:'Puas', cancel:'Tidak Puas'});
         }).catch(err=>{
             console.log(err);
         })
     }
 
     renderUnpaid = () => {
+        console.log(this.state.unpaid);
         let hasil = this.state.unpaid.map((transaction)=>{
             let batasWaktu = `${transaction.tglExpired}`
             var batas = batasWaktu.substr(0,10)
@@ -270,60 +298,73 @@ class Dashboard extends Component {
                 </div>
             )
         } else {
-            this.renderPaid()
-            this.renderUnpaid()
+            return (
+                <div>
+                    {this.renderPaid()}
+                    {this.renderUnpaid()}
+                </div>
+            )
+         
+            
         }
     }
 
     renderPaid = ()=>{
-        let hasil = this.state.paid.map((transaction)=>{
-            let tglPembelian = `${transaction.tglPembelian}`
-            let tglBeli = tglPembelian.substr(0,10)
-            let tglPembayaran = `${transaction.tglPembayaran}`
-            let tglBayar = tglPembayaran.substr(0,10)
-            if(transaction.statusNow!=='Transaksi selesai'){
-                return (
-                    <>
-                    <div className='card-title subjudul'>
-                        Status Order
-                    </div>
-                    <table class="table table-striped table-dark">
-                    <thead>
-                        <tr>
-                        <th scope="col">ID Transaksi</th>    
-                        <th scope="col">Tgl Pembelian</th>
-                        <th scope="col">Nilai Transaksi</th>
-                        <th scope="col">Tgl Pembayaran</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <th scope="col">{transaction.id}</th>    
-                        <th scope="col">{tglBeli}</th>
-                        <th scope="col">{transaction.nilaiTransaksi.toLocaleString('id')}</th>
-                        <th scope="col">{tglBayar}</th>
-                        <th scope="col">{transaction.statusNow}</th>
-                        <th scope="col">
-                            <input onClick={() => {this.onReceiveConf(transaction.id)}} type="button" 
-                            className="ui inverted basic dimdom3 button" value="Konfirmasi Terima"/>
-                        </th>
-                        </tr>
-                    </tbody>
-                    </table>
-                    </>
-                )
-            } else {
-                return null
-            }
-        })
-        return hasil
+        if(this.state.paid){
+            let hasil = this.state.paid.map((transaction)=>{
+                let tglPembayaran = `${transaction.tglPembayaran}`
+                let tglBayar = tglPembayaran.substr(0,10)
+                if(transaction.statusNow!=='Transaksi selesai'){
+                    return (
+                        <>
+                        <div className='card-title subjudul'>
+                            Status Order
+                        </div>
+                        <table class="table table-striped table-dark">
+                        <thead>
+                            <tr>
+                            <th scope="col">ID Transaksi</th>    
+                            <th scope="col">Nama Penjual</th>
+                            <th scope="col">Nilai Transaksi</th>
+                            <th scope="col">Tgl Pembayaran</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <th scope="col">
+                                <Link to='/detailtransaksi' onClick={()=>{this.props.detailTransaksi(transaction.id)}} 
+                                className="dimdom-pink-quic col mt-2">{transaction.id}</Link>
+                            </th>    
+                            <th scope="col">
+                                <Link to='/otherprofile' onClick={()=>{this.props.clickSeller(transaction.idSeller)}} 
+                                className="dimdom-pink-quic col mt-2">{transaction.namaSeller}</Link>
+                            </th>
+                            <th scope="col">{transaction.nilaiTransaksi.toLocaleString('id')}</th>
+                            <th scope="col">{tglBayar}</th>
+                            <th scope="col">{transaction.statusNow}</th>
+                            <th scope="col">
+                                <input onClick={() => {this.onReceiveConf(transaction)}} type="button" 
+                                className="ui inverted basic dimdom3 button" value="Konfirmasi Terima"/>
+                            </th>
+                            </tr>
+                        </tbody>
+                        </table>
+                        </>
+                    )
+                } else {
+                    return null
+                }
+            })
+            return hasil
+        } else {
+            return null
+        }
     }
-            
+
     renderOrderlist=()=>{
         let hasil = this.state.orders.map((order)=>{
-
             if(order.isDone<1){
                 if(order.isShipped==0) {
                     var statusPengiriman='Belum dikirim'
@@ -617,4 +658,4 @@ const mapStateToProps = (state)=>{
     }
 }
 
-export default connect(mapStateToProps)(Dashboard)
+export default connect(mapStateToProps,{clickSeller,detailTransaksi})(Dashboard)

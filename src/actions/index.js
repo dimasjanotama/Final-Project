@@ -52,4 +52,50 @@ export const clearKeywords = () => {
     }
 }
 
+export const clickSeller = (idSeller) => {
+    return (dispatch)=>{
+        localStorage.setItem(
+            'otherId',
+            JSON.stringify({otherId: idSeller}) // --> property dan nama data sama maka bisa dipersingkat dg --> {id,username}
+            )
+            dispatch ({
+                type: 'CLICK_SELLER_SUCCESS',
+                payload: {
+                    otherId: idSeller
+            }  
+        })
+}
+}
 
+export const keepClickSeller = (obj) => {
+    return {
+        type: 'CLICK_SELLER_SUCCESS',
+        payload: {
+            otherId: obj.otherId
+        }
+    }
+}
+
+export const detailTransaksi = (idTransaksi) => {
+    return (dispatch)=>{
+        localStorage.setItem(
+            'transactionId',
+            JSON.stringify({transactionId: idTransaksi}) // --> property dan nama data sama maka bisa dipersingkat dg --> {id,username}
+            )
+            dispatch ({
+                type: 'CLICK_DETAIL_TRANSAKSI',
+                payload: {
+                    idTransaksi: idTransaksi
+            }  
+        })
+}
+}
+
+export const keepDetail = (obj) => {
+    return {
+        type: 'CLICK_DETAIL_TRANSAKSI',
+        payload: {
+            idTransaksi: obj.transactionId
+        }
+    }
+}

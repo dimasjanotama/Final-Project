@@ -400,6 +400,18 @@
     transition: 0.5s;
   }
 
+  .dimdom-pink-quic {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    color: rgb(255, 255, 255);
+  }
+
+  .dimdom-pink-quic:hover {
+    font-family: 'Quicksand', sans-serif;
+    color: rgb(255, 31, 210);
+    transition: 0.5s;
+  }
+
   .dimdom-pink-logo {
     font-family:  'Mansalva', cursive;
     font-weight: 900;

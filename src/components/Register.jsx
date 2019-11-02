@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import {connect} from 'react-redux'
 import {NavLink, Redirect} from 'react-router-dom'
-
+import moment from 'moment'
 import AbsoluteWrapper from './AbsoluteWrapper'
 import Footer from './Footer'
 import Navbar from './Navbar'
@@ -22,6 +22,7 @@ class Register extends Component {
         password: '',
         namaDepan: '',
         namaBelakang: '',
+        noTelp : '',
         alamat: '',
         kelurahan: '',
         kecamatan: '',
@@ -29,8 +30,7 @@ class Register extends Component {
         propinsi: '',
         kodepos: '',
         pulau: '',
-        repeatPassword: ''
-        
+        repeatPassword: '',
     }
 
     onRegisterClick = ()=>{
@@ -54,9 +54,21 @@ class Register extends Component {
                     () => { this.setState({error: ''}) },
                     3000
                 )
+            } else if(this.state.noTelp.length<10 || this.state.noTelp.length>12){
+                this.setState({loading: false, error: `No HP minimal 10 digit dan maksimal 12 digit`})
+                setTimeout(
+                    () => { this.setState({error: ''}) },
+                    3000
+                )
+            } else if(this.state.password.length<3){
+                this.setState({loading: false, error: `Password minimal 3 karakter huruf/angka`})
+                setTimeout(
+                    () => { this.setState({error: ''}) },
+                    3000
+                )
             } else if(this.state.username && this.state.email && this.state.password && this.state.namaDepan &&
-                this.state.namaBelakang && this.state.alamat && this.state.kelurahan && this.state.kecamatan &&
-                this.state.kabupaten && this.state.propinsi && this.state.kodepos && this.state.repeatPassword){
+                this.state.namaBelakang && this.state.noTelp && this.state.alamat && this.state.kelurahan && this.state.kecamatan &&
+                this.state.kabupaten && this.state.propinsi && this.state.kodepos && this.state.pulau && this.state.repeatPassword){
                     this.cekEmail()
             } else { 
                 this.setState({loading: false, error: `Semua kolom harus diisi`})
@@ -87,12 +99,7 @@ class Register extends Component {
     }
 
     postUser = ()=>{
-
-        var today = new Date()
-        var year = today.getFullYear()
-        var month = today.getMonth()+1
-        var date = today.getDate()
-        var tglGabung = `${year}-${month}-${date}`
+        let tglDaftar = moment().format('YYYY-MM-DD')
         axios.post(urlApi + 'register',
         {
             username: this.state.username,
@@ -108,15 +115,30 @@ class Register extends Component {
             propinsi: this.state.propinsi,
             pulau: this.state.pulau,
             kodepos: this.state.kodepos,
-            tglDaftar: tglGabung 
+            tglDaftar: tglDaftar
         }).then((res)=>{
-        this.setState({loading: false, success : 'Berhasil registrasi, Silahkan cek email anda untuk verifikasi akun'})
-        
-        console.log(res.data);
+        axios.get(urlApi+'getuser',
+        {
+            params: {
+                username: this.state.username
+            }
+        }).then(res=>{
+            axios.post(urlApi+'postdataseller',
+            {
+                idSeller: res.data[0].id
+            }).then(res=>{
+                this.setState({loading: false, success : 'Berhasil registrasi, Silahkan cek email anda untuk verifikasi akun'})
+            }).catch(err=>{
+                console.log(err);
+            })
+        }).catch(err=>{
+            console.log(err);
+        })
+        }).catch(err=>{
+            console.log(err);
         })
     }
     
-
     loadingButton = () => {
         if(this.state.loading) {
             return (
@@ -168,22 +190,29 @@ class Register extends Component {
                                     <input onChange={(e) => this.setState({username: e.target.value})} type="text" placeholder="Username"/>
                                 </div>                 
                                 <div class=" col ui input2">
-                                    <input onChange={(e) => this.setState({email: e.target.value})} type="text" placeholder="Email"/>
+                                    <input onChange={(e) => this.setState({email: e.target.value})} type="email" placeholder="Email"/>
                                 </div>                 
                             </div>
                             <div className='row'>
-                                <div className='col card-title pt-4 mb-2'>Nama Depan</div>
-                                <div className='col card-title pt-4 mb-2'>Nama Belakang</div>
-                                <div className='col card-title pt-4 mb-2'>No. HP</div>
+                                <div className='col-4 card-title pt-4 mb-2'>Nama Depan</div>
+                                <div className='col-4 card-title pt-4 mb-2'>Nama Belakang</div>
+                                <div className='col-4 card-title pt-4 mb-2'>No. HP</div>
                                 <div class="w-100"></div>
-                                <div class=" col ui input2">
+                                <div class=" col-4 ui input2">
                                     <input onChange={(e) => this.setState({namaDepan: e.target.value})} type="text" placeholder="Nama Depan"/>
                                 </div>                 
-                                <div class=" col ui input2">
+                                <div class=" col-4 ui input2">
                                     <input onChange={(e) => this.setState({namaBelakang: e.target.value})} type="text" placeholder="Nama Belakang"/>
                                 </div>                 
-                                <div class=" col ui input2">
-                                    <input onChange={(e) => this.setState({noTelp: e.target.value})} type="text" placeholder="Nama Belakang"/>
+                                <div class=" col-4 ui input2">
+                                <input value={this.state.noTelp} 
+                                    onChange={(e) => {
+                                        if (isNaN(e.target.value)){
+                                            this.setState({noTelp: ''})
+                                        } else {
+                                            this.setState({noTelp:e.target.value})
+                                        }}} type="text" placeholder="No HP"/>
+                                 
                                 </div>                 
                             </div>
                             <div className='row'>
@@ -223,20 +252,30 @@ class Register extends Component {
                                 </div>              
                             </div>
                             <div className='row'>
-                                <div className='col card-title pt-4 mb-2'>Pulau</div>
-                                <div className='col card-title pt-4 mb-2'>Password</div>
-                                <div className='col card-title pt-4 mb-2'>Tulis ulang Password</div>
+                                <div className='col-2 card-title pt-4 mb-2'>Kepulauan</div>
+                                <div className='col-5 card-title pt-4 mb-2'>Password</div>
+                                <div className='col-5 card-title pt-4 mb-2'>Tulis ulang Password</div>
                                 <div class="w-100"></div>
-                                <div class=" col ui input2">
-                                    <input onChange={(e) => this.setState({pulau: e.target.value})} type="text" placeholder="Pulau"/>
+                                <div class=" col-2 ui input2">
+                                    <select onChange={(e)=>{this.setState({pulau: e.target.value})}} className='form-control' name="" id="">
+                                        <option selected disabled>Pulau</option>
+                                        <option value="Sumatera">Sumatera</option>
+                                        <option value="Jawa">Jawa</option>
+                                        <option value="Bali">Bali</option>
+                                        <option value="NTB">NTB</option>
+                                        <option value="NTT">NTT</option>
+                                        <option value="Kalimantan">Kalimantan</option>
+                                        <option value="Sulawesi">Sulawesi</option>
+                                        <option value="Maluku">Maluku</option>
+                                        <option value="Papua">Papua</option>
+                                    </select>  
                                 </div>
-                                <div class=" col ui input2">
+                                <div class=" col-5 ui input2">
                                     <input onChange={(e) => this.setState({password: e.target.value})} type="password" placeholder="Tulis password untuk akun anda"/>
                                 </div>
-                                <div class=" col ui input2">
+                                <div class=" col-5 ui input2">
                                     <input onChange={(e) => this.setState({repeatPassword: e.target.value})} type="password" placeholder="Tulis ulang password anda"/>
                                 </div>
-                                                                 
                             </div>
                             <div className='row pt-5'>
                                 <button onClick={this.onRegisterClick} className='col-4 mx-auto ui inverted basic dimdom3 button '>Daftar</button>

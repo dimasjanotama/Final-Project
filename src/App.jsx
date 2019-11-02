@@ -4,8 +4,6 @@ import { useTransition, animated } from 'react-spring'
 import Home from './components/Home'
 import Login from './components/Login'
 import Register from './components/Register'
-import Navbar from './components/Navbar'
-import Kategori from './components/Kategori'
 import Dashboard from './components/Dashboard'
 import DashboardAdmin from './components/DashboardAdmin'
 import Addproduct from './components/Addproduct'
@@ -13,6 +11,8 @@ import Myproduct from './components/Myproduct'
 import Mycart from './components/Mycart'
 import Search from './components/Search'
 import Myprofile from './components/Myprofile'
+import OtherProfile from './components/OtherProfile'
+import DetailTransaksi from './components/DetailTransaksi'
 
 
 
@@ -35,8 +35,7 @@ const App = () => {
                             <Switch location={ item }>
                                 <Route path='/' exact component={Home}/>
                                 <Route path='/login' component={Login}/>
-                                <Route path='/register' component={Register}/>
-                                <Route path='/kategori' component={Kategori}/>                                        
+                                <Route path='/register' component={Register}/>                           
                                 <Route path='/search' component={Search}/>                                        
                                 <Route path='/dashboard' component={Dashboard}/>
                                 <Route path='/dashadmin' component={DashboardAdmin}/>
@@ -44,6 +43,8 @@ const App = () => {
                                 <Route path='/myproduct' component={Myproduct}/>                                                                                              
                                 <Route path='/mycart' component={Mycart}/>                                                                                              
                                 <Route path='/myprofile' component={Myprofile}/>                                                                                              
+                                <Route path='/otherprofile' component={OtherProfile}/>                                                                                              
+                                <Route path='/detailtransaksi' component={DetailTransaksi}/>                                                                                              
                             </Switch>
                         </animated.div>
                     ))}   
