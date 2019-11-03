@@ -122,8 +122,8 @@
 .ui.inverted.dimdom3.basic.buttons .button,
 .ui.inverted.dimdom3.buttons .basic.button,
 .ui.inverted.dimdom3.basic.button {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
   font-size: 12pt;
   background-color: transparent;
   -webkit-box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
@@ -136,8 +136,8 @@
 .ui.inverted.dimdom3.basic.buttons .button:hover,
 .ui.inverted.dimdom3.buttons .basic.button:hover,
 .ui.inverted.dimdom3.basic.button:hover {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
   background-color: rgb(255, 31, 210) !important;
   -webkit-box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
   box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
@@ -150,7 +150,7 @@
 .ui.inverted.dimdom3.basic.buttons .button:focus,
 .ui.inverted.dimdom3.basic.button:focus {
   
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   background-color: rgb(255, 31, 210);
   -webkit-box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
   box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
@@ -161,7 +161,7 @@
 .ui.inverted.dimdom3.basic.buttons .active.button,
 .ui.inverted.dimdom3.buttons .basic.active.button,
 .ui.inverted.dimdom3.basic.active.button {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   background-color: rgb(255, 31, 210);
   -webkit-box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0,5) inset !important;
   box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
@@ -172,7 +172,7 @@
 .ui.inverted.dimdom3.basic.buttons .button:active,
 .ui.inverted.dimdom3.buttons .basic.button:active,
 .ui.inverted.dimdom3.basic.button:active {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   background-color: rgb(255, 31, 210);
   -webkit-box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0,5) inset !important;
   box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
@@ -185,7 +185,7 @@
 .ui.inverted.dimdom4.basic.buttons .button,
 .ui.inverted.dimdom4.buttons .basic.button,
 .ui.inverted.dimdom4.basic.button {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-weight: 700;
   background-color: transparent;
   -webkit-box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0) inset !important;
@@ -199,14 +199,14 @@
 .ui.inverted.dimdom4.basic.buttons .button:hover,
 .ui.inverted.dimdom4.buttons .basic.button:hover,
 .ui.inverted.dimdom4.basic.button:hover {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-weight: 700;
   background-color: transparent;
   -webkit-box-shadow: 0px 0px 0px 0px rgba(255, 31, 210, 0) inset !important;
   box-shadow: 0px 0px 0px 0px rgba(255, 31, 210, 0) inset !important;
   color: rgb(255, 31, 210) !important;
-  font-size: 50px;
-  
+  font-size: 36px;
+  padding-right: 0px;
   transition: 0.3s; 
 
 }
@@ -215,13 +215,13 @@
 .ui.inverted.dimdom4.basic.buttons .button:focus,
 .ui.inverted.dimdom4.basic.button:focus {
   
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-weight: 700;
   background-color: transparent;
   -webkit-box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
   box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
   color: rgb(255, 31, 210) !important;
-  font-size: 50px;
+  font-size: 30px;
   margin: 4px 2px;
   
   transition: 0.3s; 
@@ -230,13 +230,13 @@
 .ui.inverted.dimdom4.basic.buttons .active.button,
 .ui.inverted.dimdom4.buttons .basic.active.button,
 .ui.inverted.dimdom4.basic.active.button {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-weight: 700;
   background-color: transparent;
   -webkit-box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
   box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
   color: rgb(255, 31, 210) !important;
-  font-size: 50px;
+  font-size: 30px;
   margin: 4px 2px;
   
   transition: 0.3s;  
@@ -245,13 +245,13 @@
 .ui.inverted.dimdom4.basic.buttons .button:active,
 .ui.inverted.dimdom4.buttons .basic.button:active,
 .ui.inverted.dimdom4.basic.button:active {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-weight: 700;
   background-color: transparent;
   -webkit-box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
   box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
   color: rgb(255, 31, 210) !important;
-  font-size: 50px;
+  font-size: 30px;
   margin: 4px 2px;
   
   transition: 0.3s; 
@@ -389,13 +389,13 @@
   }
 
   .dimdom-pink {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 500;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
     color: rgb(255, 255, 255);
   }
 
   .dimdom-pink:hover {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Quicksand', sans-serif;
     color: rgb(255, 31, 210);
     transition: 0.5s;
   }
@@ -461,8 +461,8 @@ div.box-containe div {
 }
 
 .subjudul {
-  font-family: 'Montserrat Alternates', sans-serif;
-  font-weight: 900;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
   font-size: 20pt;
   color: rgb(255, 31, 210);
 }
@@ -540,6 +540,8 @@ div.box-containe div {
     background-size: 100%;
 }
 
+.ss {color: rgb(78, 154, 255)}
+
 .dim-height-home {
   height: 900px;
 }
@@ -583,10 +585,26 @@ div.box-containe div {
   border-radius: 20px;
 }
 
+.cardblack {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+}
+
 .card2 {
   background-color: rgba(56, 56, 56, 0.472);
   border-radius: 20px;
-  
+}
+
+.cardblue {
+  background-color: rgba(39, 41, 61);
+  border-radius: 20px;
+}
+
+.cardproduct {
+  background-color: rgba(224, 224, 224, 0.26);
+  border-radius: 20px;
+  border: 5px;
+  border-color: 'white';
 }
 
 .card-nav {
@@ -690,7 +708,7 @@ div.box-containe div {
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   text-align: left;
   line-height: 1.21428571em;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   padding: 0.67857143em 1em;
   background: rgba(255, 255, 255, 0);
   border: 1px solid rgb(74, 72, 100);
@@ -702,7 +720,7 @@ div.box-containe div {
   transition: box-shadow 0.1s ease, border-color 0.1s ease, -webkit-box-shadow 0.1s ease;
   -webkit-box-shadow: none;
   box-shadow: none;
-  transition: 0.4s
+  transition: 0.8s
 }
 
 /*--------------------

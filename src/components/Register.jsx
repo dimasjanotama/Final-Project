@@ -176,7 +176,7 @@ class Register extends Component {
             
             <AbsoluteWrapper>
                 <Navbar/>
-                <div className='row align-items-center text-light mon500 dim-height'>
+                <div className='row align-items-center text-light quic700 dim-height'>
                     <div className='col-6 mx-auto card'>
                         <div className='card-body'>
                             <div className='card-title'>

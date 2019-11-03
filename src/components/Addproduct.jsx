@@ -117,10 +117,10 @@ class Addproduct extends Component {
 
     renderList = () => {
         return (
-            <div className='row align-items-center text-light mon500'>
+            <div className='row mt-3 align-items-center text-light quic700'>
                 <div className='col-10 mx-auto card'>
                     <div className='card-body'>
-                    <div className='card-title subjudul'>
+                    <div className='card-title subjudul mt-3'>
                         Tambah Produk
                     </div>
                     <div className='card-title pt-4'>

@@ -134,6 +134,7 @@ class OtherProfile extends Component {
                     <div className='col-3 pl-0'>Produk terjual</div>
                     <div className='col-2'>{this.state.totalSold}</div>
                 </div>
+                <div className='pt-5'></div>
             </div>
         )
     }

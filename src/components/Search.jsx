@@ -182,14 +182,14 @@ class Search extends Component {
     renderList = () => {
         if(this.state.display == 'group'){
             return (
-                <div className='container'>
+                <div className='container cardblack'>
                     <div className='row align-items-center text-light mon500'>
-                        <div className='col-11 mx-auto card'>
+                        <div className='col-11 mx-auto card mb-n4'>
                             <div className='row'>
-                                <div className='col-1 card-title pt-3 pb-1'>
+                                <div className='col-1 card-title pt-4'>
                                     <i className='big info icon text-right' style={{color: 'rgb(255, 31, 210)'}}></i>
                                 </div>
-                                <div className='col-8 card-title pt-4 pb-1 pl-0 monalt900p text-left'>
+                                <div className='col-8 card-title pt-4 mt-1 pl-0 quic700p text-left'>
                                     Hasil pencarian untuk '{this.state.namaProduk}'
                                 </div>   
                             </div>
@@ -205,7 +205,7 @@ class Search extends Component {
                             // let harganya = numberWithCommas(harga)
                             if(id !== this.state.selectedId){
                                 return (
-                                    <div class="card ml-2 mr-2 mt-5" style={{width: "12rem"}}>
+                                    <div class="cardproduct ml-2 mr-2 mt-5" style={{width: "12rem"}}>
                                         <img class="card-img-top" src={`http://localhost:7777/files/${fotoProduk}`} alt="fotoproduk"/>
                                         <div className='row card-body p-0 pb-3'>
                                             <div className='col'>
@@ -238,7 +238,7 @@ class Search extends Component {
                             }
                         })}
                         <div class="w-100"></div>
-                        <div className='mx-auto'>
+                        <div className='mx-auto pt-5'>
                             <nav aria-label="Page navigation example">
                                 <p className='text-center'>Page</p>
                                 <ul class="pagination">
@@ -377,22 +377,22 @@ class Search extends Component {
                                 Search / Filter
                             </div>
                             <div className='row'>
-                                <div className='col card-title pt-5 mb-2 monalt900p'>Nama Produk</div>
+                                <div className='col card-title pt-5 mb-2 quic700p'>Nama Produk</div>
                                 <div class="w-100"></div>
                                 <div class=" col ui input2 mr-3">
                                     <input onChange={(e) => this.setState({namaProduk: e.target.value})} type="text" placeholder="Nama Produk"/>
                                 </div>
-                                <div className='col card-title pt-3 mb-2 monalt900p'>Kategori</div>
+                                <div className='col card-title pt-3 mb-2 quic700p'>Kategori</div>
                                 <div class="w-100"></div>
                                 <div class=" col ui input2 mr-3">
                                     <input onChange={(e) => this.setState({kategori: e.target.value})} type="text" placeholder="Kategori"/>
                                 </div>
-                                <div className='col card-title pt-3 mb-2 monalt900p'>Sub-Kategori</div>
+                                <div className='col card-title pt-3 mb-2 quic700p'>Sub-Kategori</div>
                                 <div class="w-100"></div>
                                 <div class=" col ui input2 mr-3">
                                     <input onChange={(e) => this.setState({subKategori: e.target.value})} type="text" placeholder="Sub-Kategori"/>
                                 </div>
-                                <div className='col card-title pt-3 mb-2 monalt900p'>Harga</div>
+                                <div className='col card-title pt-3 mb-2 quic700p'>Harga</div>
                                 <div class="w-100"></div>
                                 <div class=" col-5 ui input2">
                                     <input onChange={(e) => this.setState({hargaMin: e.target.value})} type="text" placeholder="Min"/>
@@ -400,7 +400,7 @@ class Search extends Component {
                                 <div class=" col-5 ui input2">
                                     <input onChange={(e) => this.setState({hargaMax: e.target.value})} type="text" placeholder="Max"/>
                                 </div>                       
-                                <div className='col card-title pt-3 mb-2 monalt900p'>Kondisi</div>
+                                <div className='col card-title pt-3 mb-2 quic700p'>Kondisi</div>
                                 <div class="w-100"></div>
                                 <div class="col ui input2 mr-3">
                                     <select className='form-control' onChange={(e) => this.setState({kondisi: e.target.value})} name="" id="">
@@ -418,7 +418,9 @@ class Search extends Component {
                     </div>
                     </div>
                     <div className='col-9 mt-3'>
+                       
                         {this.renderList()}
+                       
                     </div>
                 </div>
                 <Footer />

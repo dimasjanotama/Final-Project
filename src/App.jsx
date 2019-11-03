@@ -6,6 +6,7 @@ import Login from './components/Login'
 import Register from './components/Register'
 import Dashboard from './components/Dashboard'
 import DashboardAdmin from './components/DashboardAdmin'
+import Verifier from './components/Verifier'
 import Addproduct from './components/Addproduct'
 import Myproduct from './components/Myproduct'
 import Mycart from './components/Mycart'
@@ -38,13 +39,14 @@ const App = () => {
                                 <Route path='/register' component={Register}/>                           
                                 <Route path='/search' component={Search}/>                                        
                                 <Route path='/dashboard' component={Dashboard}/>
-                                <Route path='/dashadmin' component={DashboardAdmin}/>
+                                <Route path='/dashboardadmin' component={DashboardAdmin}/>
+                                <Route path='/verifier' component={Verifier}/>
                                 <Route path='/addproduct' component={Addproduct}/>
                                 <Route path='/myproduct' component={Myproduct}/>                                                                                              
                                 <Route path='/mycart' component={Mycart}/>                                                                                              
                                 <Route path='/myprofile' component={Myprofile}/>                                                                                              
                                 <Route path='/otherprofile' component={OtherProfile}/>                                                                                              
-                                <Route path='/detailtransaksi' component={DetailTransaksi}/>                                                                                              
+                                <Route path='/detailtransaksi' component={DetailTransaksi}/>                                                                                                                                                                                     
                             </Switch>
                         </animated.div>
                     ))}   

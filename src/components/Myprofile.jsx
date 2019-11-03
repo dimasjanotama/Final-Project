@@ -4,6 +4,7 @@ import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import alertify from 'alertifyjs'
+import {Line} from 'react-chartjs-2'
 
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
@@ -225,104 +226,166 @@ class Myprofile extends Component {
         var waktuTerakhir = 0
         return (
             <div>
-                <div className='card-title subjudul pb-4'>
+                <div className='card-title subjudul'>
                     Dashboard
                 </div>
                 <div className='dimdom-bottom'></div>
-                <div className='row justify-content-center'>
-                    <div className='col-8'>
-                    <div className='row mt-4' style={{fontSize:'12pt'}}>
-                    <div className='col text-right'><i className='child icon large'></i></div>
-                    <div className='col-2 pl-0'>Pembeli Puas</div>
-                    <div className='col-2'>{pembeliPuas}% Puas</div>
-                    <div className='col text-right'><i className='thumbs up outline icon large'></i></div>
-                    <div className='col-3 pl-0'>Jumlah Feedback</div>
-                    <div className='col-2'>{totalFeedback}</div>
-                </div>
-                <div className='row mt-4' style={{fontSize:'12pt'}}>
-                    <div className='col text-right'><i className='history icon large'></i></div>
-                    <div className='col-2 pl-0'>Terakhir Online</div>
-                    <div className='col-2'>{waktuTerakhir}</div>
-                    <div className='col text-right'><i className='medkit icon large'></i></div>
-                   
-                </div>
-                <div className='row mt-4' style={{fontSize:'12pt'}}>
-                    <div className='col text-right'><i className='cube icon large'></i></div>
-                    <div className='col-2 pl-0'>Total produk</div>
-                    <div className='col-2'>{this.state.totalProduct}</div>
-                    <div className='col text-right'><i className='money bill alternate outline icon large'></i></div>
-                    <div className='col-3 pl-0'>Produk terjual</div>
-                    <div className='col-2'>{this.state.totalSold}</div>
-                </div>
+                <div className='row cardblack pt-4 pb-5 pl-3 pr-3 text-light justify-content-center'>
+                    <div className='col cardblue mr-4'>
+                        <div className='mt-3' style={{fontSize:'10pt', color:'rgb(255, 92, 222)'}}>Total Penjualan</div>
+                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>11,000,000 IDR</div>
+                        <div className='chart mt-3 mb-3' >
+                            <Line
+                                data={{
+                                    labels : ['SEP', 'OKT', 'NOV', 'DES'],
+                                    datasets : [{
+                                        label: 'Total penjualan',
+                                        data: [
+                                            2500000,
+                                            8000000,
+                                            500000,
+                                            0
+                                        ],
+                                        backgroundColor:'transparent',
+                                        borderWidth:3,
+                                        borderColor: 'rgb(255, 92, 222)',
+                                        pointBackgroundColor: 'rgb(255, 92, 222)',
+                                        pointHoverBorderWidth: 10
+                                    }]
+                                }}
+                                options={{
+                                    legend : {
+                                        display: true,
+                                        position: 'right',
+                                        labels: {
+                                            fontFamily: 'Quicksand',
+                                            fontColor: 'rgb(192,192,192)'
+                                        }
+                                    },
+                                    scales: {
+                                        yAxes: [{
+                                            ticks: {
+                                                beginAtZero:true,
+                                                fontFamily: 'Quicksand',
+                                                fontColor: 'rgb(192,192,192)'
+                                            },
+                                        }],
+                                      xAxes: [{
+                                            ticks: {
+                                                fontFamily: 'Quicksand',
+                                                fontColor: 'rgb(224, 224, 224)'
+                                            },
+                                        }]
+                                    }
+                                }}
+                                />
+                        </div>
+                    </div>
+                <div className='col cardblue text-right'>
+                    <div className='mt-3' style={{fontSize:'10pt', color:'rgb(91, 226, 215)'}}>Total Pembelian</div>
+                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>3,500,000 IDR</div>
+                        <div className='chart mt-3 mb-3' >
+                            <Line
+                                data={{
+                                    labels : ['SEP', 'OKT', 'NOV', 'DES'],
+                                    datasets : [{
+                                        label: 'Total pembelian',
+                                        data: [
+                                            2000000,
+                                            1000000,
+                                            500000,
+                                            0
+                                        ],
+                                        backgroundColor:'transparent',
+                                        borderWidth:3,
+                                        borderColor: 'rgb(91, 226, 215)',
+                                        pointBackgroundColor: 'rgb(91, 226, 215)',
+                                        pointHoverBorderWidth: 10
+                                    }]
+                                }}
+                                options={{
+                                    legend : {
+                                        display: true,
+                                        position: 'left',
+                                        labels: {
+                                            fontFamily: 'Quicksand',
+                                            fontColor: 'rgb(192,192,192)'
+                                        }
+                                    },
+                                    scales: {
+                                        yAxes: [{
+                                            ticks: {
+                                                beginAtZero:true,
+                                                fontFamily: 'Quicksand',
+                                                fontColor: 'rgb(192,192,192)'
+                                            },
+                                        }],
+                                      xAxes: [{
+                                            ticks: {
+                                                fontFamily: 'Quicksand',
+                                                fontColor: 'rgb(224, 224, 224)'
+                                            },
+                                        }]
+                                    }
+                                }}
+                                />
+                        </div>
                     </div>
                 </div>
-                <div className='dimdom-bottom pt-4'></div>
+                <div className='card-title subjudul'>
+                   Penjualan
+                </div>
+                <div className='dimdom-bottom'></div>
+                <div className='row justify-content-center'>
+                <div className='col-11 pb-5'>
+                    <div className='row mt-4' style={{fontSize:'12pt'}}>
+                        <div className='col text-right'><i className='child icon large'></i></div>
+                        <div className='col-3 pl-0'>Kepuasan Pembeli</div>
+                        <div className='col-1 pl-0'>{pembeliPuas}%</div>
+                        <div className='col text-right'><i className='thumbs up outline icon large'></i></div>
+                        <div className='col-3 pl-0'>Jumlah Feedback</div>
+                        <div className='col-1'>{totalFeedback}</div>
+                    </div>
+                    <div className='row mt-4' style={{fontSize:'12pt'}}>
+                        <div className='col text-right'><i className='heart outline icon large'></i></div>
+                        <div className='col-3 pl-0'>Produk terlaris</div>
+                        <div className='col-1 pl-0'>{waktuTerakhir}</div>
+                        <div className='col text-right'><i className='medkit icon large'></i></div>
+                        <div className='col-3 pl-0'>Total transaksi</div>
+                        <div className='col-1'>{waktuTerakhir}</div>
+                    </div>
+                    <div className='row mt-4' style={{fontSize:'12pt'}}>
+                        <div className='col text-right'><i className='cube icon large'></i></div>
+                        <div className='col-3 pl-0'>Produk dijual</div>
+                        <div className='col-1 pl-0'>{this.state.totalProduct}</div>
+                        <div className='col text-right'><i className='money bill alternate outline icon large'></i></div>
+                        <div className='col-3 pl-0'>Total produk terjual</div>
+                        <div className='col-1'>{this.state.totalSold}</div>
+                    </div>
+                </div>
+                </div>
+                <div className='card-title subjudul'>
+                    Pembelian
+                </div>
+                <div className='dimdom-bottom'></div>
+                <div className='row justify-content-center'>
+                <div className='col-11 pb-5'>
+                    <div className='row mt-4' style={{fontSize:'12pt'}}>
+                        <div className='col text-right'><i className='medkit icon large'></i></div>
+                        <div className='col-3 pl-0'>Total transaksi</div>
+                        <div className='col-1'>{waktuTerakhir}</div>
+                        
+                        <div className='col text-right'><i className='cube icon large'></i></div>
+                        <div className='col-3 pl-0'>Total Produk yang dibeli</div>
+                        <div className='col-1'>{totalFeedback}</div>
+                    </div>
+                </div>
+                </div>
                 <div class="w-100"></div> 
                 <div className='pt-3'></div> 
             </div>
             )
     } 
-
-
-    renderDashboard = ()=>{
-                return (
-                    <div>INI DASHBOARD
-                    {/* <div className='row mt-4'>
-                        <div className='col-1'>
-                            <i className='handshake outline big icon'></i>
-                        </div>
-                        <div className='col mt-1' style={{fontSize:'15pt'}}>Tanggal {tgl}</div>
-                    </div>
-                    <div className='row mt-1'>
-                        <div className='col-1'></div>
-                        <div className='col' style={{fontSize:'14pt'}}>Transaksi dengan <span className='badge badge-primary'>{transaction.namaSeller}</span></div>
-                    </div>
-                    <div className='row mt-1'>
-                        <div className='col-1'></div>
-                        <div className='col'>Pembelian</div>
-                        <div className='col-3 text-right'>
-                            <span className='badge badge-danger' style={{fontSize:'11pt'}}>Rp {transaction.nilaiTransaksi.toLocaleString('id')}</span>
-                        </div>
-                    </div>
-                    <div className='row mt-1'>
-                        <div className='col-1'></div>
-                        <div className='col'>Kembalian sisa biaya ongkir</div>
-                        <div className='col-3 text-right'>
-                            <span className='badge badge-success' style={{fontSize:'11pt'}}>Rp {transaction.hakBuyer.toLocaleString('id')}</span>
-                        </div>
-                    </div>
-                    <div className='row mt-1'>
-                        <div className='col-1'></div>
-                        <div className='col'>Total Pengeluaran</div>
-                        <div className='col-3 text-right'>
-                            <span className='badge badge-danger' style={{fontSize:'11pt'}}>Rp {transaction.hakSeller.toLocaleString('id')}</span>
-                        </div>
-                    </div>
-                    </div>
-                )
-            } else {
-                return (
-                    <>
-                    <div className='row mt-4'>
-                        <div className='col-1'>
-                            <i className='handshake outline big icon'></i>
-                        </div>
-                        <div className='col mt-1' style={{fontSize:'15pt'}}>Tanggal {tgl}</div>
-                    </div>
-                    <div className='row mt-1'>
-                        <div className='col-1'></div>
-                        <div className='col' style={{fontSize:'14pt'}}>Transaksi dengan <span className='badge badge-primary'>{transaction.namaBuyer}</span></div>
-                    </div>
-                    <div className='row mt-1'>
-                        <div className='col-1'></div>
-                        <div className='col'>Penjualan + ganti ongkir</div>
-                        <div className='col-3 text-right'>
-                            <span className='badge badge-success' style={{fontSize:'11pt'}}>Rp {transaction.hakSeller}</span>
-                        </div>
-                    </div> */}
-                    </div>
-                )
-    }
 
     onUpdateClick = ()=>{
         axios.get(urlApi + 'getuser',
@@ -388,7 +451,7 @@ class Myprofile extends Component {
             } else {
                 this.updateUser()
             }
-        })alxka
+        })
     }
 
     updateUser = ()=>{

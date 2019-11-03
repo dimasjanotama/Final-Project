@@ -9,10 +9,10 @@ class Sidebar extends Component {
                 <div className='card-nav p-3 dim-height-nav'>
                     <div className='card-title'>
                     <NavLink to='/dashboard' className='ui inverted basic dimdom4 button mt-5'>Notification</NavLink>
-                    <NavLink to='/addproduct' className='ui inverted basic dimdom4 button'>Add_Product</NavLink>
-                    <NavLink to='/myproduct' className='ui inverted basic dimdom4 button'>My_Products</NavLink>
-                    <NavLink to='/mycart' className='ui inverted basic dimdom4 button'>My_Cart</NavLink>
-                    <NavLink to='/myprofile' className='ui inverted basic dimdom4 button'>My_Profile</NavLink>    
+                    <NavLink to='/addproduct' className='ui inverted basic dimdom4 button'>Add Product</NavLink>
+                    <NavLink to='/myproduct' className='ui inverted basic dimdom4 button'>My Products</NavLink>
+                    <NavLink to='/mycart' className='ui inverted basic dimdom4 button'>My Cart</NavLink>
+                    <NavLink to='/myprofile' className='ui inverted basic dimdom4 button'>My Profile</NavLink>      
                     </div>
                 </div>
             </div>

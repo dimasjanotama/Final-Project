@@ -66,7 +66,7 @@ class Login extends Component {
         return(
             <AbsoluteWrapper>
                <Navbar/>
-                <div className='row align-items-center dim-height text-light mon500'>
+                <div className='row align-items-center dim-height text-light quic700'>
                     <div className='col-5 mx-auto card'>
                         <div className='card-body'>
                             <div className='card-title'>
