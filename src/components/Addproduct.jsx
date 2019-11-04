@@ -66,6 +66,16 @@ class Addproduct extends Component {
             setTimeout(
             () => {this.setState({error: ''})},
             3000
+        )} else if(this.state.harga<50000){
+            this.setState({error: `Harga barang minimal 50.000`})
+            setTimeout(
+            () => {this.setState({error: ''})},
+            3000
+        )} else if(this.state.harga%1000>0){
+            this.setState({error: `Harga barang harus kelipatan 1000`})
+            setTimeout(
+            () => {this.setState({error: ''})},
+            3000
         )} else if (
             this.state.namaProduk && this.state.kategori && this.state.subKategori && 
             this.state.harga && this.state.berat && this.state.kondisi && this.state.deskripsi && this.state.selectedFile &&
@@ -147,7 +157,7 @@ class Addproduct extends Component {
                         </div>                 
                     </div>
                     <div className='row'>
-                        <div className='col-6 card-title pt-4 mb-2'>Harga (Harga harus kelipatan 100)</div>
+                        <div className='col-6 card-title pt-4 mb-2'>Harga (Harga harus kelipatan 1000)</div>
                         <div className='col-2 card-title pt-4 mb-2'>Kuantitas</div>
                         <div className='col-4 card-title pt-4 mb-2'>Perkiraan Berat</div>
                         <div class="w-100"></div>
@@ -214,7 +224,7 @@ class Addproduct extends Component {
                             {this.displayfilename()}
                         </div>
                     </div>
-                    <div className='row text-center pt-5'>
+                    <div className='row text-center'>
                         <div className='col mx-auto'>
                             <button onClick={this.onTambahClick} className='ui inverted basic dimdom3 button '>Tambah</button>
                             {this.notification()}

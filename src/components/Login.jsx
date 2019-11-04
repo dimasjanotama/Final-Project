@@ -101,7 +101,7 @@ class Login extends Component {
         ) //----------------------------> kurung tutup return
     } else {
         if (this.props.user_name == 'Admin') {
-            return <Redirect to='/dashadmin'/>
+            return <Redirect to='/verifier'/>
         } else {
         return <Redirect to='/dashboard'/>
         }

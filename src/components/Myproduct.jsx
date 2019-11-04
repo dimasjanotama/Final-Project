@@ -70,6 +70,16 @@ class Myproduct extends Component {
             setTimeout(
             () => {this.setState({error: ''})},
             3000
+        )} else if(this.state.harga<50000){
+            this.setState({error: `Harga barang minimal 50.000`})
+            setTimeout(
+            () => {this.setState({error: ''})},
+            3000
+        )} else if(this.state.harga%1000>0){
+            this.setState({error: `Harga barang harus kelipatan 1000`})
+            setTimeout(
+            () => {this.setState({error: ''})},
+            3000
         )} else if (this.state.namaProduk && this.state.kategori && this.state.subKategori && 
             this.state.harga && this.state.berat && this.state.kondisi && this.state.deskripsi && this.state.selectedFile &&
             this.state.qty){
@@ -287,7 +297,7 @@ class Myproduct extends Component {
             )
         } else {
             return (
-                <div className='row align-items-center text-light mon500'>
+                <div className='row align-items-center text-light quic700'>
                     
                 <div className='col-8 mx-auto card'>
                     <div className='col text-right mt-4 pr-1'>
@@ -321,7 +331,7 @@ class Myproduct extends Component {
                         </div>                 
                     </div>
                     <div className='row'>
-                        <div className='col-6 card-title pt-4 mb-2'>Harga (Harga harus kelipatan 100)</div>
+                        <div className='col-6 card-title pt-4 mb-2'>Harga (Harga harus kelipatan 1000)</div>
                         <div className='col-2 card-title pt-4 mb-2'>Kuantitas</div>
                         <div className='col-4 card-title pt-4 mb-2'>Perkiraan Berat</div>
                         <div class="w-100"></div>

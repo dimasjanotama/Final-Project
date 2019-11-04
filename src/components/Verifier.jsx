@@ -4,9 +4,8 @@ import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import alertify from 'alertifyjs'
+import moment from 'moment'
 import Navbar from './Navbar'
-
-const moment = require('moment')
 
 
 
@@ -15,24 +14,24 @@ const urlApi = 'http://localhost:7777/auth/'
 class Verifier extends Component {
 
     state = {
-        transactions : [], 
-        transactions2 : [], 
-        transactions3 : [], 
+        transactionsPay : [], 
+        transactionsShip : [], 
+        transactionsReceive : [], 
         loading: true,
         toogle: 'pembayaran'
     }
 
     componentDidMount(){
         this.getTransaction()
-        this.getTransaction2()
-        this.getTransaction3()
+        this.getTransactionPengiriman()
+        this.getTransactionPenerimaan()
     }
 
     getTransaction = () => {
         axios.get(urlApi+'getunpaidverification')
         .then(res=>{
             this.setState({
-                transactions: res.data,
+                transactionsPay: res.data,
                 loading: false
             })
         }).catch(err=>{
@@ -40,11 +39,11 @@ class Verifier extends Component {
         })
     }
 
-    getTransaction2 = () => {
+    getTransactionPengiriman = () => {
         axios.get(urlApi+'getshippingverification')
         .then(res=>{
             this.setState({
-                transactions2: res.data,
+                transactionsShip: res.data,
                 loading: false
             })
         }).catch(err=>{
@@ -52,11 +51,11 @@ class Verifier extends Component {
         })
     }
 
-    getTransaction3 = () => {
+    getTransactionPenerimaan = () => {
         axios.get(urlApi+'getalltransactions')
         .then(res=>{
             this.setState({
-                transactions3: res.data,
+                transactionsReceive: res.data,
                 loading: false
             })
         }).catch(err=>{
@@ -64,68 +63,80 @@ class Verifier extends Component {
         })
     }
 
-    onVerifikasi = (transactionId)=>{
+    onVerifikasiPembayaran = (transactionId)=>{
         axios.put(urlApi + 'paymentverification',{
             id: transactionId
         })
         .then((res)=>{
-            alertify.alert('Keterangan', 'Verifikasi Sukses', function(){ 
-                alertify.message(`Transaction ID ${transactionId} is verified`)})
+        alertify.alert('Keterangan', 'Verifikasi Sukses', function(){ 
+            alertify.message(`Transaction ID ${transactionId} is verified`)})
         this.getTransaction()
         }).catch(err=>{
             console.log(err);
         })
     }
 
-    onVerifikasi2 = (transaction)=>{
+    onVerifikasiPengiriman = (transaction)=>{
         var forBuyer = parseInt(transaction.nilaiTransaksi)-parseInt(transaction.hakSeller)
         axios.put(urlApi + 'shippingverification',{
             id: transaction.id,
             hakBuyer: forBuyer
         })
         .then((res)=>{
-            alertify.alert('Keterangan', 'Verifikasi Sukses', function(){ 
-                alertify.message(`Transaction ID ${transaction.id} is verified`)})
-        this.getTransaction2()
+        alertify.alert('Keterangan', 'Verifikasi Sukses', function(){ 
+            alertify.message(`Transaction ID ${transaction.id} is verified`)})
+        this.getTransactionPengiriman()
         }).catch(err=>{
             console.log(err);
         })
     }
 
-    onTolak = (transactionId) => {
+    onTolakPembayaran = (transaction) => {
         axios.put(urlApi + 'rejectverification',{
-            id: transactionId
+            id: transaction.id,
+            tglDitolak: moment().format('YYYY-MM-DD'),
+            idBuyer: transaction.idBuyer,
+            namaBuyer: transaction.namaBuyer,
+            idSeller: transaction.idSeller,
+            namaSeller: transaction.namaSeller,
+            nilaiTransaksi: transaction.nilaiTransaksi
         })
         .then((res)=>{
-        alert('Success')
+        alertify.alert('Keterangan', 'Transaksi Ditolak', function(){ 
+            alertify.message(`Transaction ID ${transaction.id} is REJECTED`)})
         this.getTransaction()
         }).catch(err=>{
             console.log(err);
         })
     }
 
-    onTolak2 = (transactionId) => {
+    onTolakPengiriman = (transaction) => {
         axios.put(urlApi + 'rejectshippingverification',{
-            id: transactionId
+            id: transaction.id,
+            tglDitolak: moment().format('YYYY-MM-DD'),
+            idBuyer: transaction.idBuyer,
+            namaBuyer: transaction.namaBuyer,
+            idSeller: transaction.idSeller,
+            namaSeller: transaction.namaSeller,
+            nilaiTransaksi: transaction.nilaiTransaksi
         })
         .then((res)=>{
-        alert('Success')
-        this.getTransaction()
+        alertify.alert('Keterangan', 'Transaksi Ditolak', function(){ 
+            alertify.message(`Transaction ID ${transaction.id} is REJECTED`)})
+        this.getTransactionPengiriman()
         }).catch(err=>{
             console.log(err);
         })
     }
 
     selesai = (transaction)=>{
-        let tglTerima = `${transaction.tglPenerimaan}`
-        var terima = tglTerima.substr(0,10)
         axios.put(urlApi + 'transactiondone',{
             id: transaction.id
         })
         .then((res)=>{
             axios.post(urlApi + 'addhistory',{
                 idTransaction: transaction.id,
-                tglPenerimaan: terima,
+                tglPenerimaan: moment().format('YYYY-MM-DD'),
                 idBuyer: transaction.idBuyer,
                 namaBuyer: transaction.namaBuyer,
                 idSeller: transaction.idSeller,
@@ -153,7 +164,7 @@ class Verifier extends Component {
         ).then(res=>{
             alertify.alert('Keterangan', 'Verifikasi Sukses', function(){ 
                 alertify.message(`Transaction ID ${transaction.id} is all DONE`)})
-            this.getTransaction3()
+            this.getTransactionPenerimaan()
         }).catch(err=>{
             console.log(err);
         })
@@ -165,9 +176,9 @@ class Verifier extends Component {
         
     }
 
-    renderTable = () => {
+    renderTablePembayaran = () => {
         if(this.state.loading==false){
-        let hasil = this.state.transactions.map((transaction)=>{
+        let hasil = this.state.transactionsPay.map((transaction)=>{
             let tglBeli = transaction.tglPembelian.substr(0,10)
             let tglExp = transaction.tglExpired.substr(0,10)
             let tglBayar = transaction.tglPembayaran.substr(0,10)
@@ -185,8 +196,8 @@ class Verifier extends Component {
                         <td><a href={`http://localhost:7777/files/${transaction.buktiPembayaran}`}>{transaction.buktiPembayaran}</a></td>
                         <td>{transaction.statusNow}</td>
                         <td>
-                            <input onClick={()=>{this.onVerifikasi(transaction.id)}} className='btn btn-success' type="button" value="Verifikasi"/>
-                            <input onClick={()=>{this.onTolak(transaction.id)}} className='btn btn-danger mt-1' type="button" value="Tolak"/>
+                            <input onClick={()=>{this.onVerifikasiPembayaran(transaction.id)}} className='btn btn-success' type="button" value="Verifikasi"/>
+                            <input onClick={()=>{this.onTolakPembayaran(transaction)}} className='btn btn-danger mt-1' type="button" value="Tolak"/>
                         </td>
                     </tr>
                 )
@@ -200,9 +211,9 @@ class Verifier extends Component {
         }
     }
 
-    renderTable2 = () => {
+    renderTablePengiriman = () => {
         if(this.state.loading==false){
-        let hasil = this.state.transactions2.map((transaction)=>{
+        let hasil = this.state.transactionsShip.map((transaction)=>{
             let tglKirim = transaction.tglPengiriman.substr(0,10)
             if(!transaction.isShipped){
                 return (
@@ -216,8 +227,8 @@ class Verifier extends Component {
                         <td>{transaction.hakSeller.toLocaleString('id')}</td>
                         <td>{transaction.statusNow}</td>
                         <td>
-                            <input onClick={()=>{this.onVerifikasi2(transaction)}} className='btn btn-success' type="button" value="Verifikasi"/>
-                            <input onClick={()=>{this.onTolak2(transaction.id)}} className='btn btn-danger mt-1' type="button" value="Tolak"/>
+                            <input onClick={()=>{this.onVerifikasiPengiriman(transaction)}} className='btn btn-success' type="button" value="Verifikasi"/>
+                            <input onClick={()=>{this.onTolakPengiriman(transaction)}} className='btn btn-danger mt-1' type="button" value="Tolak"/>
                         </td>
                     </tr>
                 )
@@ -231,9 +242,9 @@ class Verifier extends Component {
         }
     }
     
-    renderTable3 = () => {
+    renderTablePenerimaan = () => {
         if(this.state.loading==false){
-        let hasil = this.state.transactions3.map((transaction)=>{
+        let hasil = this.state.transactionsReceive.map((transaction)=>{
           if(transaction.hakSeller){
               var hakBuyer = parseInt(transaction.nilaiTransaksi)-parseInt(transaction.hakSeller)
           } else {
@@ -257,8 +268,10 @@ class Verifier extends Component {
                     <td>{(transaction.NamaRek) ? transaction.NamaRek : ""}</td>
                     <td>{transaction.statusNow}</td>
                     <td>{tglTerima}</td>
+                    <td>{transaction.ket}</td>
                     <td>
-                        <input onClick={()=>{this.selesai(transaction)}} className='btn btn-success' type="button" value="Selesai"/>
+                        <input onClick={()=>{this.onTolakPembayaran(transaction)}} className='btn btn-danger' type="button" value="Hapus"/>
+                        <input onClick={()=>{this.selesai(transaction)}} className='btn btn-success mt-1' type="button" value="Selesai"/>                    
                     </td>
                 </tr>
             )
@@ -302,7 +315,7 @@ class Verifier extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.renderTable()}
+                                        {this.renderTablePembayaran()}
                                     </tbody>
                                     </table>
                                     </div>
@@ -342,7 +355,7 @@ class Verifier extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.renderTable2()}
+                                        {this.renderTablePengiriman()}
                                     </tbody>
                                     </table>
                                     </div>
@@ -381,11 +394,12 @@ class Verifier extends Component {
                                         <th scope="col">Nama Rek Buyer</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Tgl Penerimaan</th>
+                                        <th scope="col">Ket</th>
                                         <th scope="col">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.renderTable3()}
+                                        {this.renderTablePenerimaan()}
                                     </tbody>
                                     </table>
                                     </div>

@@ -4,6 +4,7 @@ import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import alertify from 'alertifyjs'
+import moment from 'moment'
 
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
@@ -32,7 +33,11 @@ class Dashboard extends Component {
         hakSeller: '',
         noRekSeller: '',
         namaRekSeller: '',
-        adaHistory: false
+        adaHistory: false,
+        hour: '',
+        minute: '',
+        second: '',
+        hideUnpaid: false
     }
 
     componentDidMount(){
@@ -229,11 +234,37 @@ class Dashboard extends Component {
         })
     }
 
+    transactionTimeout = (transactionId) => {
+        axios.put(urlApi+'transactiontimeout',{
+            id: transactionId
+        }).then(res=>{
+
+        }).catch(err=>{
+            console.log(err);            
+        })
+    }
+
     renderUnpaid = () => {
-        console.log(this.state.unpaid);
         let hasil = this.state.unpaid.map((transaction)=>{
-            let batasWaktu = `${transaction.tglExpired}`
-            var batas = batasWaktu.substr(0,10)
+        if(transaction.ket!=='Hangus'){
+            let batasWaktu = new Date(`${transaction.tglExpired}`).getTime()
+            let x = setInterval(() => {
+                    let now = new Date().getTime()
+                    let t = batasWaktu - now
+                    let hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); 
+                    let minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60)); 
+                    let seconds = Math.floor((t % (1000 * 60)) / 1000); 
+                    if (t < 0) {
+                        clearInterval(x)
+                        this.transactionTimeout(transaction.id)
+                        return
+                    }
+                    this.setState({
+                    hour: hours,
+                    minute: minutes,
+                    second: seconds
+                    })
+            }, 1000);
             return (
                 <div>
                     <div className='card-title subjudul'>
@@ -241,16 +272,25 @@ class Dashboard extends Component {
                     </div>       
                     <div className='row'>
                         <div className='col card-title pt-4 mb-2'>Total Tagihan</div>
-                        <div className='col card-title pt-4 mb-2'>Unggah bukti pembayaran sebelum Tanggal</div>
+                        <div className='col card-title pt-4 mb-2'>Beli Dari</div>
+                        <div className='col-6 card-title pt-4 mb-2'>Batas waktu pembayaran</div>
                         <div class="w-100"></div>    
-                        <div className='col card-title pt-4 mb-2 quic700p'>Rp. {transaction.nilaiTransaksi}</div>
-                        <div className='col card-title pt-4 mb-2 quic700p'>{batas}</div>    
+                        <div className='col card-title pt-4 mb-2 quic700p'>
+                            <Link to='/detailtransaksi' onClick={()=>{this.props.detailTransaksi(transaction.id)}} 
+                                className="dimdom-pink-quic col mt-2">Rp. {transaction.nilaiTransaksi.toLocaleString('id')}</Link>
+                        </div>
+                        <div className='col card-title pt-4 mb-2'>
+                            <Link to='/otherprofile' onClick={()=>{this.props.clickSeller(transaction.idSeller)}} className="badge badge-primary mt-n2"
+                            style={{fontSize:'14pt'}}>{transaction.namaSeller}</Link>
+                        </div>
+                        <div className='col-6 card-title pt-4 mb-2 quic700p'><div className='badge badge-primary mt-n3' style={{fontSize: '18pt'}}>
+                        {this.state.hour} jam {this.state.minute} menit {this.state.second} detik</div></div>    
                         <div class="w-100"></div>          
                         <div className='col card-title pt-4 mb-2'>Rekening Pembayaran</div>
                         <div className='col card-title pt-4 mb-2'>Status Pembayaran</div>
                         <div class="w-100"></div>   
                         <div className='col card-title pt-4 mb-2 quic700p'>
-                            <img style={{width: '100px'}} src={require('../lib/pictures/cimb.jpg')}/>  123456789 an. Fxpedia 
+                            CIMB Niaga 123456789 an. Fxpedia 
                         </div>
                         <div className='col card-title pt-4 mb-2 quic700p'>{transaction.statusNow}</div>   
                     </div>
@@ -286,6 +326,13 @@ class Dashboard extends Component {
                     </div> 
                 </div>
             )
+        } else {
+            return (
+                <div className='card-title subjudul'>
+                    Belum ada pembelian
+                </div>
+            )
+        }
         })
         return hasil
     }
@@ -297,15 +344,19 @@ class Dashboard extends Component {
                     Belum ada pembelian
                 </div>
             )
-        } else {
+        } else if(!this.state.unpaid[0]){
             return (
                 <div>
                     {this.renderPaid()}
-                    {this.renderUnpaid()}
                 </div>
             )
-         
-            
+        } else {
+            return (
+                <div>
+                    {this.renderUnpaid()}
+                    {this.renderPaid()}
+                </div>
+            )
         }
     }
 
@@ -507,16 +558,15 @@ class Dashboard extends Component {
 
     renderHistory = ()=>{
         let hasil = this.state.history.map((transaction)=>{
-            let tanggal = `${transaction.tanggal}`
-            let tgl = tanggal.substr(0,10)
-            if (transaction.idBuyer==this.props.user_id){
+            let tanggal = transaction.tanggal
+            if (transaction.idBuyer==this.props.user_id && transaction.statusNow=='Done'){
                 return (
                     <>
                     <div className='row mt-4'>
                         <div className='col-1'>
                             <i className='handshake outline big icon'></i>
                         </div>
-                        <div className='col mt-1' style={{fontSize:'15pt'}}>Tanggal {tgl}</div>
+                        <div className='col mt-1' style={{fontSize:'15pt'}}>{moment(tanggal).format('LL')}</div>
                     </div>
                     <div className='row mt-1'>
                         <div className='col-1'></div>
@@ -545,14 +595,43 @@ class Dashboard extends Component {
                     </div>
                     </>
                 )
-            } else {
+            } else if(transaction.idBuyer==this.props.user_id && transaction.statusNow!=='Done'){
+                return (
+                    <>
+                    <div className='row mt-4'>
+                        <div className='col-1'>
+                            <i className='close icon big icon'></i>
+                        </div>
+                        <div className='col mt-1' style={{fontSize:'15pt'}}>{moment(tanggal).format('LL')}</div>
+                    </div>
+                    <div className='row mt-1'>
+                        <div className='col-1'></div>
+                        <div className='col' style={{fontSize:'14pt'}}>Transaksi dengan <span className='badge badge-primary'>{transaction.namaSeller}</span></div>
+                    </div>
+                    <div className='row mt-1'>
+                        <div className='col-1'></div>
+                        <div className='col'>Pembelian</div>
+                        <div className='col-3 text-right'>
+                            <span className='badge badge-warning' style={{fontSize:'11pt'}}>Rp {transaction.nilaiTransaksi.toLocaleString('id')}</span>
+                        </div>
+                    </div>
+                    <div className='row mt-1'>
+                        <div className='col-1'></div>
+                        <div className='col'>Transaksi Gagal/Dibatalkan</div>
+                        <div className='col-3 text-right'>
+                            <span className='badge badge-warning' style={{fontSize:'11pt'}}>{transaction.statusNow}</span>
+                        </div>
+                    </div>
+                    </>
+                )
+            } else if (transaction.idSeller==this.props.user_id && transaction.statusNow=='Done'){
                 return (
                     <>
                     <div className='row mt-4'>
                         <div className='col-1'>
                             <i className='handshake outline big icon'></i>
                         </div>
-                        <div className='col mt-1' style={{fontSize:'15pt'}}>Tanggal {tgl}</div>
+                        <div className='col mt-1' style={{fontSize:'15pt'}}>{moment(tanggal).format('LL')}</div>
                     </div>
                     <div className='row mt-1'>
                         <div className='col-1'></div>
@@ -562,7 +641,36 @@ class Dashboard extends Component {
                         <div className='col-1'></div>
                         <div className='col'>Penjualan + ganti ongkir</div>
                         <div className='col-3 text-right'>
-                            <span className='badge badge-success' style={{fontSize:'11pt'}}>Rp {transaction.hakSeller}</span>
+                            <span className='badge badge-success' style={{fontSize:'11pt'}}>Rp {transaction.hakSeller.toLocaleString('id')}</span>
+                        </div>
+                    </div>
+                    </>
+                )
+            } else {
+                return (
+                    <>
+                    <div className='row mt-4'>
+                        <div className='col-1'>
+                            <i className='times big icon'></i>
+                        </div>
+                        <div className='col mt-1' style={{fontSize:'15pt'}}>{moment(tanggal).format('LL')}</div>
+                    </div>
+                    <div className='row mt-1'>
+                        <div className='col-1'></div>
+                        <div className='col' style={{fontSize:'14pt'}}>Transaksi dengan <span className='badge badge-primary'>{transaction.namaBuyer}</span></div>
+                    </div>
+                    <div className='row mt-1'>
+                        <div className='col-1'></div>
+                        <div className='col'>Penjualan</div>
+                        <div className='col-3 text-right'>
+                            <span className='badge badge-warning' style={{fontSize:'11pt'}}>Rp {transaction.nilaiTransaksi}</span>
+                        </div>
+                    </div>
+                    <div className='row mt-1'>
+                        <div className='col-1'></div>
+                        <div className='col'>Transaksi Gagal/Dibatalkan</div>
+                        <div className='col-3 text-right'>
+                            <span className='badge badge-warning' style={{fontSize:'11pt'}}>{transaction.statusNow}</span>
                         </div>
                     </div>
                     </>

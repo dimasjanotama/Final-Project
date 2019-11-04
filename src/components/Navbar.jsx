@@ -2,7 +2,11 @@ import React, { Component } from 'react'
 import {NavLink, Redirect, Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import { onLogoutUser, searchKeywords, clearKeywords } from '../actions'
+import Axios from 'axios'
+import moment from 'moment'
 
+
+const urlApi = 'http://localhost:7777/auth/'
 
 class Navbar extends Component {
 
@@ -17,6 +21,17 @@ class Navbar extends Component {
 
     clearKeywords = ()=>{
         this.props.clearKeywords()
+    }
+
+    onLogout=()=>{
+        Axios.put(urlApi+'setlogtime',{
+            waktuLogout: moment().format('YYYY-MM-DD')+' '+ moment().format('kk:mm:ss'),
+            userId: this.props.user_id
+        }).then(res=>{
+            this.props.onLogoutUser()
+        }).catch(err=>{
+            console.log(err);
+        })
     }
 
     render () {
@@ -44,7 +59,7 @@ class Navbar extends Component {
             <div class='container-fluid' >
                 <div class="navbar row align-items-center" style={{background:'transparent' ,height:'115px'}}>                     
                     <div class="col pl-5 pt-1">
-                        <NavLink onClick={this.clearKeywords} className="dimdom-pink-logo" style={{fontSize:'40pt'}} to='/dashadmin'>fxpedia.</NavLink>
+                        <NavLink onClick={this.clearKeywords} className="dimdom-pink-logo" style={{fontSize:'40pt'}} to='/verifier'>fxpedia.</NavLink>
                     </div>
                     <div class="col pt-1 text-center">                                  
                     </div>                              
@@ -66,7 +81,7 @@ class Navbar extends Component {
                     </div>     
                     <div class="col pt-1 text-center">   
                          
-                        <button onClick={this.props.onLogoutUser} className='col-6 mx-auto ui inverted basic dimdom3 button '>Logout</button>      
+                        <button onClick={this.onLogout} className='col-6 mx-auto ui inverted basic dimdom3 button '>Logout</button>      
                     </div>   
                 </div>
             </div>
@@ -90,7 +105,7 @@ class Navbar extends Component {
                         </div>
                         <div class="col pt-1 text-center">   
                              
-                            <button onClick={this.props.onLogoutUser} className='col-6 mx-auto ui inverted basic dimdom3 button '>Logout</button>      
+                            <button onClick={this.onLogout} className='col-6 mx-auto ui inverted basic dimdom3 button '>Logout</button>      
                         </div>   
                     </div>
                 </div>
@@ -103,6 +118,7 @@ class Navbar extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        user_id : state.auth.id,
         user_name : state.auth.username,
         key_words : state.auth.keywords
     }

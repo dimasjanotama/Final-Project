@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {NavLink, Redirect} from 'react-router-dom'
 import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
-import {Line, Bar, Pie} from 'react-chartjs-2'
+import {Line, Doughnut, Pie} from 'react-chartjs-2'
 import axios from 'axios'
 import Navbar from './Navbar'
 
@@ -84,7 +84,7 @@ class DashboardAdmin extends Component {
                     <div className='col-4 pr-0'>
                     <div className='cardblue card-body'>
                         <div style={{fontSize:'10pt', color:'rgb(255, 92, 222)'}}>Total Jumlah Users</div>
-                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>10 users</div>
+                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>7 users</div>
                         <div className='chart mt-3 mb-3' >
                             <Line
                                 data={{
@@ -93,8 +93,8 @@ class DashboardAdmin extends Component {
                                         label: 'Penambahan users',
                                         data: [
                                             1,
-                                            1,
-                                            8,
+                                            2,
+                                            4,
                                             0
                                         ],
                                         backgroundColor:'transparent',
@@ -136,7 +136,7 @@ class DashboardAdmin extends Component {
                     <div className='col-4 pr-0'>
                     <div className='text-center cardblue card-body'>
                         <div style={{fontSize:'10pt', color:'rgb(78, 154, 255)'}}>Total Transaksi Selesai</div>
-                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>3 transaksi</div>
+                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>2 transaksi</div>
                         <div className='chart mt-3 mb-3' >
                             <Line
                                 data={{
@@ -146,7 +146,7 @@ class DashboardAdmin extends Component {
                                         data: [
                                             0,
                                             2,
-                                            1,
+                                            0,
                                             0
                                         ],
                                         backgroundColor:'transparent',
@@ -187,18 +187,18 @@ class DashboardAdmin extends Component {
                     </div>
                 <div className='col-4 pr-0'>
                 <div className='cardblue text-right card-body'>
-                    <div style={{fontSize:'10pt', color:'rgb(91, 226, 215)'}}>Total Transaksi Dalam Proses</div>
-                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>3 transaksi</div>
+                    <div style={{fontSize:'10pt', color:'rgb(91, 226, 215)'}}>Total Nilai Transaksi</div>
+                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>10,410,000 IDR</div>
                         <div className='chart mt-3 mb-3' >
                             <Line
                                 data={{
                                     labels : ['SEP', 'OKT', 'NOV', 'DES'],
                                     datasets : [{
-                                        label: 'Total pembelian',
+                                        label: 'Total nilai transaksi',
                                         data: [
                                             0,
-                                            1,
-                                            2,
+                                            10410000,
+                                            0,
                                             0
                                         ],
                                         backgroundColor:'transparent',
@@ -241,50 +241,32 @@ class DashboardAdmin extends Component {
                 <div className='row cardblack pb-5 text-light justify-content-center'>
                     <div className='col-4 pr-0'>
                     <div className='cardblue card-body'>
-                        <div style={{fontSize:'10pt', color:'rgb(255, 92, 222)'}}>Total Nilai Transaksi</div>
-                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>18,000,000 IDR</div>
+                        <div style={{fontSize:'10pt', color:'rgb(255, 92, 222)'}}>Transaksi Hingga Saat Ini</div>
+                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>3 transaksi</div>
                         <div className='chart mt-3 mb-3' >
-                            <Line
+                            <Pie
                                 data={{
-                                    labels : ['SEP', 'OKT', 'NOV', 'DES'],
+                                    labels: ['Selesai','Dalam Proses'],
                                     datasets : [{
-                                        label: 'Total nilai transaksi',
                                         data: [
-                                            2500000,
-                                            8000000,
-                                            7500000,
-                                            0
+                                            2,
+                                            1
                                         ],
-                                        backgroundColor:'transparent',
+                                        backgroundColor:['rgb(78, 154, 255)','rgb(91, 226, 215)'],
                                         borderWidth:3,
-                                        borderColor: 'rgb(255, 92, 222)',
-                                        pointBackgroundColor: 'rgb(255, 92, 222)',
-                                        pointHoverBorderWidth: 10
+                                        borderColor: 'rgb(39, 41, 61)',
+                                        hoverBorderColor: 'rgb(39, 41, 61)',
+                                        hoverBorderWidth: 6
                                     }]
                                 }}
                                 options={{
                                     legend : {
                                         display: true,
-                                        position: 'bottom',
+                                        position: 'right',
                                         labels: {
                                             fontFamily: 'Quicksand',
                                             fontColor: 'rgb(192,192,192)'
                                         }
-                                    },
-                                    scales: {
-                                        yAxes: [{
-                                            ticks: {
-                                                beginAtZero:true,
-                                                fontFamily: 'Quicksand',
-                                                fontColor: 'rgb(192,192,192)'
-                                            },
-                                        }],
-                                      xAxes: [{
-                                            ticks: {
-                                                fontFamily: 'Quicksand',
-                                                fontColor: 'rgb(224, 224, 224)'
-                                            },
-                                        }]
                                     }
                                 }}
                                 />
@@ -293,50 +275,32 @@ class DashboardAdmin extends Component {
                     </div>
                     <div className='col-4 pr-0'>
                     <div className='text-center cardblue card-body'>
-                        <div style={{fontSize:'10pt', color:'rgb(255, 92, 222)'}}>Total Penjualan</div>
-                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>11,000,000 IDR</div>
+                        <div style={{fontSize:'10pt', color:'rgb(78, 154, 255)'}}>Total Feedback</div>
+                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>2 Feedback</div>
                         <div className='chart mt-3 mb-3' >
-                            <Line
+                        <Pie
                                 data={{
-                                    labels : ['SEP', 'OKT', 'NOV', 'DES'],
+                                    labels: ['Puas','Tidak Puas'],
                                     datasets : [{
-                                        label: 'Total penjualan',
                                         data: [
-                                            2500000,
-                                            8000000,
-                                            500000,
+                                            2,
                                             0
                                         ],
-                                        backgroundColor:'transparent',
+                                        backgroundColor:['rgb(255, 92, 222)','rgb(91, 226, 215)'],
                                         borderWidth:3,
-                                        borderColor: 'rgb(255, 92, 222)',
-                                        pointBackgroundColor: 'rgb(255, 92, 222)',
-                                        pointHoverBorderWidth: 10
+                                        borderColor: 'rgb(39, 41, 61)',
+                                        hoverBorderColor: 'rgb(39, 41, 61)',
+                                        hoverBorderWidth: 6
                                     }]
                                 }}
                                 options={{
                                     legend : {
                                         display: true,
-                                        position: 'bottom',
+                                        position: 'right',
                                         labels: {
                                             fontFamily: 'Quicksand',
                                             fontColor: 'rgb(192,192,192)'
                                         }
-                                    },
-                                    scales: {
-                                        yAxes: [{
-                                            ticks: {
-                                                beginAtZero:true,
-                                                fontFamily: 'Quicksand',
-                                                fontColor: 'rgb(192,192,192)'
-                                            },
-                                        }],
-                                      xAxes: [{
-                                            ticks: {
-                                                fontFamily: 'Quicksand',
-                                                fontColor: 'rgb(224, 224, 224)'
-                                            },
-                                        }]
                                     }
                                 }}
                                 />
@@ -345,50 +309,35 @@ class DashboardAdmin extends Component {
                     </div>
                 <div className='col-4 pr-0'>
                 <div className='cardblue text-right card-body'>
-                    <div style={{fontSize:'10pt', color:'rgb(91, 226, 215)'}}>Total Pembelian</div>
-                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>3,500,000 IDR</div>
+                    <div style={{fontSize:'10pt', color:'rgb(91, 226, 215)'}}>Total Produk Dijual</div>
+                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>8 Produk</div>
                         <div className='chart mt-3 mb-3' >
-                            <Line
+                        <Pie
                                 data={{
-                                    labels : ['SEP', 'OKT', 'NOV', 'DES'],
+                                    labels: ['Distortion','Dynamics','Filter','Modulation','Pitch','Time','Preamp/Cabsim','Multi FX','Bass FX'],
                                     datasets : [{
-                                        label: 'Total pembelian',
                                         data: [
-                                            2000000,
-                                            1000000,
-                                            500000,
-                                            0
+                                            3,0,1,0,2,2,0,0,0
                                         ],
-                                        backgroundColor:'transparent',
+                                        backgroundColor:['rgb(248, 107, 107)','rgb(255, 248, 148)','grey','rgb(210, 95, 255)','rgb(255, 180, 119)',
+                                            'rgb(78, 154, 255)','rgb(117, 255, 135)','rgb(155, 125, 92)','rgb(57, 209, 255)'],
                                         borderWidth:3,
-                                        borderColor: 'rgb(91, 226, 215)',
-                                        pointBackgroundColor: 'rgb(91, 226, 215)',
-                                        pointHoverBorderWidth: 10
+                                        borderColor: 'rgb(39, 41, 61)',
+                                        hoverBorderColor: 'rgb(39, 41, 61)',
+                                        hoverBorderWidth: 6
                                     }]
                                 }}
                                 options={{
                                     legend : {
                                         display: true,
-                                        position: 'bottom',
+                                        position: 'right',
                                         labels: {
+                                            boxWidth: 25,
+                                            padding: 2,
                                             fontFamily: 'Quicksand',
-                                            fontColor: 'rgb(192,192,192)'
+                                            fontColor: 'rgb(192,192,192)',
+                                            fontSize: 12
                                         }
-                                    },
-                                    scales: {
-                                        yAxes: [{
-                                            ticks: {
-                                                beginAtZero:true,
-                                                fontFamily: 'Quicksand',
-                                                fontColor: 'rgb(192,192,192)'
-                                            },
-                                        }],
-                                      xAxes: [{
-                                            ticks: {
-                                                fontFamily: 'Quicksand',
-                                                fontColor: 'rgb(224, 224, 224)'
-                                            },
-                                        }]
                                     }
                                 }}
                                 />
@@ -396,7 +345,12 @@ class DashboardAdmin extends Component {
                         </div>
                     </div>
                 </div>
-                <div className='dimdom-bottom'></div>
+                <div style={{fontSize:'10pt', color:'rgb(255, 92, 222)'}}>Penjual teraktif</div>
+                <div className='mt-2' style={{fontSize:'19pt'}}>Zahra</div>
+                <div className='pb-5 mt-1' style={{fontSize:'10pt', color:'rgb(192,192,192)'}}>3 transaksi</div>
+                <div style={{fontSize:'10pt', color:'rgb(255, 92, 222)'}}>Pembeli teraktif</div>
+                <div className='mt-2' style={{fontSize:'19pt'}}>Dimas</div>
+                <div className='pb-5 mt-1' style={{fontSize:'10pt', color:'rgb(192,192,192)'}}>2 transaksi</div>
                 <div className='pt-3'></div> 
             </div>
         )
