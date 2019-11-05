@@ -14,7 +14,7 @@ import {clickSeller, detailTransaksi} from '../actions'
 
 const urlApi = 'http://localhost:7777/auth/'
 
-class Dashboard extends Component {
+class Notification extends Component {
 
     state = {
         unpaid : [],
@@ -251,6 +251,8 @@ class Dashboard extends Component {
             let x = setInterval(() => {
                     let now = new Date().getTime()
                     let t = batasWaktu - now
+                    console.log(t)
+                    // let days = Math.floor((t % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24)); 
                     let hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); 
                     let minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60)); 
                     let seconds = Math.floor((t % (1000 * 60)) / 1000); 
@@ -600,7 +602,7 @@ class Dashboard extends Component {
                     <>
                     <div className='row mt-4'>
                         <div className='col-1'>
-                            <i className='close icon big icon'></i>
+                            <i className='times big icon'></i>
                         </div>
                         <div className='col mt-1' style={{fontSize:'15pt'}}>{moment(tanggal).format('LL')}</div>
                     </div>
@@ -647,34 +649,7 @@ class Dashboard extends Component {
                     </>
                 )
             } else {
-                return (
-                    <>
-                    <div className='row mt-4'>
-                        <div className='col-1'>
-                            <i className='times big icon'></i>
-                        </div>
-                        <div className='col mt-1' style={{fontSize:'15pt'}}>{moment(tanggal).format('LL')}</div>
-                    </div>
-                    <div className='row mt-1'>
-                        <div className='col-1'></div>
-                        <div className='col' style={{fontSize:'14pt'}}>Transaksi dengan <span className='badge badge-primary'>{transaction.namaBuyer}</span></div>
-                    </div>
-                    <div className='row mt-1'>
-                        <div className='col-1'></div>
-                        <div className='col'>Penjualan</div>
-                        <div className='col-3 text-right'>
-                            <span className='badge badge-warning' style={{fontSize:'11pt'}}>Rp {transaction.nilaiTransaksi}</span>
-                        </div>
-                    </div>
-                    <div className='row mt-1'>
-                        <div className='col-1'></div>
-                        <div className='col'>Transaksi Gagal/Dibatalkan</div>
-                        <div className='col-3 text-right'>
-                            <span className='badge badge-warning' style={{fontSize:'11pt'}}>{transaction.statusNow}</span>
-                        </div>
-                    </div>
-                    </>
-                )
+                return null
             }
         })
         return hasil
@@ -766,4 +741,4 @@ const mapStateToProps = (state)=>{
     }
 }
 
-export default connect(mapStateToProps,{clickSeller,detailTransaksi})(Dashboard)
+export default connect(mapStateToProps,{clickSeller,detailTransaksi})(Notification)

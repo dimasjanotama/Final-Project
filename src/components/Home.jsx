@@ -39,7 +39,7 @@ class Home extends Component {
             </AbsoluteWrapper>
         )
     } else {
-        return <Redirect to='./dashboard'/>
+        return <Redirect to='./notification'/>
     }
     }
 }

@@ -3,6 +3,7 @@ import {Redirect, Link} from 'react-router-dom'
 import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
 import axios from 'axios'
+import alertify from 'alertifyjs'
 
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
@@ -102,9 +103,8 @@ class Myproduct extends Component {
                 fd.append('data', JSON.stringify(data))
                 axios.post(urlApi+'editproduct', fd)
                 .then(res=>{
-                    console.log(res)
-                    alert('Berhasil edit produk')
-                    return <Redirect to='/myproduct'/>
+                    alertify.message('Berhasil edit produk')
+                    this.setState({display: 'detail'})
                 }).catch(err=>{
                     console.log(err)
                 })
@@ -192,7 +192,7 @@ class Myproduct extends Component {
             }
         }
         ).then(res=>{
-            alert('Berhasil menghapus produk')
+            alertify.alert('Berhasil menghapus produk')
             this.renderProducts()
         }).catch(err=>{
             console.log(err);

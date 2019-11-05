@@ -3,6 +3,7 @@ import {NavLink, Redirect} from 'react-router-dom'
 import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
 import axios from 'axios'
+import moment from 'moment'
 
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
@@ -18,12 +19,14 @@ class OtherProfile extends Component {
         transactionSell: [],
         totalSold : 0,
         totalProduct : 0,
-        dataSeller: []
+        dataSeller: [],
+        products: []
     }
 
     componentDidMount(){
         this.getProfile()
         this.getOrdersData()
+        this.getProductsData()
     }
 
     getProfile = () => {
@@ -33,7 +36,6 @@ class OtherProfile extends Component {
             }
         }).then(res=>{
             this.setState({ otherProfile: res.data[0] })
-            console.log(res.data);
             axios.get(urlApi+'getdataseller',{
                 params : {
                     idSeller:  this.props.other_id
@@ -54,7 +56,6 @@ class OtherProfile extends Component {
                 idSeller:  this.props.user_id
             }
         }).then(res=>{
-            console.log(res.data[0].qtyTerjual);
             this.setState({ totalSold: res.data[0].qtyTerjual })
             axios.get(urlApi+'gettotalproduct',{
                 params : {
@@ -71,20 +72,46 @@ class OtherProfile extends Component {
         })
     }
 
-    otherProfile = () => {
-        if(this.state.dataSeller){
-            var { waktuLogout, totalPuas, totalFeedback } = this.state.dataSeller
-            if(totalPuas && totalFeedback && waktuLogout){
-                var pembeliPuas = (totalPuas/totalFeedback)*100
-                var waktuTerakhir = '5 jam lalu'
-            } else {
-                var pembeliPuas = (totalPuas/totalFeedback)*100
+    getProductsData = () => {
+        axios.get(urlApi+'getnewestproduct',{
+            params : {
+                userId: this.props.other_id
             }
+        }).then(res=>{
+            this.setState({products: res.data})
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
+    otherProfile = () => {
+        let tglDaftar = moment(this.state.otherProfile.tglDaftar).format('LL')
+        var { username, kabupaten, propinsi, fotoProfil } = this.state.otherProfile
+        var { waktuLogout, totalPuas, totalFeedback, totalTransaksi } = this.state.dataSeller        
+        if(!totalPuas && !totalFeedback && !totalTransaksi){
+            var pembeliPuas = 0
+            var totalFeedback = 0
+            var totalTransaksi = 0
         } else {
-            var { pembeliPuas, totalFeedback, waktuTerakhir } = ''
+            var pembeliPuas = (totalPuas/totalFeedback)*100
         }
-        var { username, kabupaten, propinsi, tglDaftar, fotoProfil } = this.state.otherProfile;
-        var tglll = new Date(`${this.state.otherProfile.tglDaftar}`).toLocaleDateString()
+
+        let now = new Date().getTime()
+        let lastLogout = new Date(`${waktuLogout}`).getTime()
+        let t = now - lastLogout
+        let days = Math.floor(t / (1000 * 60 * 60 * 24))
+        let hours = Math.floor(t / (1000 * 60 * 60))
+        let minutes = Math.floor(t / (1000 * 60))
+        console.log(days);
+        console.log(hours);
+        console.log(minutes);
+        var keterangan = minutes+' manit yang lalu'
+        if(minutes>60 && hours<24){
+            var keterangan = hours+' jam yang lalu'
+        } else if(minutes>60 && hours>24){
+            var keterangan = days+' hari yang lalu'
+        }
+
         return (
             <div>
                 <div className='card-title subjudul'>
@@ -98,44 +125,73 @@ class OtherProfile extends Component {
                         <img className="rounded-circle" style={{width:'200px'}} 
                         src={fotoProfil ? `http://localhost:7777/files/${fotoProfil}` : require('../lib/pictures/user.jpg')}></img>
                     </div>
-                    <div className='col-12 card-title pt-4 pb-1 pl-0 quic700p text-center'>
+                    <div className='col-12 card-title pt-2 pb-1 quic700p text-center'>
                         {username}
                     </div>  
-                     <div className='col-12 card-title pb-1 pl-0 quic700 text-center'>
+                     <div className='col-12 card-title quic700 text-center'>
                         <p>{kabupaten}, {propinsi}</p>
                     </div> 
                 </div>
                 </div>
-                <div className='dimdom-bottom'></div>
-                <div className='card-title subjudul mt-4'>
+                <div className='card-title subjudul mt-2'>
                     Statistik Seller
                 </div>
-                <div className='row mt-5' style={{fontSize:'12pt'}}>
+                <div className='dimdom-bottom'></div>
+                <div className='row mt-3' style={{fontSize:'12pt'}}>
                     <div className='col text-right'><i className='child icon large'></i></div>
                     <div className='col-2 pl-0'>Pembeli Puas</div>
                     <div className='col-2'>{pembeliPuas}% Puas</div>
                     <div className='col text-right'><i className='thumbs up outline icon large'></i></div>
-                    <div className='col-3 pl-0'>Jumlah Feedback</div>
-                    <div className='col-2'>{totalFeedback}</div>
+                    <div className='col-2 pl-0'>Jumlah Feedback</div>
+                    <div className='col-3'>{totalFeedback}</div>
                 </div>
-                <div className='row mt-4' style={{fontSize:'12pt'}}>
+                <div className='row mt-2' style={{fontSize:'12pt'}}>
                     <div className='col text-right'><i className='history icon large'></i></div>
                     <div className='col-2 pl-0'>Terakhir Online</div>
-                    <div className='col-2'>{waktuTerakhir}</div>
+                    <div className='col-2'>{keterangan}</div>
                     <div className='col text-right'><i className='medkit icon large'></i></div>
-                    <div className='col-3 pl-0'>Bergabung</div>
-                    <div className='col-2'>{tglll}</div>
+                    <div className='col-2 pl-0'>Bergabung</div>
+                    <div className='col-3'>{tglDaftar}</div>
                 </div>
-                <div className='row mt-4' style={{fontSize:'12pt'}}>
+                <div className='row mt-2' style={{fontSize:'12pt'}}>
                     <div className='col text-right'><i className='cube icon large'></i></div>
                     <div className='col-2 pl-0'>Total produk</div>
                     <div className='col-2'>{this.state.totalProduct}</div>
                     <div className='col text-right'><i className='money bill alternate outline icon large'></i></div>
-                    <div className='col-3 pl-0'>Produk terjual</div>
-                    <div className='col-2'>{this.state.totalSold}</div>
+                    <div className='col-2 pl-0'>Produk terjual</div>
+                    <div className='col-3'>{totalTransaksi}</div>
                 </div>
                 <div className='pt-5'></div>
+                <div className='card-title subjudul mt-2'>
+                    Produk terbaru dari {username}
+                </div>
+                <div className='dimdom-bottom'></div>
             </div>
+        )
+    }
+
+    newestProducts = () => {
+        return (
+        <div className='row ml-2 mr-2 mt-3 mb-5'>
+            {this.state.products.map((product)=>{
+                let {id, namaProduk, harga, fotoProduk} = product
+                    let numberWithCommas = (x) => {
+                        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    }
+                    let harganya = numberWithCommas(harga)
+                    return (
+                        <div class="cardproduct ml-2 mr-2" style={{width: "12rem"}}>
+                            <img src={`http://localhost:7777/files/${fotoProduk}`} class="card-img-top" alt="fotoproduk"/>
+                            <div class="card-body">
+                                <p className='mb-2 text-left'>{namaProduk}</p>
+                                <p className='card-text text-center quic700' style={{fontSize:'14pt'}} >
+                                    <span className='text-light'>Rp. {harganya}</span>
+                                </p>
+                            </div>
+                        </div>
+                    ) 
+            })}
+        </div>
         )
     }
 
@@ -149,6 +205,7 @@ class OtherProfile extends Component {
                             </div>
                         </div>
                         {this.otherProfile()}
+                        {this.newestProducts()}
                     </div>
                 </div>
             </div>

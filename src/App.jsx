@@ -4,7 +4,7 @@ import { useTransition, animated } from 'react-spring'
 import Home from './components/Home'
 import Login from './components/Login'
 import Register from './components/Register'
-import Dashboard from './components/Dashboard'
+import Notification from './components/Notification'
 import DashboardAdmin from './components/DashboardAdmin'
 import Verifier from './components/Verifier'
 import Addproduct from './components/Addproduct'
@@ -38,7 +38,7 @@ const App = () => {
                                 <Route path='/login' component={Login}/>
                                 <Route path='/register' component={Register}/>                           
                                 <Route path='/search' component={Search}/>                                        
-                                <Route path='/dashboard' component={Dashboard}/>
+                                <Route path='/notification' component={Notification}/>
                                 <Route path='/dashboardadmin' component={DashboardAdmin}/>
                                 <Route path='/verifier' component={Verifier}/>
                                 <Route path='/addproduct' component={Addproduct}/>

@@ -24,8 +24,9 @@ class Navbar extends Component {
     }
 
     onLogout=()=>{
+        let waktu = moment().format('YYYY-MM-DD')+' '+ moment().format('hh:mm:ss')
         Axios.put(urlApi+'setlogtime',{
-            waktuLogout: moment().format('YYYY-MM-DD')+' '+ moment().format('kk:mm:ss'),
+            waktuLogout: waktu,
             userId: this.props.user_id
         }).then(res=>{
             this.props.onLogoutUser()
@@ -64,7 +65,7 @@ class Navbar extends Component {
                     <div class="col pt-1 text-center">                                  
                     </div>                              
                     <div class="col pt-1 text-center">   
-                        <button onClick={this.props.onLogoutUser} className='col-6 mx-auto ui inverted basic dimdom3 button '>Logout</button>      
+                        <button onClick={this.onLogout} className='col-6 mx-auto ui inverted basic dimdom3 button '>Logout</button>      
                     </div>   
                 </div>
             </div>

@@ -18,12 +18,12 @@ class Myprofile extends Component {
 
     state = {
         profile: [],
-        transactionBuy: [],
-        transactionSell: [],
-        ordersBuy: [],
-        ordersSell: [],
-        toogle: '',
         dataSeller: [],
+        totalProdukTerjual: '',
+        totalProdukDijual: '',
+        produkTerlaris: '',
+        totalTransaksiBeli: '',
+        toogle: '',
         error: '',
         success: '',
         username: '',
@@ -46,8 +46,6 @@ class Myprofile extends Component {
     componentDidMount(){
         this.setState({toogle: 'profile'})
         this.getProfile()
-        this.getTransactions()
-        this.getOrders()
     }
 
     getProfile = () => {
@@ -62,7 +60,8 @@ class Myprofile extends Component {
                     idSeller:  this.props.user_id
                 }
             }).then(res=>{
-                this.setState({ dataSeller: res.data })
+                this.setState({ dataSeller: res.data[0] })
+                this.getStats()
             }).catch(err=>{
                 console.log(err);
             })
@@ -71,19 +70,37 @@ class Myprofile extends Component {
         })
     }
 
-    getTransactions = () => {
-        axios.get(urlApi+'gettransaction',{
-            params : {
-                idBuyer:  this.props.user_id
+    getStats = ()=>{
+        axios.get(urlApi+'totaltransactionbuy',{
+            params: {
+                userId: this.props.user_id
             }
         }).then(res=>{
-            this.setState({ transactionBuy: res.data })
-            axios.get(urlApi+'gettransactionbuy',{
-                params : {
-                    idSeller:  this.props.user_id
+            this.setState({totalTransaksiBeli: res.data[0].totalTransaksi})
+            axios.get(urlApi+'totalproductnow',{
+                params: {
+                    userId: this.props.user_id
                 }
             }).then(res=>{
-                this.setState({ transactionSell: res.data })
+                this.setState({totalProdukDijual: res.data[0].totalProduk})
+                axios.get(urlApi+'totalproductsold',{
+                    params: {
+                        userId: this.props.user_id
+                    }
+                }).then(res=>{
+                    this.setState({totalProdukTerjual: res.data[0].totalProduk})
+                    axios.get(urlApi+'mostwantedproduct',{
+                        params: {
+                            userId: this.props.user_id
+                        }
+                    }).then(res=>{
+                        this.setState({produkTerlaris: res.data[0].namaProduk})
+                    }).catch(err=>{
+                        console.log(err);
+                    })
+                }).catch(err=>{
+                    console.log(err);
+                })
             }).catch(err=>{
                 console.log(err);
             })
@@ -92,26 +109,6 @@ class Myprofile extends Component {
         })
     }
 
-    getOrders = () => {
-        axios.get(urlApi+'getorderlist',{
-            params : {
-                idSeller:  this.props.user_id
-            }
-        }).then(res=>{
-            this.setState({ ordersSell: res.data })
-            axios.get(urlApi+'getorderbuy',{
-                params : {
-                    idBuyer:  this.props.user_id
-                }
-            }).then(res=>{
-                this.setState({ ordersBuy: res.data })
-            }).catch(err=>{
-                console.log(err);
-            })
-        }).catch(err=>{
-            console.log(err);
-        })
-    }
 
     displayfilename = ()=>{
         if (this.state.selectedFile) {
@@ -221,9 +218,14 @@ class Myprofile extends Component {
     }
 
     dashboard = () => {
-        var { waktuLogin, waktuLogout, totalPuas, totalFeedback, totalTransaksi } = 0    
-        var pembeliPuas = (parseInt(totalPuas)/parseInt(totalFeedback))*100
-        var waktuTerakhir = 0
+        var { totalPuas, totalFeedback, totalTransaksi } = this.state.dataSeller        
+        if(!totalPuas && !totalFeedback && !totalTransaksi){
+            var pembeliPuas = 0
+            var totalFeedback = 0
+            var totalTransaksi = 0
+        } else {
+            var pembeliPuas = (totalPuas/totalFeedback)*100
+        }
         return (
             <div>
                 <div className='card-title subjudul'>
@@ -348,19 +350,24 @@ class Myprofile extends Component {
                     </div>
                     <div className='row mt-4' style={{fontSize:'12pt'}}>
                         <div className='col text-right'><i className='heart outline icon large'></i></div>
-                        <div className='col-3 pl-0'>Produk terlaris</div>
-                        <div className='col-1 pl-0'>{waktuTerakhir}</div>
+                        <div className='col-4 pl-0'>Produk terlaris</div>
                         <div className='col text-right'><i className='medkit icon large'></i></div>
                         <div className='col-3 pl-0'>Total transaksi</div>
-                        <div className='col-1'>{waktuTerakhir}</div>
+                        <div className='col-1'>{totalTransaksi}</div>
+                    </div>
+                    <div className='row' style={{fontSize:'12pt'}}>
+                        <div className='col-6 pl-0 text-right'>{this.state.produkTerlaris}</div>
+                        <div className='col text-right'></div>
+                        <div className='col-3 pl-0'></div>
+                        <div className='col-1'></div>
                     </div>
                     <div className='row mt-4' style={{fontSize:'12pt'}}>
                         <div className='col text-right'><i className='cube icon large'></i></div>
                         <div className='col-3 pl-0'>Produk dijual</div>
-                        <div className='col-1 pl-0'>{this.state.totalProduct}</div>
+                        <div className='col-1 pl-0'>{this.state.totalProdukDijual}</div>
                         <div className='col text-right'><i className='money bill alternate outline icon large'></i></div>
                         <div className='col-3 pl-0'>Total produk terjual</div>
-                        <div className='col-1'>{this.state.totalSold}</div>
+                        <div className='col-1'>{this.state.totalProdukTerjual}</div>
                     </div>
                 </div>
                 </div>
@@ -370,14 +377,10 @@ class Myprofile extends Component {
                 <div className='dimdom-bottom'></div>
                 <div className='row justify-content-center'>
                 <div className='col-11 pb-5'>
-                    <div className='row mt-4' style={{fontSize:'12pt'}}>
-                        <div className='col text-right'><i className='medkit icon large'></i></div>
-                        <div className='col-3 pl-0'>Total transaksi</div>
-                        <div className='col-1'>{waktuTerakhir}</div>
-                        
-                        <div className='col text-right'><i className='cube icon large'></i></div>
-                        <div className='col-3 pl-0'>Total Produk yang dibeli</div>
-                        <div className='col-1'>{totalFeedback}</div>
+                    <div className='row mt-4 justify-content-center' style={{fontSize:'12pt'}}>
+                        <div className='col-1'><i className='medkit icon large'></i></div>
+                        <div className='col-4 pl-0 mt-1'>Total transaksi Pembelian</div>
+                        <div className='col-3 mt-1'>{this.state.totalTransaksiBeli} transaksi</div>
                     </div>
                 </div>
                 </div>

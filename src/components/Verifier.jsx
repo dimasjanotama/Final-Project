@@ -102,7 +102,7 @@ class Verifier extends Component {
             nilaiTransaksi: transaction.nilaiTransaksi
         })
         .then((res)=>{
-        alertify.alert('Keterangan', 'Transaksi Ditolak', function(){ 
+        alertify.alert('Keterangan', 'Transaksi berhasil dihapus', function(){ 
             alertify.message(`Transaction ID ${transaction.id} is REJECTED`)})
         this.getTransaction()
         }).catch(err=>{
@@ -124,6 +124,31 @@ class Verifier extends Component {
         alertify.alert('Keterangan', 'Transaksi Ditolak', function(){ 
             alertify.message(`Transaction ID ${transaction.id} is REJECTED`)})
         this.getTransactionPengiriman()
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
+    onTolakPenerimaan = (transaction) => {
+        axios.put(urlApi+'rejectquantity',{
+            idTransaction: transaction.id
+        }).then(res=>{
+            axios.put(urlApi + 'rejectverification',{
+                id: transaction.id,
+                tglDitolak: moment().format('YYYY-MM-DD'),
+                idBuyer: transaction.idBuyer,
+                namaBuyer: transaction.namaBuyer,
+                idSeller: transaction.idSeller,
+                namaSeller: transaction.namaSeller,
+                nilaiTransaksi: transaction.nilaiTransaksi
+            })
+            .then((res)=>{
+            alertify.alert('Keterangan', 'Transaksi berhasil dihapus', function(){ 
+                alertify.message(`Transaction ID ${transaction.id} was ERASED by admin`)})
+            this.getTransactionPenerimaan()
+            }).catch(err=>{
+                console.log(err);
+            })
         }).catch(err=>{
             console.log(err);
         })
@@ -270,7 +295,7 @@ class Verifier extends Component {
                     <td>{tglTerima}</td>
                     <td>{transaction.ket}</td>
                     <td>
-                        <input onClick={()=>{this.onTolakPembayaran(transaction)}} className='btn btn-danger' type="button" value="Hapus"/>
+                        <input onClick={()=>{this.onTolakPenerimaan(transaction)}} className='btn btn-danger' type="button" value="Hapus"/>
                         <input onClick={()=>{this.selesai(transaction)}} className='btn btn-success mt-1' type="button" value="Selesai"/>                    
                     </td>
                 </tr>

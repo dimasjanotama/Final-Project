@@ -4,6 +4,7 @@ import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
 import { clickSeller } from '../actions'
 import axios from 'axios'
+import alertify from 'alertifyjs'
 
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
@@ -199,10 +200,6 @@ class Search extends Component {
                         {this.state.products.map((product)=>{
                             let {id, idUser, namaSeller, namaProduk, kategori, subKategori, berat, kondisi, deskripsi, fotoProduk, qty} = product
                             let harga = parseInt(product.harga)
-                            // let numberWithCommas = (x) => {
-                            //     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                            // }
-                            // let harganya = numberWithCommas(harga)
                             if(id !== this.state.selectedId){
                                 return (
                                     <div class="cardproduct ml-2 mr-2 mt-5" style={{width: "12rem"}}>
@@ -281,11 +278,9 @@ class Search extends Component {
 
     onClickAtc = (idProduct, product)=>{
         if(this.state.orderQty < 1 ){
-            alert('Pembelian minimal 1')
+            alertify.alert('Keterangan', 'Pembelian minimal 1')
         } else if (this.state.orderQty > parseInt(product.qty)){
-            alert('Stok produk tidak mencukupi')
-        } else if (this.state.orderQty > parseInt(product.qty)){
-            alert('Stok produk tidak mencukupi')
+            alertify.alert('Keterangan', 'Stok produk tidak mencukupi')
         } else {
             this.cekQty(idProduct, product)
         } 
@@ -307,7 +302,7 @@ class Search extends Component {
                     qty: this.state.qty,
                     pulauSeller:this.state.product.pulauUser            
                 }).then(res=>{
-                    alert('Success! Berhasil menambah ke keranjang')
+                    alertify.alert('Keterangan', 'Success! Berhasil menambah ke keranjang')
                     this.setState({redirect:true})
                 }).catch(err=>{
                     console.log(err);
@@ -349,7 +344,7 @@ class Search extends Component {
                         fotoProduk: product.fotoProduk
                     }
                     ).then(res=>{
-                        alert('Sukses! Berhasil ditambahkan ke keranjang')
+                        alertify.alert('Keterangan', 'Sukses! Berhasil ditambahkan ke keranjang')
                         this.setState({redirect:true})
                     }).catch(err=>{
                         console.log(err);

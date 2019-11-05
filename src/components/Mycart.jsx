@@ -4,6 +4,7 @@ import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import moment from 'moment'
+import alertify from 'alertifyjs'
 
 import Footer from './Footer'
 import Navbar from './Navbar'
@@ -19,7 +20,8 @@ class Mycart extends Component {
     state = {
         carts: [],
         user: [],
-        totalBerat: 0
+        totalBerat: 0,
+        redirect : false
     }
 
     componentDidMount = ()=>{
@@ -32,7 +34,6 @@ class Mycart extends Component {
             this.getCart()
         }).catch(err=>{
             console.log(err);
-            
         })
     }
 
@@ -48,15 +49,17 @@ class Mycart extends Component {
         })
     }
 
-    onDeleteClick = (idCart) => {
+    onDeleteClick = (product) => {
         axios.delete(urlApi+'deletecart',{
             data : {
-                idCart : idCart,
+                idCart : product.id,
+                idProduct : product.idProduct,
+                orderQty: product.orderQty,
                 idBuyer: this.props.user_id
             }
         }
         ).then(res=>{
-            alert('Berhasil menghapus produk')
+            alertify.message('Berhasil menghapus produk')
             this.getCart()
         }).catch(err=>{
             console.log(err);
@@ -68,8 +71,6 @@ class Mycart extends Component {
         let hasil = this.state.carts.map((product)=>{
             let { id, namaProduk, harga, orderQty, fotoProduk, pulauBuyer, pulauSeller } = product 
             let berat = (product.berat/1000)*orderQty
-           
-            
             if(pulauBuyer==pulauSeller){
                 var ongkir = 50000*berat
             } else { var ongkir = 160000*berat}
@@ -86,7 +87,7 @@ class Mycart extends Component {
                     <div className='col-1 card-title pt-4 mb-2'>{berat}kg</div>
                     <div className='col-2 card-title pt-4 mb-2'>Rp {totalHarga.toLocaleString('id')}</div>
                     <div className='col-2 card-title pt-4 mb-2'>
-                        <button onClick={()=>{this.onDeleteClick(id)}} className='ui inverted basic dimdom3 button mt-n2'>Hapus</button>
+                        <button onClick={()=>{this.onDeleteClick(product)}} className='ui inverted basic dimdom3 button mt-n2'>Hapus</button>
                     </div>
                 </>
             )
@@ -95,11 +96,18 @@ class Mycart extends Component {
     }
 
     checkOut = () => {
-        var today = new Date()
-        console.log(moment().format('YYYY-MM-DD')+' '+ moment().format('kk:mm:ss'));
-        console.log(moment().add(1, 'd').format('YYYY-MM-DD')+' '+ moment().format('kk:mm:ss'));
+        this.state.carts.map((product)=>{
+            axios.put(urlApi+'refreshquantity',{
+                idProduct: product.idProduct,
+                orderQty: product.orderQty
+            }).then(res=>{
+            }).catch(err=>{
+                console.log(err);
+            })
+        })
         axios.post(urlApi+'addtransaction',{
-           
+            tglPembelian: moment().format('YYYY-MM-DD')+' '+ moment().format('hh:mm:ss'),
+            tglExpired: moment().add(1, 'd').format('YYYY-MM-DD')+' '+ moment().format('hh:mm:ss'),
             idBuyer: this.props.user_id,
             namaBuyer: this.state.user.username,
             nilaiTransaksi: this.subtotal,
@@ -112,8 +120,9 @@ class Mycart extends Component {
                 }
             }
             ).then(res=>{
-                alert('Silahkan ke menu dashboard, dan lakukan prosedur pembayaran sesuai petunjuk')
+                alertify.alert('Keterangan', 'Berhasil, Silahkan lakukan prosedur pembayaran sesuai petunjuk')
                 this.getCart()
+                this.setState({redirect: true})
             }).catch(err=>{
                 console.log(err);
             })
@@ -203,6 +212,9 @@ class Mycart extends Component {
     }
 
     render() {
+        if(this.state.redirect){
+            return <Redirect to='/notification'/>
+        }
         if(this.props.user_name){
         return(   
             <AbsoluteWrapper>
