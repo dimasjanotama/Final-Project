@@ -6,6 +6,7 @@ import moment from 'moment'
 import AbsoluteWrapper from './AbsoluteWrapper'
 import Footer from './Footer'
 import Navbar from './Navbar'
+var crypto = require('crypto')
 
 
 // 701ca464c7e78ef9dfd477f0e978c3a0
@@ -99,12 +100,17 @@ class Register extends Component {
     }
 
     postUser = ()=>{
+        function encryptMyPass (pw) { //algoritma  //punya kita
+            let result = crypto.createHmac('sha256','fxpedia').update(pw).digest('hex')
+            return result
+        }
+        let password = encryptMyPass(this.state.password)
         let tglDaftar = moment().format('YYYY-MM-DD')
         axios.post(urlApi + 'register',
         {
             username: this.state.username,
             email: this.state.email,
-            password: this.state.password,                     
+            password: password,                    
             namaDepan: this.state.namaDepan,
             namaBelakang: this.state.namaBelakang,
             noTelp: this.state.noTelp,
@@ -257,7 +263,7 @@ class Register extends Component {
                                 <div className='col-5 card-title pt-4 mb-2'>Tulis ulang Password</div>
                                 <div class="w-100"></div>
                                 <div class=" col-2 ui input2">
-                                    <select onChange={(e)=>{this.setState({pulau: e.target.value})}} className='form-control' name="" id="">
+                                    <select style={{backgroundColor:'rgb(0,0,0,0)'}} onChange={(e)=>{this.setState({pulau: e.target.value})}} className='form-control custom-select' name="" id="">
                                         <option selected disabled>Pulau</option>
                                         <option value="Sumatera">Sumatera</option>
                                         <option value="Jawa">Jawa</option>

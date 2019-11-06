@@ -24,7 +24,7 @@ class Addproduct extends Component {
         kategori: '',
         subKategori: '',
         harga: '',
-        qty: 0,
+        qty: '',
         berat: '',
         kondisi: '',
         deskripsi: '',
@@ -170,10 +170,14 @@ class Addproduct extends Component {
                                         this.setState({harga:e.target.value})
                                     }}} type="text" placeholder="Masukkan harga"/>
                         </div>
-                        <div class="col-2 ui input">
-                            <input onChange={(e) => {
-                                    this.setState({qty:e.target.value})
-                                    }} type="number" placeholder="qty"/>
+                        <div class="col-2 ui input2">
+                        <input value={this.state.qty} 
+                                    onChange={(e) => {
+                                        if (isNaN(e.target.value)){
+                                            this.setState({qty: ''})
+                                        } else {
+                                            this.setState({qty:e.target.value})
+                                        }}} type="text" placeholder="qty"/>
                         </div>  
                         <div class="col-4 ui right labeled input">
                             <input value={this.state.berat} 
@@ -182,7 +186,7 @@ class Addproduct extends Component {
                                         this.setState({berat: ''})
                                     } else {
                                         this.setState({berat:e.target.value})
-                                    }}} type="text" placeholder="Berat"/>
+                                    }}} style={{backgroundColor:'transparent', borderColor:'rgb(74, 72, 100)', color:'white'}} type="text" placeholder="Berat"/>
                             <div class="ui basic label">
                                 gram
                             </div> 
@@ -193,7 +197,7 @@ class Addproduct extends Component {
                     
                         <div class="w-100"></div>
                         <div class="col ui input2">
-                            <select className='form-control' onChange={(e) => this.setState({kondisi: e.target.value})} name="" id="">
+                            <select className='form-control custom-select' onChange={(e) => this.setState({kondisi: e.target.value})} name="" id="">
                                 <option selected disabled>Kondisi Barang</option>
                                 <option value="Baru">Baru</option>
                                 <option value="Bekas">Bekas</option>
@@ -208,7 +212,8 @@ class Addproduct extends Component {
                         <div class=" col ui form">
                             <div class="field">
                                 <label>Text</label>
-                                <textarea className='form-control' rows='4' onChange={(e) => this.setState({deskripsi: e.target.value})} placeholder="Tulis deskripsi efek anda">
+                                <textarea style={{backgroundColor:'transparent', borderColor:'rgb(178, 115, 187)', color:'white'}} className='form-control' rows='4' 
+                                onChange={(e) => this.setState({deskripsi: e.target.value})} placeholder="Tulis deskripsi efek anda">
                                 </textarea>
                             </div>
                         </div>                               

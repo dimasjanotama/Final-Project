@@ -249,7 +249,7 @@ class Myproduct extends Component {
                         <div class="w-100"></div>
                         <div className='mx-auto'>
                             <nav aria-label="Page navigation example">
-                                <p className='text-center'>Page</p>
+                                <p className='text-center quic700'>Page</p>
                                 <ul class="pagination">
                                     {this.renderpagination()}
                                 </ul>

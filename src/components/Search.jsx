@@ -21,8 +21,8 @@ class Search extends Component {
         currentpage : '',
         products : [],
         namaProduk : '',
+        namaSeller : '',
         kategori: '',
-        subKategori: '',
         hargaMin: '',
         hargaMax: '',
         kondisi: '',
@@ -59,7 +59,7 @@ class Search extends Component {
 
     onFilterClick = ()=>{
         let filterData = {}
-        let {namaProduk, kategori, subKategori, kondisi} = this.state
+        let {namaProduk, namaSeller, kategori, kondisi} = this.state
         let hargamax = parseInt(this.state.hargaMax)
         let hargamin = parseInt(this.state.hargaMin)
         let userid = this.props.user_id
@@ -72,14 +72,14 @@ class Search extends Component {
         if(namaProduk){
             filterData = {...filterData,  namaProduk}
         }
+        if(namaSeller){
+            filterData = {...filterData,  namaSeller}
+        }
         if(hargamax && hargamin){
             filterData = {...filterData, hargamax, hargamin}
         }
         if(kategori){
             filterData = {...filterData, kategori}
-        }
-        if(subKategori){
-            filterData = {...filterData, subKategori}
         }
         if(kondisi == 'baru' || kondisi == 'bekas'){
             filterData = {...filterData, kondisi}
@@ -102,7 +102,7 @@ class Search extends Component {
 
     renderProducts = ()=>{
         let filterData = {}
-        let {namaProduk, kategori, subKategori, kondisi} = this.state
+        let {namaProduk, namaSeller, kategori, kondisi} = this.state
         let hargamax = parseInt(this.state.hargaMax)
         let hargamin = parseInt(this.state.hargaMin)
         let userid = this.props.user_id
@@ -112,17 +112,23 @@ class Search extends Component {
         if(userid){
             filterData = {...filterData,  userid}
         }
+        if(namaSeller){
+            filterData = {...filterData, userid: userid, namaSeller}
+        }
         if(namaProduk){
             filterData = {...filterData, userid: userid, namaProduk}
         }
         if(hargamax && hargamin){
             filterData = {...filterData, hargamax, hargamin}
         }
+        if(hargamax){
+            filterData = {...filterData, hargamax}
+        }
+        if(hargamin){
+            filterData = {...filterData, hargamin}
+        }
         if(kategori){
             filterData = {...filterData, kategori}
-        }
-        if(subKategori){
-            filterData = {...filterData, subKategori}
         }
         if(kondisi == 'baru' || kondisi == 'bekas'){
             filterData = {...filterData, kondisi}
@@ -198,7 +204,7 @@ class Search extends Component {
                     </div>
                     <div className='row ml-2 mr-2'>
                         {this.state.products.map((product)=>{
-                            let {id, idUser, namaSeller, namaProduk, kategori, subKategori, berat, kondisi, deskripsi, fotoProduk, qty} = product
+                            let {id, idUser, namaSeller, namaProduk, kategori, berat, kondisi, deskripsi, fotoProduk, qty} = product
                             let harga = parseInt(product.harga)
                             if(id !== this.state.selectedId){
                                 return (
@@ -237,7 +243,7 @@ class Search extends Component {
                         <div class="w-100"></div>
                         <div className='mx-auto pt-5'>
                             <nav aria-label="Page navigation example">
-                                <p className='text-center'>Page</p>
+                                <p className='text-center quic700'>Page</p>
                                 <ul class="pagination">
                                     {this.renderpagination()}
                                 </ul>
@@ -377,16 +383,28 @@ class Search extends Component {
                                 <div class=" col ui input2 mr-3">
                                     <input onChange={(e) => this.setState({namaProduk: e.target.value})} type="text" placeholder="Nama Produk"/>
                                 </div>
+                                <div className='col card-title pt-3 mb-2 quic700p'>Nama Seller</div>
+                                <div class="w-100"></div>
+                                <div class=" col ui input2 mr-3">
+                                    <input onChange={(e) => this.setState({namaSeller: e.target.value})} type="text" placeholder="Nama Seller"/>
+                                </div>
                                 <div className='col card-title pt-3 mb-2 quic700p'>Kategori</div>
                                 <div class="w-100"></div>
                                 <div class=" col ui input2 mr-3">
-                                    <input onChange={(e) => this.setState({kategori: e.target.value})} type="text" placeholder="Kategori"/>
+                                    <select onChange={(e) => this.setState({kategori: e.target.value})} className='form-control custom-select' name="" id="">
+                                        <option selected disabled>Kategori</option>
+                                        <option value="Distortion">Distortion</option>
+                                        <option value="Dynamics">Dynamics</option>
+                                        <option value="Filter">Filter</option>
+                                        <option value="Modulation">Modulation</option>
+                                        <option value="Pitch">Pitch</option>
+                                        <option value="Time">Time</option>
+                                        <option value="Preamp/Cabsim">Preamp/Cabsim</option>
+                                        <option value="Multi Effect">Multi Effect</option>
+                                        <option value="Bass FX">Bass FX</option>
+                                    </select>  
                                 </div>
-                                <div className='col card-title pt-3 mb-2 quic700p'>Sub-Kategori</div>
                                 <div class="w-100"></div>
-                                <div class=" col ui input2 mr-3">
-                                    <input onChange={(e) => this.setState({subKategori: e.target.value})} type="text" placeholder="Sub-Kategori"/>
-                                </div>
                                 <div className='col card-title pt-3 mb-2 quic700p'>Harga</div>
                                 <div class="w-100"></div>
                                 <div class=" col-5 ui input2">
@@ -398,7 +416,7 @@ class Search extends Component {
                                 <div className='col card-title pt-3 mb-2 quic700p'>Kondisi</div>
                                 <div class="w-100"></div>
                                 <div class="col ui input2 mr-3">
-                                    <select className='form-control' onChange={(e) => this.setState({kondisi: e.target.value})} name="" id="">
+                                    <select className='form-control custom-select' onChange={(e) => this.setState({kondisi: e.target.value})} name="" id="">
                                         <option selected disabled>Kondisi Barang</option>
                                         <option value="baru">Baru</option>
                                         <option value="bekas">Bekas</option>
@@ -413,9 +431,7 @@ class Search extends Component {
                     </div>
                     </div>
                     <div className='col-9 mt-3'>
-                       
                         {this.renderList()}
-                       
                     </div>
                 </div>
                 <Footer />

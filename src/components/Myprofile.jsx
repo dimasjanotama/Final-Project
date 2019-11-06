@@ -10,6 +10,7 @@ import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 import Footer from './Footer'
 import moment from 'moment'
+var crypto = require('crypto')
 
 
 const urlApi = 'http://localhost:7777/auth/'
@@ -218,11 +219,13 @@ class Myprofile extends Component {
     }
 
     dashboard = () => {
+        var terlaris = this.state.produkTerlaris
         var { totalPuas, totalFeedback, totalTransaksi } = this.state.dataSeller        
-        if(!totalPuas && !totalFeedback && !totalTransaksi){
+        if(!totalPuas && !totalFeedback && !totalTransaksi && !terlaris){
             var pembeliPuas = 0
             var totalFeedback = 0
             var totalTransaksi = 0
+            var terlaris = 'Belum ada'
         } else {
             var pembeliPuas = (totalPuas/totalFeedback)*100
         }
@@ -356,7 +359,7 @@ class Myprofile extends Component {
                         <div className='col-1'>{totalTransaksi}</div>
                     </div>
                     <div className='row' style={{fontSize:'12pt'}}>
-                        <div className='col-6 pl-0 text-right'>{this.state.produkTerlaris}</div>
+                        <div className='col-6 pl-0 text-right'>{terlaris}</div>
                         <div className='col text-right'></div>
                         <div className='col-3 pl-0'></div>
                         <div className='col-1'></div>
@@ -458,11 +461,16 @@ class Myprofile extends Component {
     }
 
     updateUser = ()=>{
+        function encryptMyPass (pw) { //algoritma  //punya kita
+            let result = crypto.createHmac('sha256','fxpedia').update(pw).digest('hex')
+            return result
+        }
+        let password = encryptMyPass(this.state.newPassword)
         axios.put(urlApi + 'updateprofile',
         {
             username: this.state.username,
             email: this.state.email,
-            password: this.state.newPassword,                     
+            password: password,                     
             namaDepan: this.state.namaDepan,
             namaBelakang: this.state.namaBelakang,
             noTelp: this.state.noTelp,
@@ -580,7 +588,6 @@ class Myprofile extends Component {
                                     } else {
                                         this.setState({noTelp:e.target.value})
                                     }}} type="text" placeholder="No HP"/>
-                                
                             </div>                 
                         </div>
                         <div className='row'>
@@ -625,7 +632,7 @@ class Myprofile extends Component {
                             <div className='col-5 card-title pt-4 mb-2'>Tulis ulang Password Baru</div>
                             <div class="w-100"></div>
                             <div class=" col-2 ui input2">
-                                <select onChange={(e)=>{this.setState({pulau: e.target.value})}} className='form-control' name="" id="">
+                                <select onChange={(e)=>{this.setState({pulau: e.target.value})}} className='form-control custom-select' name="" id="">
                                     <option selected disabled>Pulau</option>
                                     <option value="Sumatera">Sumatera</option>
                                     <option value="Jawa">Jawa</option>

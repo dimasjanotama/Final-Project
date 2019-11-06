@@ -536,7 +536,7 @@ class Notification extends Component {
             return (
                 <div>
                     <div className='card-title subjudul pb-4'>
-                        History Transaksi
+                        History Transaksi (5 transaksi terakhir)
                     </div>
                     <div className='dimdom-bottom'></div>
                     <div className='row justify-content-center'>

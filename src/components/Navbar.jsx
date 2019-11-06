@@ -11,12 +11,13 @@ const urlApi = 'http://localhost:7777/auth/'
 class Navbar extends Component {
 
     state = {
-        keywords : ''
+        keywords : '',
+        redirect : false
     }
 
     onSearchClick = ()=>{
         this.props.searchKeywords(this.state.keywords)
-        
+        this.setState({redirect: true})
     }
 
     clearKeywords = ()=>{
@@ -70,24 +71,7 @@ class Navbar extends Component {
                 </div>
             </div>
             </div>    
-        )} else if(this.props.key_words){
-         return (
-            <div>
-            <div className='dimdom-bg'></div>
-            <div class='container-fluid' >
-                <div class="navbar row align-items-center" style={{background:'transparent' ,height:'115px'}}>
-                    
-                    <div class="col pl-5 pt-1">
-                        <NavLink onClick={this.clearKeywords} className="dimdom-pink-logo" style={{fontSize:'40pt'}} to='/'>fxpedia.</NavLink>
-                    </div>     
-                    <div class="col pt-1 text-center">   
-                         
-                        <button onClick={this.onLogout} className='col-6 mx-auto ui inverted basic dimdom3 button '>Logout</button>      
-                    </div>   
-                </div>
-            </div>
-            </div>    
-        )} else {
+        )}  else {
             return (
                 <div>
                 <div className='dimdom-bg'></div>

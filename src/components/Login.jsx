@@ -8,6 +8,7 @@ import Footer from './Footer'
 import Navbar from './Navbar'
 import axios from 'axios'
 
+var crypto = require('crypto')
 const urlApi = 'http://localhost:7777/auth/'
 
 class Login extends Component {
@@ -21,10 +22,15 @@ class Login extends Component {
     }
 
     onLoginClick = () => {
+        function encryptMyPass (pw) { //algoritma  //punya kita
+            let result = crypto.createHmac('sha256','fxpedia').update(pw).digest('hex')
+            return result
+        }
+        let password = encryptMyPass(this.state.password)
         axios.get(urlApi + 'login', {
             params: {
                 username: this.state.username,
-                password: this.state.password
+                password: password
             }
         }).then(res=>{
             if(res.data.status==='404' || res.data.status==='401'){

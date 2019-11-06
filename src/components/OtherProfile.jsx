@@ -4,11 +4,15 @@ import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import moment from 'moment'
+import 'moment/locale/id'
+
 
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 import Footer from './Footer'
 
+
+moment.locale('id');
 
 const urlApi = 'http://localhost:7777/auth/'
 
@@ -85,7 +89,7 @@ class OtherProfile extends Component {
     }
 
     otherProfile = () => {
-        let tglDaftar = moment(this.state.otherProfile.tglDaftar).format('LL')
+        let tglDaftar = moment(this.state.otherProfile.tglDaftar).format('D MMMM YYYY')
         var { username, kabupaten, propinsi, fotoProfil } = this.state.otherProfile
         var { waktuLogout, totalPuas, totalFeedback, totalTransaksi } = this.state.dataSeller        
         if(!totalPuas && !totalFeedback && !totalTransaksi){
@@ -105,12 +109,15 @@ class OtherProfile extends Component {
         console.log(days);
         console.log(hours);
         console.log(minutes);
-        var keterangan = minutes+' manit yang lalu'
-        if(minutes>60 && hours<24){
-            var keterangan = hours+' jam yang lalu'
-        } else if(minutes>60 && hours>24){
-            var keterangan = days+' hari yang lalu'
-        }
+        // var keterangan = minutes+' manit yang lalu'
+        // if(minutes>60 && hours<24){
+        //     var keterangan = hours+' jam yang lalu'
+        // } else if(minutes>60 && hours>24){
+        //     var keterangan = days+' hari yang lalu'
+        // }
+        
+
+        let keterangan = moment(waktuLogout).startOf('hour').fromNow()
 
         return (
             <div>
