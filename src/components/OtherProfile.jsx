@@ -106,9 +106,9 @@ class OtherProfile extends Component {
         let days = Math.floor(t / (1000 * 60 * 60 * 24))
         let hours = Math.floor(t / (1000 * 60 * 60))
         let minutes = Math.floor(t / (1000 * 60))
-        console.log(days);
-        console.log(hours);
-        console.log(minutes);
+        // console.log(days);
+        // console.log(hours);
+        // console.log(minutes);
         // var keterangan = minutes+' manit yang lalu'
         // if(minutes>60 && hours<24){
         //     var keterangan = hours+' jam yang lalu'

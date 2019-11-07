@@ -27,6 +27,7 @@ class Login extends Component {
             return result
         }
         let password = encryptMyPass(this.state.password)
+        // console.log(password);
         axios.get(urlApi + 'login', {
             params: {
                 username: this.state.username,

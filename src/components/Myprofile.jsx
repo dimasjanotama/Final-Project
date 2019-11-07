@@ -18,8 +18,12 @@ const urlApi = 'http://localhost:7777/auth/'
 class Myprofile extends Component {
 
     state = {
+        sellChart: [],
+        buyChart: [],
         profile: [],
         dataSeller: [],
+        totalSell: '',
+        totalBuy: '',
         totalProdukTerjual: '',
         totalProdukDijual: '',
         produkTerlaris: '',
@@ -95,7 +99,10 @@ class Myprofile extends Component {
                             userId: this.props.user_id
                         }
                     }).then(res=>{
+                        if(res.data[0]){
                         this.setState({produkTerlaris: res.data[0].namaProduk})
+                        } else {}
+                        this.getChart()
                     }).catch(err=>{
                         console.log(err);
                     })
@@ -110,6 +117,44 @@ class Myprofile extends Component {
         })
     }
 
+    getChart = () => {
+        axios.get(urlApi+'getsellchart',{
+            params: {
+                idSeller: this.props.user_id
+            }
+        }).then(res=>{
+            this.setState({sellChart: res.data})
+            axios.get(urlApi+'getbuychart',{
+                params: {
+                    idBuyer: this.props.user_id
+                }
+            }).then(res=>{
+                this.setState({buyChart: res.data})
+                axios.get(urlApi+'gettotalsell',{
+                    params: {
+                        idSeller: this.props.user_id
+                    }
+                }).then(res=>{
+                    this.setState({totalSell: res.data[0].totalSell})
+                    axios.get(urlApi+'gettotalsell',{
+                        params: {
+                            idBuyer: this.props.user_id
+                        }
+                    }).then(res=>{
+                        this.setState({totalBuy: res.data[0].totalBuy})
+                    }).catch(err=>{
+                        console.log(err);
+                    })
+                }).catch(err=>{
+                    console.log(err);
+                })
+            }).catch(err=>{
+                console.log(err);
+            })
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
 
     displayfilename = ()=>{
         if (this.state.selectedFile) {
@@ -219,6 +264,64 @@ class Myprofile extends Component {
     }
 
     dashboard = () => {
+        let bulanIni = (moment().format('M'))
+        this.buy1 = 0
+        this.buy2 = 0
+        this.buy3 = 0
+        this.buy4 = 0
+        this.sell1 = 0
+        this.sell2 = 0
+        this.sell3 = 0
+        this.sell4 = 0
+        var chartBulan = []
+        if (bulanIni==1){
+            var chartBulan = ['OKT','NOV','DES','JAN']   
+        } else if(bulanIni==2){
+            var chartBulan = ['NOV','DES','JAN','FEB']  
+        } else if(bulanIni==3){
+            var chartBulan = ['DES','JAN','FEB','MAR']  
+        } else if(bulanIni==4){
+            var chartBulan = ['JAN','FEB','MAR','APR']  
+        } else if(bulanIni==5){
+            var chartBulan = ['FEB','MAR','APR','MEI']  
+        } else if(bulanIni==6){
+            var chartBulan = ['MAR','APR','MEI','JUN']  
+        } else if(bulanIni==7){
+            var chartBulan = ['APR','MEI','JUN','JUL']  
+        } else if(bulanIni==8){
+            var chartBulan = ['MEI','JUN','JUL','AGS']  
+        } else if(bulanIni==9){
+            var chartBulan = ['JUN','JUL','AGS','SEP']  
+        } else if(bulanIni==10){
+            var chartBulan = ['JUL','AGS','SEP','OKT']  
+        } else if(bulanIni==11){
+            var chartBulan = ['AGS','SEP','OKT','NOV']
+            this.state.sellChart.map((perbulan)=>{
+                if(perbulan.bulan==8){
+                    this.sell1 = perbulan.totalPenjualan
+                } else if (perbulan.bulan==9){
+                    this.sell2 = perbulan.totalPenjualan
+                } else if (perbulan.bulan==10){
+                    this.sell3 = perbulan.totalPenjualan
+                } else if (perbulan.bulan==11){
+                    this.sell4 = perbulan.totalPenjualan
+                } else {}
+            })  
+            this.state.buyChart.map((perbulan)=>{
+                if(perbulan.bulan==8){
+                    this.buy1 = perbulan.totalPembelian
+                } else if (perbulan.bulan==9){
+                    this.buy2 = perbulan.totalPembelian
+                } else if (perbulan.bulan==10){
+                    this.buy3 = perbulan.totalPembelian
+                } else if (perbulan.bulan==11){
+                    this.buy4 = perbulan.totalPembelian
+                } else {}
+            }) 
+        } else if(bulanIni==12){
+            var chartBulan = ['SEP','OKT','NOV','DES']  
+        }
+
         var terlaris = this.state.produkTerlaris
         var { totalPuas, totalFeedback, totalTransaksi } = this.state.dataSeller        
         if(!totalPuas && !totalFeedback && !totalTransaksi && !terlaris){
@@ -242,14 +345,14 @@ class Myprofile extends Component {
                         <div className='chart mt-3 mb-3' >
                             <Line
                                 data={{
-                                    labels : ['SEP', 'OKT', 'NOV', 'DES'],
+                                    labels : [chartBulan[0], chartBulan[1], chartBulan[2], chartBulan[3]],
                                     datasets : [{
                                         label: 'Total penjualan',
                                         data: [
-                                            2500000,
-                                            8000000,
-                                            500000,
-                                            0
+                                            this.sell1,
+                                            this.sell2,
+                                            this.sell3,
+                                            this.sell4
                                         ],
                                         backgroundColor:'transparent',
                                         borderWidth:3,
@@ -292,14 +395,14 @@ class Myprofile extends Component {
                         <div className='chart mt-3 mb-3' >
                             <Line
                                 data={{
-                                    labels : ['SEP', 'OKT', 'NOV', 'DES'],
+                                    labels : [chartBulan[0], chartBulan[1], chartBulan[2], chartBulan[3]],
                                     datasets : [{
                                         label: 'Total pembelian',
                                         data: [
-                                            2000000,
-                                            1000000,
-                                            500000,
-                                            0
+                                            this.buy1,
+                                            this.buy2,
+                                            this.buy3,
+                                            this.buy4
                                         ],
                                         backgroundColor:'transparent',
                                         borderWidth:3,

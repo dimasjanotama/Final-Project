@@ -10,6 +10,8 @@ import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 import Footer from './Footer'
 import {clickSeller, detailTransaksi} from '../actions'
+import { saveAs } from 'file-saver';
+
 
 
 const urlApi = 'http://localhost:7777/auth/'
@@ -21,6 +23,7 @@ class Notification extends Component {
         paid: [],
         orderTransactions: [],
         orders: [],
+        history:[],
         selectedFile: '',
         selectedFile2: '',
         noRek: '',
@@ -557,6 +560,18 @@ class Notification extends Component {
             )
         }
     }
+
+    // download = ()=>{
+    //     // axios.get(urlApi+'downloadhistory',{
+    //     //         username: 'dimas'
+    //     // }).then(res=>{
+    //     // }).catch(err=>{
+    //     //     console.log(err);
+    //     // })
+    //     let arrHistory = this.state.history
+    //     // console.log(`http://localhost:7777/auth/downloadhistory?history=${arrHistory}`);
+    //     window.open(`http://localhost:7777/auth/downloadhistory?history=${arrHistory}`)
+    // }
 
     renderHistory = ()=>{
         let hasil = this.state.history.map((transaction)=>{

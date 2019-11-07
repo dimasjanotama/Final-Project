@@ -195,12 +195,6 @@ class Verifier extends Component {
         })
     }
 
-    addHistory = (transaction)=>{
-        let tglTerima = `${transaction.tglPenerimaan}`
-        var terima = tglTerima.substr(0,10)
-        
-    }
-
     renderTablePembayaran = () => {
         if(this.state.loading==false){
         let hasil = this.state.transactionsPay.map((transaction)=>{
