@@ -136,7 +136,7 @@ class Myprofile extends Component {
                     }
                 }).then(res=>{
                     this.setState({totalSell: res.data[0].totalSell})
-                    axios.get(urlApi+'gettotalsell',{
+                    axios.get(urlApi+'gettotalbuy',{
                         params: {
                             idBuyer: this.props.user_id
                         }
@@ -264,6 +264,8 @@ class Myprofile extends Component {
     }
 
     dashboard = () => {
+        let totSell = this.state.totalSell.toLocaleString('id')
+        let totBuy = this.state.totalBuy.toLocaleString('id')
         let bulanIni = (moment().format('M'))
         this.buy1 = 0
         this.buy2 = 0
@@ -341,7 +343,7 @@ class Myprofile extends Component {
                 <div className='row cardblack pt-4 pb-5 pl-3 pr-3 text-light justify-content-center'>
                     <div className='col cardblue mr-4'>
                         <div className='mt-3' style={{fontSize:'10pt', color:'rgb(255, 92, 222)'}}>Total Penjualan</div>
-                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>11,000,000 IDR</div>
+                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>{totSell} IDR</div>
                         <div className='chart mt-3 mb-3' >
                             <Line
                                 data={{
@@ -391,7 +393,7 @@ class Myprofile extends Component {
                     </div>
                 <div className='col cardblue text-right'>
                     <div className='mt-3' style={{fontSize:'10pt', color:'rgb(91, 226, 215)'}}>Total Pembelian</div>
-                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>3,500,000 IDR</div>
+                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>{totBuy} IDR</div>
                         <div className='chart mt-3 mb-3' >
                             <Line
                                 data={{
