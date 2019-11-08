@@ -100,12 +100,12 @@ class OtherProfile extends Component {
             var pembeliPuas = (totalPuas/totalFeedback)*100
         }
 
-        let now = new Date().getTime()
-        let lastLogout = new Date(`${waktuLogout}`).getTime()
-        let t = now - lastLogout
-        let days = Math.floor(t / (1000 * 60 * 60 * 24))
-        let hours = Math.floor(t / (1000 * 60 * 60))
-        let minutes = Math.floor(t / (1000 * 60))
+        // let now = new Date().getTime()
+        // let lastLogout = new Date(`${waktuLogout}`).getTime()
+        // let t = now - lastLogout
+        // let days = Math.floor(t / (1000 * 60 * 60 * 24))
+        // let hours = Math.floor(t / (1000 * 60 * 60))
+        // let minutes = Math.floor(t / (1000 * 60))
         // console.log(days);
         // console.log(hours);
         // console.log(minutes);

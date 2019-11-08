@@ -218,7 +218,6 @@ class Register extends Component {
                                         } else {
                                             this.setState({noTelp:e.target.value})
                                         }}} type="text" placeholder="No HP"/>
-                                 
                                 </div>                 
                             </div>
                             <div className='row'>

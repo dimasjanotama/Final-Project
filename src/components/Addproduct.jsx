@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import axios from 'axios'
 import alertify from 'alertifyjs';
 import moment from 'moment'
+import DeskripsiProduk from './DeskripsiProduk'
 
 
 import Footer from './Footer'
@@ -216,7 +217,7 @@ class Addproduct extends Component {
                                 onChange={(e) => this.setState({deskripsi: e.target.value})} placeholder="Tulis deskripsi efek anda">
                                 </textarea>
                             </div>
-                        </div>                               
+                        </div>
                     </div>
                     <div className='card-title pt-5'>
                         Foto Produk

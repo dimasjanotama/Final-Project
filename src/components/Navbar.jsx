@@ -25,7 +25,7 @@ class Navbar extends Component {
     }
 
     onLogout=()=>{
-        let waktu = moment().format('YYYY-MM-DD')+' '+ moment().format('hh:mm:ss')
+        let waktu = moment().format('YYYY-MM-DD')+' '+ moment().format('HH:mm:ss')
         Axios.put(urlApi+'setlogtime',{
             waktuLogout: waktu,
             userId: this.props.user_id

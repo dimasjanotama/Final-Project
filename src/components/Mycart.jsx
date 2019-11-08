@@ -21,7 +21,8 @@ class Mycart extends Component {
         carts: [],
         user: [],
         totalBerat: 0,
-        redirect : false
+        redirect : false,
+        unpaid:[]
     }
 
     componentDidMount = ()=>{
@@ -32,6 +33,19 @@ class Mycart extends Component {
         }).then(res=>{
             this.setState({user: res.data[0]})
             this.getCart()
+            this.getUnpaid()
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
+    getUnpaid = ()=>{
+        axios.get(urlApi+'getunverifiedtransaction',{
+            params : {
+                idBuyer:  this.props.user_id
+            }
+        }).then(res=>{
+            this.setState({ unpaid: res.data })
         }).catch(err=>{
             console.log(err);
         })
@@ -96,39 +110,43 @@ class Mycart extends Component {
     }
 
     checkOut = () => {
-        this.state.carts.map((product)=>{
-            axios.put(urlApi+'refreshquantity',{
-                idProduct: product.idProduct,
-                orderQty: product.orderQty
+        if(this.state.unpaid[0]){
+            alertify.alert('Keterangan','Selesaikan terlebih dahulu pembayaran untuk orderan anda yang sebelumnya')
+        } else {
+            this.state.carts.map((product)=>{
+                axios.put(urlApi+'refreshquantity',{
+                    idProduct: product.idProduct,
+                    orderQty: product.orderQty
+                }).then(res=>{
+                }).catch(err=>{
+                    console.log(err);
+                })
+            })
+            axios.post(urlApi+'addtransaction',{
+                tglPembelian: moment().format('YYYY-MM-DD')+' '+ moment().format('HH:mm:ss'),
+                tglExpired: moment().add(1, 'd').format('YYYY-MM-DD')+' '+ moment().format('HH:mm:ss'),
+                idBuyer: this.props.user_id,
+                namaBuyer: this.state.user.username,
+                nilaiTransaksi: this.subtotal,
+                idSeller: this.state.carts[0].idSeller,
+                namaSeller: this.state.carts[0].namaSeller
             }).then(res=>{
-            }).catch(err=>{
-                console.log(err);
-            })
-        })
-        axios.post(urlApi+'addtransaction',{
-            tglPembelian: moment().format('YYYY-MM-DD')+' '+ moment().format('hh:mm:ss'),
-            tglExpired: moment().add(1, 'd').format('YYYY-MM-DD')+' '+ moment().format('hh:mm:ss'),
-            idBuyer: this.props.user_id,
-            namaBuyer: this.state.user.username,
-            nilaiTransaksi: this.subtotal,
-            idSeller: this.state.carts[0].idSeller,
-            namaSeller: this.state.carts[0].namaSeller
-        }).then(res=>{
-            axios.delete(urlApi+'deletecartbyuserid',{
-                data : {
-                    idBuyer: this.props.user_id
+                axios.delete(urlApi+'deletecartbyuserid',{
+                    data : {
+                        idBuyer: this.props.user_id
+                    }
                 }
-            }
-            ).then(res=>{
-                alertify.alert('Keterangan', 'Berhasil, Silahkan lakukan prosedur pembayaran sesuai petunjuk')
-                this.getCart()
-                this.setState({redirect: true})
+                ).then(res=>{
+                    alertify.alert('Keterangan', 'Berhasil, Silahkan lakukan prosedur pembayaran sesuai petunjuk')
+                    this.getCart()
+                    this.setState({redirect: true})
+                }).catch(err=>{
+                    console.log(err);
+                })
             }).catch(err=>{
                 console.log(err);
             })
-        }).catch(err=>{
-            console.log(err);
-        })
+        }
     }
 
 

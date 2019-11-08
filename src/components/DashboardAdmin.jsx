@@ -4,9 +4,8 @@ import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
 import {Line, Doughnut, Pie} from 'react-chartjs-2'
 import axios from 'axios'
+import moment from 'moment'
 import Navbar from './Navbar'
-
-const moment = require('moment')
 
 
 
@@ -15,37 +14,94 @@ const urlApi = 'http://localhost:7777/auth/'
 class DashboardAdmin extends Component {
 
     state = {
-        transactions : [], 
-        transactions2 : [], 
-        transactions3 : [], 
-        loading: true,
-        toogle: 'pembayaran'
+        userChart: [],
+        transdoneChart: [],
+        transvalueChart: [],
+        totUsers: '',
+        totTransdone: '',
+        totTransvalue: '',
+        transStatusChart: [],
+        satisfactionChart: [],
+        productsChart: [],
+        activeSeller: [],
+        activeBuyer: [],
+        loading: true
     }
 
     componentDidMount(){
-        this.getTransaction()
-        this.getTransaction2()
-        this.getTransaction3()
+        this.getAllChart()
     }
 
-    getTransaction = () => {
-        axios.get(urlApi+'getunpaidverification')
+    getAllChart = () => {
+        axios.get(urlApi+'getuserschart')
         .then(res=>{
-            this.setState({
-                transactions: res.data,
-                loading: false
+            this.setState({userChart: res.data})
+            axios.get(urlApi+'gettotalusers')
+            .then(res=>{
+                this.setState({totUsers: res.data[0].totalUsers})
+                axios.get(urlApi+'transactiondonechart')
+                .then(res=>{
+                    this.setState({transdoneChart: res.data})
+                    axios.get(urlApi+'totaltransactiondone')
+                    .then(res=>{
+                        this.setState({totTransdone: res.data[0].totalTransactions})
+                        axios.get(urlApi+'transactionvaluechart')
+                        .then(res=>{
+                            this.setState({transvalueChart: res.data})
+                            axios.get(urlApi+'totaltransactionvalue')
+                            .then(res=>{
+                                this.setState({totTransvalue: res.data[0].transactionsValue})
+                                this.getAllDiagram()    
+                            }).catch(err=>{
+                                console.log(err);
+                            })
+                        }).catch(err=>{
+                            console.log(err);
+                        })
+                    }).catch(err=>{
+                        console.log(err);
+                    })
+                }).catch(err=>{
+                    console.log(err);
+                })
+            }).catch(err=>{
+                console.log(err);
             })
         }).catch(err=>{
             console.log(err);
         })
     }
 
-    getTransaction2 = () => {
-        axios.get(urlApi+'getshippingverification')
+    getAllDiagram = () => {
+        axios.get(urlApi+'transactionstatuschart')
         .then(res=>{
-            this.setState({
-                transactions2: res.data,
-                loading: false
+            this.setState({transStatusChart: res.data})
+            axios.get(urlApi+'custsatisfactionchart')
+            .then(res=>{
+                this.setState({satisfactionChart: res.data})
+                axios.get(urlApi+'productschart')
+                .then(res=>{
+                    this.setState({productsChart: res.data})
+                    axios.get(urlApi+'activeseller')
+                    .then(res=>{
+                        this.setState({activeSeller: res.data})
+                        axios.get(urlApi+'activebuyer')
+                        .then(res=>{
+                            this.setState({
+                                activeBuyer: res.data,
+                                loading: false
+                            })
+                        }).catch(err=>{
+                            console.log(err);
+                        })
+                    }).catch(err=>{
+                        console.log(err);
+                    })
+                }).catch(err=>{
+                    console.log(err);
+                })
+            }).catch(err=>{
+                console.log(err);
             })
         }).catch(err=>{
             console.log(err);
@@ -64,16 +120,146 @@ class DashboardAdmin extends Component {
         })
     }
 
-    addHistory = (transaction)=>{
-        let tglTerima = `${transaction.tglPenerimaan}`
-        var terima = tglTerima.substr(0,10)
-        
-    }
-
     renderList = () => {
-        var { waktuLogin, waktuLogout, totalPuas, totalFeedback, totalTransaksi } = 0    
-        var pembeliPuas = (parseInt(totalPuas)/parseInt(totalFeedback))*100
-        var waktuTerakhir = 0
+        if(this.state.loading==false){
+
+        // DIAGRAM STATUS TRANSAKSI
+        this.transaksiSelesai = 0
+        this.totalPuas = 0
+        this.totalTidakPuas = 0
+        var transProses = 0
+        var allTransaction = 0
+        this.state.transStatusChart.map((perstatus)=>{
+            if(perstatus.statusNow=='Transaksi selesai'){
+                this.transaksiSelesai = perstatus.totalTransactions
+                allTransaction+= perstatus.totalTransactions
+            } else {
+                transProses+= perstatus.totalTransactions
+                allTransaction+= perstatus.totalTransactions
+            }
+        })
+        this.transaksiProses = transProses
+        this.totalJmlTransaksi = allTransaction
+        
+        // DIAGRAM KEPUASAN
+        this.totalTidakPuas = (this.state.satisfactionChart[0].totalFeedback)-(this.state.satisfactionChart[0].totalPuas)
+        
+        // DIAGRAM TOTAL PRODUK DAN KATEGORI
+        this.distortion = 0
+        this.dynamics = 0
+        this.filter = 0
+        this.modulation = 0
+        this.pitch = 0
+        this.time = 0
+        this.preamp = 0
+        this.multi = 0
+        this.bass = 0
+        var totProduct = 0
+        this.state.productsChart.map((perkategori)=>{
+            if(perkategori.kategori=='Distortion'){
+                this.distortion = perkategori.totalProduct
+                totProduct+= perkategori.totalProduct
+            } else if(perkategori.kategori=='Dynamics'){
+                this.dynamics = perkategori.totalProduct
+                totProduct+= perkategori.totalProduct
+            } else if(perkategori.kategori=='Filter'){
+                this.filter = perkategori.totalProduct
+                totProduct+= perkategori.totalProduct
+            } else if(perkategori.kategori=='Modulation'){
+                this.modulation = perkategori.totalProduct
+                totProduct+= perkategori.totalProduct
+            } else if(perkategori.kategori=='Pitch'){
+                this.pitch = perkategori.totalProduct
+                totProduct+= perkategori.totalProduct
+            } else if(perkategori.kategori=='Time'){
+                this.time = perkategori.totalProduct
+                totProduct+= perkategori.totalProduct
+            } else if(perkategori.kategori=='Preamp Cabsim'){
+                this.preamp = perkategori.totalProduct
+                totProduct+= perkategori.totalProduct
+            } else if(perkategori.kategori=='Multi FX'){
+                this.multi = perkategori.totalProduct
+                totProduct+= perkategori.totalProduct
+            } else if(perkategori.kategori=='Bass FX'){
+                this.bass = perkategori.totalProduct
+                totProduct+= perkategori.totalProduct
+            }
+        })
+        this.totalProducts = totProduct
+
+        // GRAFIK USERS, TRANSAKSI SELESAI, NILAI TRANSAKSI
+        let bulanIni = (moment().format('M'))
+        this.user1 = 0
+        this.user2 = 0
+        this.user3 = 0
+        this.user4 = 0
+        this.transdone1 = 0
+        this.transdone2 = 0
+        this.transdone3 = 0
+        this.transdone4 = 0
+        this.transvalue1 = 0
+        this.transvalue2 = 0
+        this.transvalue3 = 0
+        this.transvalue4 = 0
+        var chartBulan = []
+        if (bulanIni==1){
+            var chartBulan = ['OKT','NOV','DES','JAN']   
+        } else if(bulanIni==2){
+            var chartBulan = ['NOV','DES','JAN','FEB']  
+        } else if(bulanIni==3){
+            var chartBulan = ['DES','JAN','FEB','MAR']  
+        } else if(bulanIni==4){
+            var chartBulan = ['JAN','FEB','MAR','APR']  
+        } else if(bulanIni==5){
+            var chartBulan = ['FEB','MAR','APR','MEI']  
+        } else if(bulanIni==6){
+            var chartBulan = ['MAR','APR','MEI','JUN']  
+        } else if(bulanIni==7){
+            var chartBulan = ['APR','MEI','JUN','JUL']  
+        } else if(bulanIni==8){
+            var chartBulan = ['MEI','JUN','JUL','AGS']  
+        } else if(bulanIni==9){
+            var chartBulan = ['JUN','JUL','AGS','SEP']  
+        } else if(bulanIni==10){
+            var chartBulan = ['JUL','AGS','SEP','OKT']  
+        } else if(bulanIni==11){
+            var chartBulan = ['AGS','SEP','OKT','NOV']
+            this.state.userChart.map((perbulan)=>{
+                if(perbulan.bulan==8){
+                    this.user1 = perbulan.newUser
+                } else if (perbulan.bulan==9){
+                    this.user2 = perbulan.newUser
+                } else if (perbulan.bulan==10){
+                    this.user3 = perbulan.newUser
+                } else if (perbulan.bulan==11){
+                    this.user4 = perbulan.newUser
+                } else {}
+            })  
+            this.state.transdoneChart.map((perbulan)=>{
+                if(perbulan.bulan==8){
+                    this.transdone1 = perbulan.totalTransaksi
+                } else if (perbulan.bulan==9){
+                    this.transdone2 = perbulan.totalTransaksi
+                } else if (perbulan.bulan==10){
+                    this.transdone3 = perbulan.totalTransaksi
+                } else if (perbulan.bulan==11){
+                    this.transdone4 = perbulan.totalTransaksi
+                } else {}
+            }) 
+            this.state.transvalueChart.map((perbulan)=>{
+                if(perbulan.bulan==8){
+                    this.transvalue1 = perbulan.nilaiTransaksi
+                } else if (perbulan.bulan==9){
+                    this.transvalue2 = perbulan.nilaiTransaksi
+                } else if (perbulan.bulan==10){
+                    this.transvalue3 = perbulan.nilaiTransaksi
+                } else if (perbulan.bulan==11){
+                    this.transvalue4 = perbulan.nilaiTransaksi
+                } else {}
+            }) 
+        } else if(bulanIni==12){
+            var chartBulan = ['SEP','OKT','NOV','DES']  
+        }
         return (
             <div>
                 <div className='card-title subjudul'>
@@ -84,18 +270,18 @@ class DashboardAdmin extends Component {
                     <div className='col-4 pr-0'>
                     <div className='cardblue card-body'>
                         <div style={{fontSize:'10pt', color:'rgb(255, 92, 222)'}}>Total Jumlah Users</div>
-                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>7 users</div>
+                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>{this.state.totUsers} users</div>
                         <div className='chart mt-3 mb-3' >
                             <Line
                                 data={{
-                                    labels : ['SEP', 'OKT', 'NOV', 'DES'],
+                                    labels : [chartBulan[0], chartBulan[1], chartBulan[2], chartBulan[3]],
                                     datasets : [{
                                         label: 'Penambahan users',
                                         data: [
-                                            1,
-                                            2,
-                                            4,
-                                            0
+                                            this.user1,
+                                            this.user2,
+                                            this.user3,
+                                            this.user4
                                         ],
                                         backgroundColor:'transparent',
                                         borderWidth:3,
@@ -136,18 +322,18 @@ class DashboardAdmin extends Component {
                     <div className='col-4 pr-0'>
                     <div className='text-center cardblue card-body'>
                         <div style={{fontSize:'10pt', color:'rgb(78, 154, 255)'}}>Total Transaksi Selesai</div>
-                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>2 transaksi</div>
+                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>{this.state.totTransdone} transaksi</div>
                         <div className='chart mt-3 mb-3' >
                             <Line
                                 data={{
-                                    labels : ['SEP', 'OKT', 'NOV', 'DES'],
+                                    labels : [chartBulan[0], chartBulan[1], chartBulan[2], chartBulan[3]],
                                     datasets : [{
                                         label: 'Total transaksi',
                                         data: [
-                                            0,
-                                            2,
-                                            0,
-                                            0
+                                            this.transdone1,
+                                            this.transdone2,
+                                            this.transdone3,
+                                            this.transdone4
                                         ],
                                         backgroundColor:'transparent',
                                         borderWidth:3,
@@ -188,18 +374,18 @@ class DashboardAdmin extends Component {
                 <div className='col-4 pr-0'>
                 <div className='cardblue text-right card-body'>
                     <div style={{fontSize:'10pt', color:'rgb(91, 226, 215)'}}>Total Nilai Transaksi</div>
-                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>10,410,000 IDR</div>
+                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>{this.state.totTransvalue.toLocaleString('en')} IDR</div>
                         <div className='chart mt-3 mb-3' >
                             <Line
                                 data={{
-                                    labels : ['SEP', 'OKT', 'NOV', 'DES'],
+                                    labels : [chartBulan[0], chartBulan[1], chartBulan[2], chartBulan[3]],
                                     datasets : [{
                                         label: 'Total nilai transaksi',
                                         data: [
-                                            0,
-                                            10410000,
-                                            0,
-                                            0
+                                            this.transvalue1,
+                                            this.transvalue2,
+                                            this.transvalue3,
+                                            this.transvalue4
                                         ],
                                         backgroundColor:'transparent',
                                         borderWidth:3,
@@ -242,15 +428,15 @@ class DashboardAdmin extends Component {
                     <div className='col-4 pr-0'>
                     <div className='cardblue card-body'>
                         <div style={{fontSize:'10pt', color:'rgb(255, 92, 222)'}}>Transaksi Hingga Saat Ini</div>
-                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>3 transaksi</div>
+                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>{this.totalJmlTransaksi} transaksi</div>
                         <div className='chart mt-3 mb-3' >
                             <Pie
                                 data={{
                                     labels: ['Selesai','Dalam Proses'],
                                     datasets : [{
                                         data: [
-                                            2,
-                                            1
+                                            this.transaksiSelesai,
+                                            this.transaksiProses
                                         ],
                                         backgroundColor:['rgb(78, 154, 255)','rgb(91, 226, 215)'],
                                         borderWidth:3,
@@ -276,15 +462,15 @@ class DashboardAdmin extends Component {
                     <div className='col-4 pr-0'>
                     <div className='text-center cardblue card-body'>
                         <div style={{fontSize:'10pt', color:'rgb(78, 154, 255)'}}>Total Feedback</div>
-                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>2 Feedback</div>
+                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>{this.state.satisfactionChart[0].totalFeedback} Feedback</div>
                         <div className='chart mt-3 mb-3' >
                         <Pie
                                 data={{
                                     labels: ['Puas','Tidak Puas'],
                                     datasets : [{
                                         data: [
-                                            2,
-                                            0
+                                            this.state.satisfactionChart[0].totalPuas,
+                                            this.totalTidakPuas
                                         ],
                                         backgroundColor:['rgb(255, 92, 222)','rgb(91, 226, 215)'],
                                         borderWidth:3,
@@ -310,14 +496,22 @@ class DashboardAdmin extends Component {
                 <div className='col-4 pr-0'>
                 <div className='cardblue text-right card-body'>
                     <div style={{fontSize:'10pt', color:'rgb(91, 226, 215)'}}>Total Produk Dijual</div>
-                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>8 Produk</div>
+                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>{this.totalProducts} Produk</div>
                         <div className='chart mt-3 mb-3' >
                         <Pie
                                 data={{
                                     labels: ['Distortion','Dynamics','Filter','Modulation','Pitch','Time','Preamp/Cabsim','Multi FX','Bass FX'],
                                     datasets : [{
                                         data: [
-                                            3,0,1,0,2,2,0,0,0
+                                            this.distortion,
+                                            this.dynamics,
+                                            this.filter,
+                                            this.modulation,
+                                            this.pitch,
+                                            this.time,
+                                            this.preamp,
+                                            this.multi,
+                                            this.bass
                                         ],
                                         backgroundColor:['rgb(248, 107, 107)','rgb(255, 248, 148)','grey','rgb(210, 95, 255)','rgb(255, 180, 119)',
                                             'rgb(78, 154, 255)','rgb(117, 255, 135)','rgb(155, 125, 92)','rgb(57, 209, 255)'],
@@ -346,14 +540,21 @@ class DashboardAdmin extends Component {
                     </div>
                 </div>
                 <div style={{fontSize:'10pt', color:'rgb(255, 92, 222)'}}>Penjual teraktif</div>
-                <div className='mt-2' style={{fontSize:'19pt'}}>Zahra</div>
-                <div className='pb-5 mt-1' style={{fontSize:'10pt', color:'rgb(192,192,192)'}}>3 transaksi</div>
+                <div className='mt-2' style={{fontSize:'19pt'}}>{this.state.activeSeller[0].namaSeller}</div>
+                <div className='pb-5 mt-1' style={{fontSize:'10pt', color:'rgb(192,192,192)'}}>{this.state.activeSeller[0].totalTransaksi} transaksi</div>
                 <div style={{fontSize:'10pt', color:'rgb(255, 92, 222)'}}>Pembeli teraktif</div>
-                <div className='mt-2' style={{fontSize:'19pt'}}>Dimas</div>
-                <div className='pb-5 mt-1' style={{fontSize:'10pt', color:'rgb(192,192,192)'}}>2 transaksi</div>
+                <div className='mt-2' style={{fontSize:'19pt'}}>{this.state.activeBuyer[0].namaBuyer}</div>
+                <div className='pb-5 mt-1' style={{fontSize:'10pt', color:'rgb(192,192,192)'}}>{this.state.activeBuyer[0].totalTransaksi} transaksi</div>
                 <div className='pt-3'></div> 
             </div>
         )
+        } else {
+            return (
+                <div>
+                    <h1>Loading...</h1>
+                </div>
+            )
+        }
     }
 
     render() {

@@ -30,7 +30,7 @@ class Search extends Component {
         product: [],
         selectedId: '',
         toogle: '',
-        orderQty: 0,
+        orderQty: '',
         pulauUser: '',
         user: [],
         idCart: ''
@@ -255,26 +255,66 @@ class Search extends Component {
         } else if(this.state.display == 'detail'){
             return (
             <div className='container'>
-                    <div className='card col-10 mx-auto my-3 pb-3'>
+                    <div className='card col-10 mx-auto my-3 pb-3 quic700'>
                         <div className='col text-right mt-4 pr-1'>
                             <i className='times link icon' onClick={()=>this.setState({display: 'group'})}></i>
                         </div>
-                        <div className='card-header mt-2'>
-                            <h3><b>{this.state.product.namaProduk}</b></h3>
-                        </div>
-                        <div className='card-body pb-1'>
-                            <div className='text-center'>
-                            <img className='card-img-top mb-3' src={`http://localhost:7777/files/${this.state.product.fotoProduk}`} style={{width:'220px'}} alt=""/>
+                        <div className='row card-body pb-1'>
+                            <div className='col-5 text-center'>
+                                <img className='card-img-top mb-3' src={`http://localhost:7777/files/${this.state.product.fotoProduk}`} style={{width:'300px', borderRadius:'20pt'}} alt=""/>
                             </div>
-                            <h3><b>Description :</b></h3>
-                            <p>{this.state.product.deskripsi}</p>
-                            <h3><b>Harga :</b></h3>
-                            <p>Rp. {this.state.product.harga.toLocaleString('id')}</p>
-                            <h3><b>Quantity :</b></h3>
-                            <p>{this.state.product.qty}</p>
-                            <input onChange={(e) => this.setState({orderQty: e.target.value})} type="number" className='form-control' placeholder='Quantity'/>
-                            <br/>
-                            <button className='ui inverted basic dimdom3 button mb-1 btn-block' onClick={()=>{this.onClickAtc(this.state.product.id, this.state.product)}}>Add to Cart</button>
+                            <div className='col-7'>
+                                <h2 className='quic700'><b>{this.state.product.namaProduk}</b></h2>
+                                <div className='dimdom-bottom'></div>
+                                <p style={{fontSize:'22pt'}} className='quic700p mt-3'>Rp. {this.state.product.harga.toLocaleString('id')}</p>
+                                <div className='row'>
+                                    <div className='col-3'>
+                                        Pengiriman
+                                    </div>
+                                    <div className='col-1 text-right'>
+                                        <i className='shipping fast icon'></i>
+                                    </div>
+                                    <div className='col-8 pl-0 text-left'>
+                                        JNE Reguler
+                                    </div>
+                                    <div className='col-4'></div>
+                                    <div className='col-8 pl-0 text-left'>
+                                        Dalam Pulau Rp 9.000 - Rp 50.000
+                                    </div>
+                                    <div className='col-4'></div>
+                                    <div className='col-8 pl-0 text-left'>
+                                        Antar Pulau Rp 50.000 - Rp.160.000
+                                    </div>
+                                    <div className='col-3 pt-4 mt-2'>
+                                        Kuantitas
+                                    </div>
+                                    <div className='col-3 pt-4 text-left ui input2'>
+                                        <input value={this.state.orderQty} 
+                                            onChange={(e) => {
+                                                if (isNaN(e.target.value)){
+                                                    this.setState({orderQty: ''})
+                                                } else {
+                                                    this.setState({orderQty:e.target.value})
+                                                }}} type="text" placeholder="Qty"/>                           
+                                    </div>
+                                    <div className='col-6 pt-4 mt-2 pl-0 text-left'>
+                                        <p>Tersisa {this.state.product.qty} buah</p>
+                                    </div>
+                                    <div className='col-4 pt-3 mt-2'>
+                                        <div class="ui inverted basic dimdom3 buttons">
+                                            <button className='ui inverted basic dimdom3 button mb-1 btn-block' onClick={()=>{this.onClickAtc(this.state.product.id, this.state.product)}}>Add to Cart</button>                            
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='row cardwhite ml-4 mr-3 mt-5 mb-5 pr-4 pl-4 justify-content-center'>
+                            <div className='col-12 cardgrey ml-4 mr-4 mt-4 mb-5 pt-4 pb-4 pr-3 pl-5 text-dark' style={{fontSize:'16pt'}}>
+                                Deskripsi Produk
+                            </div>
+                            <div className='col text-dark pb-5'>
+                                <p>{this.state.product.deskripsi}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -383,6 +423,7 @@ class Search extends Component {
                                 <div class=" col ui input2 mr-3">
                                     <input onChange={(e) => this.setState({namaProduk: e.target.value})} type="text" placeholder="Nama Produk"/>
                                 </div>
+                                <div class="w-100"></div>
                                 <div className='col card-title pt-3 mb-2 quic700p'>Nama Seller</div>
                                 <div class="w-100"></div>
                                 <div class=" col ui input2 mr-3">

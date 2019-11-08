@@ -605,6 +605,14 @@ div.box-containe div {
   background-color: rgba(39, 41, 61);
   border-radius: 20px;
 }
+.cardwhite {
+  background-color: rgb(255, 255, 255);
+  border-radius: 20px;
+}
+.cardgrey {
+  background-color: rgb(211, 211, 211);
+  border-radius: 20px;
+}
 
 .cardproduct {
   background-color: rgba(224, 224, 224, 0.26);

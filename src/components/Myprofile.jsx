@@ -5,11 +5,11 @@ import {connect} from 'react-redux'
 import axios from 'axios'
 import alertify from 'alertifyjs'
 import {Line} from 'react-chartjs-2'
+import moment from 'moment'
 
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 import Footer from './Footer'
-import moment from 'moment'
 var crypto = require('crypto')
 
 
@@ -264,8 +264,16 @@ class Myprofile extends Component {
     }
 
     dashboard = () => {
-        let totSell = this.state.totalSell.toLocaleString('id')
-        let totBuy = this.state.totalBuy.toLocaleString('id')
+        if(this.state.totalSell){
+            var totSell = this.state.totalSell.toLocaleString('id')
+        } else {
+            var totSell = 0
+        }
+        if(this.state.totalBuy){
+            var totBuy = this.state.totalBuy.toLocaleString('id')
+        } else {
+            var totBuy = 0
+        }
         let bulanIni = (moment().format('M'))
         this.buy1 = 0
         this.buy2 = 0
