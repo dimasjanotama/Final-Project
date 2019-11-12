@@ -507,7 +507,7 @@
 
 .dimdom-bg {
   height: 15px;
-  background: linear-gradient(to right,rgb(0, 0, 0) 0%, rgb(255, 31, 210) 10%,  rgb(0, 0, 0) 22%);
+  background: linear-gradient(to right,rgb(0, 0, 0, 0) 0%, rgb(255, 31, 210) 10%,  rgb(0, 0, 0, 0) 22%);
 }
 .dimdom-bg-bottom {
   height: 70px;

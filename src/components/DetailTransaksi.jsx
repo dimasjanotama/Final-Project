@@ -40,8 +40,7 @@ class DetailTransaksi extends Component {
     }
 
     renderCart = () => {
-        console.log(this.state.detail);
-        this.subtotal = 0
+        this.totalSemua = 0
         let hasil = this.state.detail.map((product)=>{
             let { namaProduk, harga, orderQty, fotoProduk, pulauBuyer, pulauSeller } = product 
             let berat = (product.berat/1000)*orderQty
@@ -49,7 +48,7 @@ class DetailTransaksi extends Component {
                 var ongkir = 50000*berat
             } else { var ongkir = 160000*berat}
             let totalHarga = (parseInt(harga)*parseInt(orderQty))+ongkir
-            this.subtotal += totalHarga   
+            this.totalSemua += totalHarga
             return (
                 <>
                     <div className='col-1 card-title pt-3 pb-1'>
@@ -63,44 +62,42 @@ class DetailTransaksi extends Component {
                 </>
             )
         })
+        this.subtotal = this.totalSemua
         return hasil
     }
 
     renderList = () => {
         return (
-            <div className='row align-items-center text-light quic700'>
-                <div className='col-11 mx-auto card'>
-                    <div className='card-body'>
-                    <div className='row card-title pt-4'>
-                        <div className='col-1 card-title pt-3 pb-1'>
-                            <i className='big shopping cart icon text-right' style={{color: 'rgb(255, 31, 210)'}}></i>
+            <div className='row align-items-center quic700'>
+                <div className='col-11 mx-auto cardwhite pb-5'>
+                <div className='row pt-4'>
+                        <div className='col-1 card-title pr-0'>
+                            <i className='big shopping cart huge icon text-right' style={{color: 'rgb(255, 31, 210)'}}></i>
                         </div>
-                        <div className='col-8 card-title pt-4 pb-1 pl-0 quic700p text-left'>
+                        <div className='col-4 card-title pl-0 pt-3 quic700 text-left' style={{fontSize:'25pt'}}>
                             Detail Belanja
                         </div>   
                     </div>
-                    <div className='dimdom-bottom'></div>
-                    <div className='row justify-content-center'>
-                        <div className='col-5 card-title pt-4 mb-2 text-center'>Produk</div>
-                        <div className='col-2 card-title pt-4 mb-2'>Harga Satuan</div>
-                        <div className='col-1 card-title pt-4 mb-2'>Qty</div>
-                        <div className='col-1 card-title pt-4 mb-2'>Berat</div>
-                        <div className='col-3 card-title pt-4 mb-2'>Total Harga + Ongkir</div>
-                        <div class="w-100"></div>
-                        {this.renderCart()}
-                    </div>
-                    <br/>
-                    <div className='dimdom-bottom'></div>
-                    <div className='row card-title pt-4'>
-                        <div className='col-5 card-title pt-2 pb-1'>
-                        </div>
-                        <div className='col-2 card-title pt-2 mb-2 text-right'>Subtotal</div>
-                        <div className='col-3 card-title pt-2 mb-2 quic700p' style={{fontSize:'16pt'}}>Rp {this.subtotal.toLocaleString('id')}</div>
-                    </div>                    
-                    <div className='row'>
-                        <div className='col pt-3'>
+                    <div className='row pt-4'>
+                        <div className='col-11 cardwhite mx-auto'>
+                            <div className='row'>
+                                <div className='col-4 card-title pt-4 mb-4 text-center'>Produk</div>
+                                <div className='col-2 card-title pt-4 mb-4'>Harga Satuan</div>
+                                <div className='col-1 card-title pt-4 mb-4'>Qty</div>
+                                <div className='col-1 card-title pt-4 mb-4'>Berat</div>
+                                <div className='col-4 card-title pt-4 mb-4'>Total Harga + Ongkir</div>
+                                <div class="w-100"></div>
+                                {this.renderCart()}
+                            </div>
                         </div>
                     </div>
+                    <div className='row pt-4'>
+                        <div className='col-5 cardwhite pt-3 pb-3' style={{left:'53%'}}>
+                            <div className='row'>
+                                <div className='col-4 card-title pt-2 mb-2 text-right'>Subtotal</div>
+                                <div className='col-7 card-title pt-2 mb-2 quic700p' style={{fontSize:'16pt'}}>Rp {this.subtotal.toLocaleString('id')}</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -112,8 +109,8 @@ class DetailTransaksi extends Component {
         return(   
             <AbsoluteWrapper>
                 <Navbar/>
-                <div className='row dim-height-addproduct text-light'> 
-                    <div className='col-12'>
+                <div className='row dim-wrapper text-light'> 
+                    <div className='col-11 mx-auto mt-3'>
                         {this.renderList()}
                     </div>
                 </div>

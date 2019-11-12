@@ -203,7 +203,7 @@ class Myprofile extends Component {
         var tglGabung = tglDaftar
         return (
             <div>
-                <div className='col-11 cardgrey ml-5 mr-4 mt-4 mb-4 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
+                <div className='col-11 cardgrey ml-5 mr-4 mt-4 mb-4 pt-4 pb-4 pr-3 pl-5 text-dark' style={{fontSize:'16pt'}}>
                     Profil
                 </div>
                  <div className='row text-light'>
@@ -347,7 +347,7 @@ class Myprofile extends Component {
         }
         return (
             <div>
-                <div className='col-11 cardgrey ml-5 mr-4 mt-4 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
+                <div className='col-11 cardgrey ml-5 mr-4 mt-4 pt-4 pb-4 pr-3 pl-5 text-dark' style={{fontSize:'16pt'}}>
                     Statistik
                 </div>
                 <div className='row'>
@@ -456,7 +456,7 @@ class Myprofile extends Component {
                     </div>
                 </div>
                 </div>
-                <div className='col-11 cardgrey ml-5 mr-4 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
+                <div className='col-11 cardgrey ml-5 mr-4 pt-4 pb-4 pr-3 pl-5 text-dark' style={{fontSize:'16pt'}}>
                     Penjualan
                 </div>
                 <div className='row justify-content-center'>
@@ -508,7 +508,7 @@ class Myprofile extends Component {
                     </div>
                 </div>
                 </div>
-                <div className='col-11 cardgrey ml-5 mr-4 mt-4 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
+                <div className='col-11 cardgrey ml-5 mr-4 mt-4 pt-4 pb-4 pr-3 pl-5 text-dark' style={{fontSize:'16pt'}}>
                     Pembelian
                 </div>
                 <div className='row justify-content-center'>
