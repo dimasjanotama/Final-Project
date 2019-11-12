@@ -6,7 +6,7 @@ import axios from 'axios'
 
 import Footer from './Footer'
 import Navbar from './Navbar'
-import Sidebar from './Sidebar'
+
 
 
 
@@ -113,8 +113,7 @@ class DetailTransaksi extends Component {
             <AbsoluteWrapper>
                 <Navbar/>
                 <div className='row dim-height-addproduct text-light'> 
-                    <Sidebar/>
-                    <div className='col-9'>
+                    <div className='col-12'>
                         {this.renderList()}
                     </div>
                 </div>

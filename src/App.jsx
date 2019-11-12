@@ -14,6 +14,7 @@ import Search from './components/Search'
 import Myprofile from './components/Myprofile'
 import OtherProfile from './components/OtherProfile'
 import DetailTransaksi from './components/DetailTransaksi'
+import Navbar from './components/Navbar'
 
 
 
@@ -25,7 +26,7 @@ const App = () => {
         const transitions = useTransition(location, location => location.pathname, {
             from: { opacity: 1 , transform: "translate(100%, 0)" },
             enter: { opacity: 1 , transform: "translate(0%, 0)" },
-            leave: { opacity: 0 , transform: "translate(-50%, 0)" }
+            leave: { opacity: 0 , transform: "translate(-100%, 0)" }
         });
 
         return(

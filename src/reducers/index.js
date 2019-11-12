@@ -6,7 +6,8 @@ const init = {
     username: '',
     keywords: '',
     otherId: '',
-    transactionId: ''
+    transactionId: '',
+    kodeUnik: ''
 }
 
 const AuthReducer = (state = init, action) => { 
@@ -29,6 +30,12 @@ const AuthReducer = (state = init, action) => {
 
         case 'CLICK_DETAIL_TRANSAKSI':
             return {...state,transactionId: action.payload.idTransaksi}
+
+        case 'SET_UNIQUE_DIGIT':
+            return {...state,kodeUnik: action.payload.kodeUnik}
+
+        case 'CLEAR_UNIQUE_DIGIT':
+            return {...state,kodeUnik:''}
 
         default:
             return state

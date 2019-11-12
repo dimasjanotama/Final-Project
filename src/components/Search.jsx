@@ -7,7 +7,6 @@ import axios from 'axios'
 import alertify from 'alertifyjs'
 
 import Navbar from './Navbar'
-import Sidebar from './Sidebar'
 import Footer from './Footer'
 
 
@@ -43,9 +42,13 @@ class Search extends Component {
             namaProduk: this.props.key_words,
             toogle: ''
         })
+        let token = localStorage.getItem('token')
         axios.get(urlApi+'getuserbyid' ,{
             params : {
                 userid: this.props.user_id
+            },
+            headers : {
+                authorization : token
             }           
         }).then(res=>{
             this.setState({user: res.data[0]})
@@ -63,6 +66,7 @@ class Search extends Component {
         let hargamax = parseInt(this.state.hargaMax)
         let hargamin = parseInt(this.state.hargaMin)
         let userid = this.props.user_id
+        let token = localStorage.getItem('token')
         // this.props.history.push(`/jc10?name=${name}`)
         // let feParams = querystring.parse(this.props.location.search)
         // console.log(feParams)
@@ -85,7 +89,10 @@ class Search extends Component {
             filterData = {...filterData, kondisi}
         }
         axios.get(urlApi + 'countfilterproducts', {
-            params: filterData
+            params: filterData,
+            headers : {
+                authorization : token
+            }  
         }).then(res=>{
             this.setState({products: res.data})
             let totalitem = res.data[0].totalitem
@@ -106,6 +113,7 @@ class Search extends Component {
         let hargamax = parseInt(this.state.hargaMax)
         let hargamin = parseInt(this.state.hargaMin)
         let userid = this.props.user_id
+        let token = localStorage.getItem('token')
         // this.props.history.push(`/jc10?name=${name}`)
         // let feParams = querystring.parse(this.props.location.search)
         // console.log(feParams)
@@ -143,7 +151,10 @@ class Search extends Component {
             filterData = {...filterData, indexke}
         }
         axios.get(urlApi + 'paginationfilterproducts', {
-            params: filterData
+            params: filterData,
+            headers : {
+                authorization : token
+            }  
         }).then(res=>{
             this.setState({products: res.data})
         }).catch(err=>{
@@ -172,11 +183,15 @@ class Search extends Component {
     }
 
     onDetailClick = (idproduct) => {
+        let token = localStorage.getItem('token')
         axios.get(urlApi + 'getproductsearch', {
             params: {
                 userid: this.props.user_id,
                 idproduct: idproduct
-            }
+            },
+            headers : {
+                authorization : token
+            }  
         }).then(res=>{
             this.setState({product: res.data[0]})
             this.setState({display: 'detail'})           
@@ -189,14 +204,14 @@ class Search extends Component {
     renderList = () => {
         if(this.state.display == 'group'){
             return (
-                <div className='container cardblack'>
-                    <div className='row align-items-center text-light mon500'>
-                        <div className='col-11 mx-auto card mb-n4'>
+                <div className='container'>
+                    <div className='row align-items-center quic700'>
+                        <div className='col-11 mx-auto mb-n4'>
                             <div className='row'>
                                 <div className='col-1 card-title pt-4'>
-                                    <i className='big info icon text-right' style={{color: 'rgb(255, 31, 210)'}}></i>
+                                    <i className='huge info icon text-right' style={{color: 'rgb(255, 31, 210)'}}></i>
                                 </div>
-                                <div className='col-8 card-title pt-4 mt-1 pl-0 quic700p text-left'>
+                                <div className='col-8 card-title pt-4 mt-4 ml-2 text-left' style={{fontSize:'20pt'}}>
                                     Hasil pencarian untuk '{this.state.namaProduk}'
                                 </div>   
                             </div>
@@ -204,24 +219,30 @@ class Search extends Component {
                     </div>
                     <div className='row ml-2 mr-2'>
                         {this.state.products.map((product)=>{
-                            let {id, idUser, namaSeller, namaProduk, kategori, berat, kondisi, deskripsi, fotoProduk, qty} = product
+                            let {id, idUser, namaSeller, namaProduk, kategori, kondisi, fotoProduk} = product
                             let harga = parseInt(product.harga)
                             if(id !== this.state.selectedId){
                                 return (
-                                    <div class="cardproduct ml-2 mr-2 mt-5" style={{width: "12rem"}}>
+                                    <div class="cardwhite ml-2 mr-2 mt-5" style={{width: "12rem"}}>
                                         <img class="card-img-top" src={`http://localhost:7777/files/${fotoProduk}`} alt="fotoproduk"/>
                                         <div className='row card-body p-0 pb-3'>
-                                            <div className='col'>
-                                                <button className='btn dimdom-pink mb-2 text-left' onClick={()=>{this.onDetailClick(id)}}>{namaProduk}</button>
+                                            <div className='col text-center'>
+                                                <button className='btn dimdom-pink-black mb-1' onClick={()=>{this.onDetailClick(id)}}>{namaProduk}</button>
+                                            </div>
+                                            <div class="w-100"></div>
+                                            <div className='col ml-3'>
+                                                <span className='badge badge-grey mb-2'>{kategori}</span>
+                                                <span className='ml-2 mb-2 badge badge-primary'>{kondisi}</span>
                                             </div>
                                             <div class="w-100"></div>
                                             <i className='ml-3 col-2 pr-1 text-left user icon'></i>
-                                            <p className='col pl-0 card-text'>
-                                                <Link to='/otherprofile' onClick={()=>{this.props.clickSeller(idUser)}} className="dimdom-pink col mt-2">{namaSeller}</Link>
+                                            <p className='col pl-0'>
+                                                <Link to='/otherprofile' onClick={()=>{this.props.clickSeller(idUser)}} className="col mt-2 pl-0">
+                                                    <span className='badge badge-primary' style={{fontSize:'10pt'}}>{namaSeller}</span></Link>
                                             </p>
                                             <div class="w-100"></div>
-                                            <p className='col ml-3 card-text quic700' style={{fontSize:'14pt'}} >
-                                                <span className='text-light'>Rp. {harga.toLocaleString('id')}</span>
+                                            <p className='col card-text ml-3 quic700' style={{fontSize:'16pt'}} >
+                                                <span className='badge badge-grey'>Rp. {harga.toLocaleString('id')}</span>
                                             </p>
                                         </div>
                                     </div>
@@ -253,26 +274,28 @@ class Search extends Component {
                 </div>
             )
         } else if(this.state.display == 'detail'){
+            let berat = this.state.product.berat/1000
             return (
             <div className='container'>
-                    <div className='card col-10 mx-auto my-3 pb-3 quic700'>
+                    <div className='card col-10 mx-auto my-3 pb-3 quic700 text-light'>
                         <div className='col text-right mt-4 pr-1'>
-                            <i className='times link icon' onClick={()=>this.setState({display: 'group'})}></i>
+                            <i className='times link icon text-light' onClick={()=>this.setState({display: 'group'})}></i>
                         </div>
                         <div className='row card-body pb-1'>
                             <div className='col-5 text-center'>
                                 <img className='card-img-top mb-3' src={`http://localhost:7777/files/${this.state.product.fotoProduk}`} style={{width:'300px', borderRadius:'20pt'}} alt=""/>
                             </div>
                             <div className='col-7'>
-                                <h2 className='quic700'><b>{this.state.product.namaProduk}</b></h2>
+                                <h2 className='quic700 text-light'><b>{this.state.product.namaProduk}</b>
+                                   <span className='badge badge-primary ml-3'>{this.state.product.kategori}</span></h2>
                                 <div className='dimdom-bottom'></div>
-                                <p style={{fontSize:'22pt'}} className='quic700p mt-3'>Rp. {this.state.product.harga.toLocaleString('id')}</p>
+                                <p style={{fontSize:'22pt'}} className='quic700p mt-3'>Rp {this.state.product.harga.toLocaleString('id')}</p>
                                 <div className='row'>
                                     <div className='col-3'>
                                         Pengiriman
                                     </div>
                                     <div className='col-1 text-right'>
-                                        <i className='shipping fast icon'></i>
+                                        <i className='shipping fast icon text-light'></i>
                                     </div>
                                     <div className='col-8 pl-0 text-left'>
                                         JNE Reguler
@@ -284,6 +307,12 @@ class Search extends Component {
                                     <div className='col-4'></div>
                                     <div className='col-8 pl-0 text-left'>
                                         Antar Pulau Rp 50.000 - Rp.160.000
+                                    </div>
+                                    <div className='col-3 pt-4 mt-2'>
+                                        Berat
+                                    </div>
+                                    <div className='col-9 pt-4 mt-2 text-left ui input2'>
+                                        {berat} kg                         
                                     </div>
                                     <div className='col-3 pt-4 mt-2'>
                                         Kuantitas
@@ -333,11 +362,15 @@ class Search extends Component {
     }
 
     cekQty = (idProduct, product)=>{
+        let token = localStorage.getItem('token')
         axios.get(urlApi+'cekqty',{
             params : {
                 idProduct : idProduct,
                 idBuyer: this.props.user_id
-            }
+            },
+            headers : {
+                authorization : token
+            }  
         }).then(res=>{
             if(res.data[0].sudahada>0){
                 let orderQtyNow = parseInt(res.data[0].orderQty) + parseInt(this.state.orderQty)
@@ -410,28 +443,45 @@ class Search extends Component {
         return(   
             <AbsoluteWrapper>
                 <Navbar/>
-                <div className='row dim-height text-light'> 
-                    <div className='col-3 mt-3'>
-                    <div className='card-nav p-3 dim-height-nav'>
-                        <div className='card-title pt-2 pl-4'>
-                            <div className='subjudul'>
-                                Search / Filter
+                <div className='container quic700'>
+                <div className='row'> 
+                    <div className='col-11 mt-3 mx-auto'>
+                    <div className='cardwhite p-3 row'>
+                        <div className='col-2'>
+                            <img className='magnify' src={require('../lib/pictures/MAGNIFY.jpg')} alt=""/>
+                        </div>
+                        <div className='card-title col-10 pt-2'>
+                            <div className='col-11 cardgrey ml-5 mr-4 mt-4 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
+                                Cari efek yang kamu mau disini
                             </div>
-                            <div className='row'>
-                                <div className='col card-title pt-5 mb-2 quic700p'>Nama Produk</div>
-                                <div class="w-100"></div>
-                                <div class=" col ui input2 mr-3">
+                            <div className='row pt-3 col-11 mx-auto'>
+                                <div className='col-2 card-title pt-2 mb-2 pr-0'>Nama Produk</div>
+                                <div class=" col-4 ui input3 mr-3 mb-1">
                                     <input onChange={(e) => this.setState({namaProduk: e.target.value})} type="text" placeholder="Nama Produk"/>
                                 </div>
+                                <div className='col-1 card-title pt-1 mb-2 '>Harga</div>
+                                <div class=" col-2 ui input3 mb-1">
+                                    <input onChange={(e) => this.setState({hargaMin: e.target.value})} type="text" placeholder="Min"/>
+                                </div>
+                                <div class=" col-2 ui input3 mb-1">
+                                    <input onChange={(e) => this.setState({hargaMax: e.target.value})} type="text" placeholder="Max"/>
+                                </div>    
                                 <div class="w-100"></div>
-                                <div className='col card-title pt-3 mb-2 quic700p'>Nama Seller</div>
-                                <div class="w-100"></div>
-                                <div class=" col ui input2 mr-3">
+                                <div className='col-2 card-title pt-2 mb-2 pr-0'>Nama Seller</div>
+                                <div class=" col-4 ui input3 mr-3 mb-1">
                                     <input onChange={(e) => this.setState({namaSeller: e.target.value})} type="text" placeholder="Nama Seller"/>
                                 </div>
-                                <div className='col card-title pt-3 mb-2 quic700p'>Kategori</div>
+                                <div className='col-1 card-title pt-2 mb-2'>Kondisi</div>
+                                <div class="col-4 ui input3 mr-3">
+                                    <select className='form-control custom-select mb-1' onChange={(e) => this.setState({kondisi: e.target.value})} name="" id="">
+                                        <option selected disabled>Kondisi Barang</option>
+                                        <option value="baru">Baru</option>
+                                        <option value="bekas">Bekas</option>
+                                    </select>
+                                </div>
                                 <div class="w-100"></div>
-                                <div class=" col ui input2 mr-3">
+                                <div className='col-2 card-title pt-2 mb-2 pr-0'>Kategori</div>
+                                <div class=" col-4 ui input3 mr-3">
                                     <select onChange={(e) => this.setState({kategori: e.target.value})} className='form-control custom-select' name="" id="">
                                         <option selected disabled>Kategori</option>
                                         <option value="Distortion">Distortion</option>
@@ -445,36 +495,20 @@ class Search extends Component {
                                         <option value="Bass FX">Bass FX</option>
                                     </select>  
                                 </div>
-                                <div class="w-100"></div>
-                                <div className='col card-title pt-3 mb-2 quic700p'>Harga</div>
-                                <div class="w-100"></div>
-                                <div class=" col-5 ui input2">
-                                    <input onChange={(e) => this.setState({hargaMin: e.target.value})} type="text" placeholder="Min"/>
-                                </div>
-                                <div class=" col-5 ui input2">
-                                    <input onChange={(e) => this.setState({hargaMax: e.target.value})} type="text" placeholder="Max"/>
-                                </div>                       
-                                <div className='col card-title pt-3 mb-2 quic700p'>Kondisi</div>
-                                <div class="w-100"></div>
-                                <div class="col ui input2 mr-3">
-                                    <select className='form-control custom-select' onChange={(e) => this.setState({kondisi: e.target.value})} name="" id="">
-                                        <option selected disabled>Kondisi Barang</option>
-                                        <option value="baru">Baru</option>
-                                        <option value="bekas">Bekas</option>
-                                    </select>
-                                </div>
-                                <div class="w-100"></div>
-                                <div className='col card-title pt-5 mr-3'>
-                                    <button onClick={this.onFilterClick} className='ui inverted basic dimdom3 button btn-block'>Filter</button>    
+                                <div className='col-3 card-title' style={{left:'12%'}}>
+                                    <button onClick={this.onFilterClick} className='ui inverted basic dimdom3 button btn-block'>Cari</button>    
                                 </div>
                             </div>
                         </div>
                     </div>
                     </div>
-                    <div className='col-9 mt-3'>
+                </div>
+                <div className='row'>
+                    <div className='col-11 mx-auto mt-3'>
                         {this.renderList()}
                     </div>
                 </div>
+            </div>
                 <Footer />
             </AbsoluteWrapper>
         )

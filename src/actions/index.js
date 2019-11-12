@@ -99,3 +99,31 @@ export const keepDetail = (obj) => {
         }
     }
 }
+
+export const setKodeUnik = (kode) => {
+    return (dispatch)=>{
+        localStorage.setItem('kodeUnik',kode)
+            dispatch ({
+                type: 'SET_UNIQUE_DIGIT',
+                payload: {
+                    kodeUnik: kode
+            }  
+        })
+}
+}
+
+export const keepKodeUnik = (kode) => {
+    return {
+        type: 'SET_UNIQUE_DIGIT',
+        payload: {
+            kodeUnik: kode
+        }
+    }
+}
+
+export const clearKodeUnik = () => {
+    localStorage.removeItem('kodeUnik')
+    return {
+        type: 'CLEAR_UNIQUE_DIGIT'
+    }
+}

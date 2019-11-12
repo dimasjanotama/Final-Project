@@ -10,7 +10,6 @@ import DeskripsiProduk from './DeskripsiProduk'
 
 import Footer from './Footer'
 import Navbar from './Navbar'
-import Sidebar from './Sidebar'
 
 
 
@@ -37,9 +36,13 @@ class Addproduct extends Component {
     }
 
     componentDidMount = ()=>{
+        let token = localStorage.getItem('token')
         axios.get(urlApi+'getuserbyid' ,{
             params : {
                 userid: this.props.user_id
+            },
+            headers : {
+                authorization : token
             }
         }).then(res=>{
             this.setState({pulauUser: res.data[0].pulau})
@@ -252,8 +255,7 @@ class Addproduct extends Component {
             <AbsoluteWrapper>
                 <Navbar/>
                 <div className='row dim-height-addproduct text-light'> 
-                    <Sidebar/>
-                    <div className='col-9'>
+                    <div className='col-12'>
                         {this.renderList()}
                     </div>
                 </div>

@@ -6,6 +6,7 @@ import axios from 'axios'
 import alertify from 'alertifyjs'
 import moment from 'moment'
 import Navbar from './Navbar'
+import Footer from './Footer'
 
 
 
@@ -436,19 +437,12 @@ class Verifier extends Component {
         return(   
             <AbsoluteWrapper>
                 <Navbar/>
-                <div className='row dim-height-addproduct text-light'> 
-                    <div className='col-3 mt-3'>
-                        <div className='card-nav p-3 dim-height-nav'>
-                            <div className='card-title'>
-                                <NavLink to='/verifier' className='ui inverted basic dimdom4 button mt-5'>Verifikasi</NavLink>   
-                                <NavLink to='/dashboardadmin' className='ui inverted basic dimdom4 button mt-5'>Dashboard</NavLink>   
-                            </div>
-                        </div>
-                </div>
-                    <div className='col-9 mt-3'>
+                <div className='row text-light dim-wrapper'> 
+                    <div className='col-11 mx-auto mt-3'>
                         {this.renderList()}
                     </div>
                 </div>
+                <Footer />
             </AbsoluteWrapper>
         )
         } else {

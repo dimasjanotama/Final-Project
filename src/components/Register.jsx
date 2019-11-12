@@ -181,6 +181,7 @@ class Register extends Component {
         return(
             
             <AbsoluteWrapper>
+                <div id='bg-base-register'>
                 <Navbar/>
                 <div className='row align-items-center text-light quic700 dim-height'>
                     <div className='col-6 mx-auto card'>
@@ -297,8 +298,7 @@ class Register extends Component {
                         </div>
                     </div>
                 </div>
-              
-                <Footer/>
+                </div>
             </AbsoluteWrapper>
         ) //-----------------------------> kurung tutup return
     } else {

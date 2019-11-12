@@ -8,7 +8,6 @@ import 'moment/locale/id'
 
 
 import Navbar from './Navbar'
-import Sidebar from './Sidebar'
 import Footer from './Footer'
 
 
@@ -225,7 +224,6 @@ class OtherProfile extends Component {
             <AbsoluteWrapper>
                 <Navbar/>
                 <div className='row dim-height-addproduct text-light'> 
-                    <Sidebar/>
                     <div className='col-9 mt-3'>
                         {this.renderList()}
                     </div>

@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import {Redirect, Link} from 'react-router-dom'
+import {Redirect, Link, NavLink} from 'react-router-dom'
 import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
 import axios from 'axios'
 import alertify from 'alertifyjs'
 
 import Navbar from './Navbar'
-import Sidebar from './Sidebar'
 import Footer from './Footer'
 
 
@@ -41,9 +40,13 @@ class Myproduct extends Component {
             display: 'group',
             currentpage: 1
         })
+        let token = localStorage.getItem('token')
         axios.get(urlApi+'getuserbyid' ,{
             params : {
                 userid: this.props.user_id
+            },
+            headers : {
+                authorization : token
             }
         }).then(res=>{
             this.setState({propinsiUser: res.data[0].propinsi})
@@ -130,9 +133,13 @@ class Myproduct extends Component {
     }
 
     renderProducts = ()=>{
+        let token = localStorage.getItem('token')
         axios.get(urlApi + 'countproducts', {
             params: {
                 userid: this.props.user_id
+            },
+            headers : {
+                authorization : token
             }
         }).then(res=>{
             let activepage = this.state.currentpage
@@ -149,10 +156,14 @@ class Myproduct extends Component {
             } else {
                 indexke += (activepage-1)*10 
             } 
+            let token = localStorage.getItem('token')
             axios.get(urlApi + 'paginationproducts', {
                 params: {
                     userid: this.props.user_id,
                     indexke: indexke
+                },
+                headers : {
+                    authorization : token
                 }
             }).then(res=>{
                 this.setState({products: res.data})
@@ -164,10 +175,14 @@ class Myproduct extends Component {
     }
 
     onDetailClick = (idproduct) => {
+        let token = localStorage.getItem('token')
         axios.get(urlApi + 'getproductbyid', {
             params: {
                 userid: this.props.user_id,
                 idproduct: idproduct
+            },
+            headers : {
+                authorization : token
             }
         }).then(res=>{
             this.setState({product: res.data[0]})
@@ -224,8 +239,11 @@ class Myproduct extends Component {
         if(this.state.display == 'group'){
             if(this.state.products[0]){
             return (
-                <div className='container'>
-                    <div className='row ml-2 mr-2 quic700p'>
+                    <div className='row quic700'>
+                        <div className='col-3'>
+                            <img className='diamond' src={require('../lib/pictures/DIAMOND.png')} alt=""/>
+                        </div>
+                        <div className='col-8 mt-4'>
                         {this.state.products.map((product)=>{
                             let {id, namaProduk, kategori, subKategori, harga, berat, kondisi, deskripsi, fotoProduk, qty} = product
                             let numberWithCommas = (x) => {
@@ -233,19 +251,32 @@ class Myproduct extends Component {
                             }
                             let harganya = numberWithCommas(harga)
                             return (
-                                <div class="card ml-2 mr-2" style={{width: "12rem"}}>
-                                    <img src={`http://localhost:7777/files/${fotoProduk}`} class="card-img-top" alt="fotoproduk"/>
-                                    <div class="card-body">
-                                        <button className='btn dimdom-pink mb-2 text-left' onClick={()=>{this.onDetailClick(id)}}>{namaProduk}</button>
-                                        <p className='card-text text-center quic700' style={{fontSize:'14pt'}} >
-                                            <span className='text-light'>Rp. {harganya}</span>
-                                        </p>
-                                        <button className='ui inverted basic dimdom3 button mb-1 btn-block' onClick={()=>{this.onEditClick(id)}}>Edit</button>
-                                        <button className='ui inverted basic dimdom3 button mb-1 mt-1 btn-block' onClick={()=>{this.onDeleteClick(id)}}>Hapus</button>
+                                <div className="cardwhite ml-2 mr-2 pb-3 mb-4 row">
+                                    <div className='col-2 pt-4 pl-5'>
+                                        <img src={`http://localhost:7777/files/${fotoProduk}`} style={{width:'70px'}} alt="fotoproduk"/>
+                                    </div>
+                                    <div className="col-7">
+                                        <div className='col'>
+                                            <button className='btn dimdom-pink-black pt-4 text-left pl-0' onClick={()=>{this.onDetailClick(id)}}>{namaProduk}</button>  
+                                        </div>
+                                        <div className='w-100'></div>
+                                        <div className='col mb-2'>
+                                            <span className='badge badge-primary'>{product.kondisi}</span>
+                                            <span className='badge badge-primary ml-4' style={{top:'50%'}}>Kuantitas {qty}</span>
+                                        </div>
+                                        <div className='w-100'></div>
+                                        <div className='col'>
+                                            <span className='badge badge-grey' style={{fontSize:'12pt'}}>Rp {harganya}</span>
+                                        </div>
+                                    </div>
+                                    <div className='col-2 pt-5'>
+                                        <button className='ui inverted basic small button mb-1 btn-block' onClick={()=>{this.onEditClick(id)}}>Edit</button>
+                                        <button className='ui inverted basic small button mb-1 btn-block' onClick={()=>{this.onDeleteClick(id)}}>Hapus</button>
                                     </div>
                                 </div>
                             ) 
                         })}
+                        </div>
                         <div class="w-100"></div>
                         <div className='mx-auto pt-5'>
                             <nav aria-label="Page navigation example">
@@ -256,15 +287,30 @@ class Myproduct extends Component {
                             </nav>
                         </div>
                     </div>
-                </div>
+                
             )
             } else {
                 return (
-                <div className='row align-items-center text-light quic700'>
-                    <div className='col-11 mx-auto card'>
+                    <div className='row align-items-center text-light quic700'>
+                    <div className='col-11 mx-auto cardwhite'>
                         <div className='card-body'>
-                            <div className='card-title subjudul'>
-                                Anda belum memiliki produk untuk dijual
+                            <div className='col-11 cardgrey ml-5 mr-4 mt-4 mb-5 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
+                                Kamu belum memiliki produk untuk dijual
+                            </div>
+                            <div className='row text-center'>
+                                <div className='latar'>
+                                    <i className='info circle huge icon' style={{color:'black',backgroundColor:'transparent'}}></i>
+                                </div>
+                                <div className='w-100'></div>
+                                <div className='col text-center text-black-50 pt-4' style={{fontSize:'12pt'}}>
+                                    <p>Ingin jual produk kamu? yuk! tambah produk kamu  <NavLink to='addproduct' className='dimdom-pink'>disini</NavLink></p>
+                                </div>
+                            </div>
+                            <div className='row text-right pt-3 pb-3'>
+                                <div className='col'>
+                                    <img className='pig' src={require('../lib/pictures/PIG.png')} alt=""/>
+                                    <img className='pedal' src={require('../lib/pictures/pedal2.jpg')} alt=""/>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -442,9 +488,8 @@ class Myproduct extends Component {
         return(   
             <AbsoluteWrapper>
                 <Navbar/>
-                <div className='row dim-height text-light'> 
-                    <Sidebar/>
-                    <div className='col-9 mt-3'>
+                <div className='row dim-wrapper'> 
+                    <div className='col-11 mx-auto mt-3'>
                         {this.renderList()}
                     </div>
                 </div>

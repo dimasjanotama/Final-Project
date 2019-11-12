@@ -48,7 +48,14 @@ class Login extends Component {
                         3000
                     )
                 } else {
-                this.props.onLoginUser(res.data.result[0].id, res.data.result[0].username);
+                    this.props.onLoginUser(res.data.result[0].id, res.data.result[0].username);
+                    axios.post(urlApi+'gettoken',{
+                        username: this.state.username
+                    }).then(res=>{
+                        localStorage.setItem('token',res.data.token)
+                    }).catch(err=>{
+                        console.log(err);
+                    })
             }}
         })
     }
@@ -72,6 +79,7 @@ class Login extends Component {
     if(!this.props.user_name){
         return(
             <AbsoluteWrapper>
+                <div id='bg-base-login'>
                <Navbar/>
                 <div className='row align-items-center dim-height text-light quic700'>
                     <div className='col-5 mx-auto card'>
@@ -102,7 +110,7 @@ class Login extends Component {
                         </div>
                     </div>
                 </div>
-               <Footer />
+               </div>
             </AbsoluteWrapper>
             
         ) //----------------------------> kurung tutup return

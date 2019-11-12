@@ -8,7 +8,6 @@ import {Line} from 'react-chartjs-2'
 import moment from 'moment'
 
 import Navbar from './Navbar'
-import Sidebar from './Sidebar'
 import Footer from './Footer'
 var crypto = require('crypto')
 
@@ -785,8 +784,7 @@ class Myprofile extends Component {
             <AbsoluteWrapper>
                 <Navbar/>
                 <div className='row dim-height-addproduct text-light'> 
-                    <Sidebar/>
-                    <div className='col-9 mt-3'>
+                    <div className='col-12 mt-3'>
                         {this.renderList()}
                     </div>
                 </div>

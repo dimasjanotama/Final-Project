@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Link, Redirect} from 'react-router-dom'
+import {NavLink, Link, Redirect} from 'react-router-dom'
 import AbsoluteWrapper from './AbsoluteWrapper'
 import {connect} from 'react-redux'
 import axios from 'axios'
@@ -7,10 +7,10 @@ import alertify from 'alertifyjs'
 import moment from 'moment'
 
 import Navbar from './Navbar'
-import Sidebar from './Sidebar'
 import Footer from './Footer'
 import {clickSeller, detailTransaksi} from '../actions'
 import { saveAs } from 'file-saver';
+
 
 
 
@@ -51,15 +51,22 @@ class Notification extends Component {
     }
 
     getBuyTransaction = () => {
+        let token = localStorage.getItem('token')
         axios.get(urlApi+'getunverifiedtransaction',{
             params : {
                 idBuyer:  this.props.user_id
+            },
+            headers : {
+                authorization : token
             }
         }).then(res=>{
             this.setState({ unpaid: res.data })
             axios.get(urlApi+'getverifiedtransaction',{
                 params : {
                     idBuyer:  this.props.user_id
+                },
+                headers : {
+                    authorization : token
                 }
             }).then(res=>{
                 this.setState({ paid: res.data })
@@ -72,9 +79,13 @@ class Notification extends Component {
     }
 
     getSellTransaction = () => {
+        let token = localStorage.getItem('token')
         axios.get(urlApi+'gettransactionorder',{
             params : {
                 idSeller:  this.props.user_id
+            },
+            headers : {
+                authorization : token
             }
         }).then(res=>{
 
@@ -82,6 +93,9 @@ class Notification extends Component {
             axios.get(urlApi+'getorderlist',{
                 params : {
                     idSeller:  this.props.user_id
+                },
+                headers : {
+                    authorization : token
                 }
             }).then(res=>{
                 if(res.data[0]){
@@ -100,9 +114,13 @@ class Notification extends Component {
     }
 
     getHistory = () => {
+        let token = localStorage.getItem('token')
         axios.get(urlApi+'gethistory',{
             params : {
                 userId:  this.props.user_id
+            },
+            headers : {
+                authorization : token
             }
         }).then(res=>{
             if(res.data[0]){
@@ -272,9 +290,9 @@ class Notification extends Component {
             }, 1000);
             return (
                 <div>
-                    <div className='card-title subjudul'>
-                        Mohon segera selesaikan pembayaran Anda
-                    </div>       
+                    <div className='col-11 cardgrey ml-5 mr-4 mt-4 mb-5 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
+                        Mohon selesaikan pembayaran berikut
+                    </div>      
                     <div className='row'>
                         <div className='col card-title pt-4 mb-2'>Total Tagihan</div>
                         <div className='col card-title pt-4 mb-2'>Beli Dari</div>
@@ -345,9 +363,26 @@ class Notification extends Component {
     buyer = ()=>{
         if(!this.state.paid[0] && !this.state.unpaid[0]){
             return (
-                <div className='card-title subjudul'>
+                <>
+                <div className='col-11 cardgrey ml-5 mr-4 mt-4 mb-5 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
                     Belum ada pembelian
                 </div>
+                <div className='row text-center'>
+                    <div className='latar'>
+                        <i className='info circle huge icon' style={{color:'black',backgroundColor:'transparent'}}></i>
+                    </div>
+                    <div className='w-100'></div>
+                    <div className='col text-center text-black-50 pt-4' style={{fontSize:'12pt'}}>
+                        <p>Kamu belum membeli produk apapun, yuk! cari produk yang kamu mau <NavLink to='search' className='dimdom-pink'>disini</NavLink></p>
+                    </div>
+                </div>
+                <div className='row text-right'>
+                    <div className='col'>
+                        <img className='dino' src={require('../lib/pictures/dino2.png')} alt=""/>
+                        <img className='pedal' src={require('../lib/pictures/pedal2.jpg')} alt=""/>
+                    </div>
+                </div>
+                </>
             )
         } else if(!this.state.unpaid[0]){
             return (
@@ -527,9 +562,26 @@ class Notification extends Component {
             </div>  
         )} else {
             return (
-                <div className='card-title subjudul'>
-                    Belum ada orderan
+                <>
+                <div className='col-11 cardgrey ml-5 mr-4 mt-4 mb-5 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
+                    Belum ada pesanan
                 </div>
+                <div className='row text-center'>
+                    <div className='latar'>
+                        <i className='info circle huge icon' style={{color:'black',backgroundColor:'transparent'}}></i>
+                    </div>
+                    <div className='w-100'></div>
+                    <div className='col text-center text-black-50 pt-4' style={{fontSize:'12pt'}}>
+                        <p>Ingin jual produk kamu? yuk! tambah produk kamu  <NavLink to='addproduct' className='dimdom-pink'>disini</NavLink></p>
+                    </div>
+                </div>
+                <div className='row text-right pt-3 pb-3'>
+                    <div className='col'>
+                        <img className='pig' src={require('../lib/pictures/PIG.png')} alt=""/>
+                        <img className='pedal' src={require('../lib/pictures/pedal2.jpg')} alt=""/>
+                    </div>
+                </div>
+                </>
             )
         }
     }
@@ -538,25 +590,40 @@ class Notification extends Component {
         if(this.state.adaHistory){
             return (
                 <div>
-                    <div className='card-title subjudul pb-4'>
-                        History Transaksi (5 transaksi terakhir)
+                    <div className='col-11 cardgrey ml-5 mr-4 mt-4 mb-5 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
+                        Riwayat Transaksi (5 transaksi terakhir)
                     </div>
-                    <div className='dimdom-bottom'></div>
                     <div className='row justify-content-center'>
                         <div className='col-8'>
                             {this.renderHistory()}
                         </div>
                     </div>
-                    <div className='dimdom-bottom pt-4'></div>
-                    <div class="w-100"></div> 
-                    <div className='pt-3'></div> 
+                    <div className='pt-5'></div> 
                 </div>
             )
         } else {
             return (
-                <div className='card-title subjudul'>
-                    Belum ada history tansaksi
+                <>
+                <div className='col-11 cardgrey ml-5 mr-4 mt-4 mb-5 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
+                    Belum ada riwayat transaksi
                 </div>
+                <div className='row text-center'>
+                    <div className='latar'>
+                        <i className='info circle huge icon' style={{color:'black',backgroundColor:'transparent'}}></i>
+                    </div>
+                    <div className='w-100'></div>
+                    <div className='col text-center text-black-50 pt-4' style={{fontSize:'12pt'}}>
+                        <p>Kamu belum membeli dan menjual produk apapun, yuk! cari produk yang kamu mau <NavLink to='search' className='dimdom-pink'>disini</NavLink></p>
+                        <p> dan tambah produk kamu  <NavLink to='addproduct' className='dimdom-pink'>disini</NavLink></p>
+                    </div>
+                </div>
+                <div className='row text-right mt-2 pt-3 mb-3'>
+                    <div className='col'>
+                        <img className='diplo' src={require('../lib/pictures/DIPLO.png')} alt=""/>
+                        <img className='pedal' src={require('../lib/pictures/pedal2.jpg')} alt=""/>
+                    </div>
+                </div>
+                </>
             )
         }
     }
@@ -579,7 +646,7 @@ class Notification extends Component {
             if (transaction.idBuyer==this.props.user_id && transaction.statusNow=='Done'){
                 return (
                     <>
-                    <div className='row mt-4'>
+                    <div className='row mt-4 cardgrey'>
                         <div className='col-1'>
                             <i className='handshake outline big icon'></i>
                         </div>
@@ -587,7 +654,8 @@ class Notification extends Component {
                     </div>
                     <div className='row mt-1'>
                         <div className='col-1'></div>
-                        <div className='col' style={{fontSize:'14pt'}}>Transaksi dengan <span className='badge badge-primary'>{transaction.namaSeller}</span></div>
+                        <div className='col' style={{fontSize:'14pt'}}>Transaksi dengan <Link to='/otherprofile' onClick={()=>{this.props.clickSeller(transaction.idSeller)}}> 
+                        <span className='badge badge-primary'>{transaction.namaSeller}</span></Link></div>
                     </div>
                     <div className='row mt-1'>
                         <div className='col-1'></div>
@@ -615,7 +683,7 @@ class Notification extends Component {
             } else if(transaction.idBuyer==this.props.user_id && transaction.statusNow!=='Done'){
                 return (
                     <>
-                    <div className='row mt-4'>
+                    <div className='row mt-4 cardgrey'>
                         <div className='col-1'>
                             <i className='times big icon'></i>
                         </div>
@@ -623,19 +691,20 @@ class Notification extends Component {
                     </div>
                     <div className='row mt-1'>
                         <div className='col-1'></div>
-                        <div className='col' style={{fontSize:'14pt'}}>Transaksi dengan <span className='badge badge-primary'>{transaction.namaSeller}</span></div>
+                        <div className='col' style={{fontSize:'14pt'}}>Transaksi dengan <Link to='/otherprofile' onClick={()=>{this.props.clickSeller(transaction.idSeller)}}> 
+                        <span className='badge badge-primary'>{transaction.namaSeller}</span></Link></div>
                     </div>
                     <div className='row mt-1'>
                         <div className='col-1'></div>
                         <div className='col'>Pembelian</div>
-                        <div className='col-3 text-right'>
+                        <div className='col-4 text-right'>
                             <span className='badge badge-warning' style={{fontSize:'11pt'}}>Rp {transaction.nilaiTransaksi.toLocaleString('id')}</span>
                         </div>
                     </div>
                     <div className='row mt-1'>
                         <div className='col-1'></div>
                         <div className='col'>Transaksi Gagal/Dibatalkan</div>
-                        <div className='col-3 text-right'>
+                        <div className='col-5 text-right'>
                             <span className='badge badge-warning' style={{fontSize:'11pt'}}>{transaction.statusNow}</span>
                         </div>
                     </div>
@@ -644,7 +713,7 @@ class Notification extends Component {
             } else if (transaction.idSeller==this.props.user_id && transaction.statusNow=='Done'){
                 return (
                     <>
-                    <div className='row mt-4'>
+                    <div className='row mt-4 cardgrey'>
                         <div className='col-1'>
                             <i className='handshake outline big icon'></i>
                         </div>
@@ -652,7 +721,8 @@ class Notification extends Component {
                     </div>
                     <div className='row mt-1'>
                         <div className='col-1'></div>
-                        <div className='col' style={{fontSize:'14pt'}}>Transaksi dengan <span className='badge badge-primary'>{transaction.namaBuyer}</span></div>
+                        <div className='col' style={{fontSize:'14pt'}}>Transaksi dengan <Link to='/otherprofile' onClick={()=>{this.props.clickSeller(transaction.idSeller)}}> 
+                        <span className='badge badge-primary'>{transaction.namaSeller}</span></Link></div>
                     </div>
                     <div className='row mt-1'>
                         <div className='col-1'></div>
@@ -674,14 +744,14 @@ class Notification extends Component {
         if(this.state.toogle=='buyer'){
         return (
             <div className='row align-items-center text-light quic700'>
-                <div className='col-11 mx-auto card'>
+                <div className='col-11 mx-auto cardwhite'>
                     <div className='card-body'>
                         <div className='row card-title'>
                             <div className='col card-title text-right'>
                                 <div class="ui inverted basic dimdom3 buttons">
-                                    <button onClick={()=>{this.setState({toogle: 'buyer'})}} class="ui inverted basic dimdom3 button">Buyer</button>
-                                    <button onClick={()=>{this.setState({toogle: 'seller'})}} class="ui inverted basic dimdom3 button">Seller</button>
-                                    <button onClick={()=>{this.setState({toogle: 'history'})}} class="ui inverted basic dimdom3 button">History</button>
+                                    <button onClick={()=>{this.setState({toogle: 'buyer'})}} class="ui inverted basic dimdom3 button">Beli</button>
+                                    <button onClick={()=>{this.setState({toogle: 'seller'})}} class="ui inverted basic dimdom3 button">Jual</button>
+                                    <button onClick={()=>{this.setState({toogle: 'history'})}} class="ui inverted basic dimdom3 button">Riwayat</button>
                                 </div>
                             </div>
                         </div>
@@ -692,14 +762,14 @@ class Notification extends Component {
         )} else if(this.state.toogle=='seller'){
             return (
                 <div className='row align-items-center text-light quic700'>
-                    <div className='col-11 mx-auto card'>
+                    <div className='col-11 mx-auto cardwhite'>
                         <div className='card-body'>
                             <div className='row card-title'>
                                 <div className='col card-title text-right'>
                                     <div class="ui inverted basic dimdom3 buttons">
-                                        <button onClick={()=>{this.setState({toogle: 'buyer'})}} class="ui inverted basic dimdom3 button">Buyer</button>
-                                        <button onClick={()=>{this.setState({toogle: 'seller'})}} class="ui inverted basic dimdom3 button">Seller</button>
-                                        <button onClick={()=>{this.setState({toogle: 'history'})}} class="ui inverted basic dimdom3 button">History</button>
+                                        <button onClick={()=>{this.setState({toogle: 'buyer'})}} class="ui inverted basic dimdom3 button">Beli</button>
+                                        <button onClick={()=>{this.setState({toogle: 'seller'})}} class="ui inverted basic dimdom3 button">Jual</button>
+                                        <button onClick={()=>{this.setState({toogle: 'history'})}} class="ui inverted basic dimdom3 button">Riwayat</button>
                                     </div>
                                 </div>
                             </div>
@@ -709,15 +779,15 @@ class Notification extends Component {
                 </div>
         )} else {
             return (
-                <div className='row align-items-center text-light quic700'>
-                    <div className='col-11 mx-auto card'>
+                <div className='row align-items-center quic700'>
+                    <div className='col-11 mx-auto cardwhite'>
                         <div className='card-body'>
                             <div className='row card-title'>
                                 <div className='col card-title text-right'>
                                     <div class="ui inverted basic dimdom3 buttons">
-                                        <button onClick={()=>{this.setState({toogle: 'buyer'})}} class="ui inverted basic dimdom3 button">Buyer</button>
-                                        <button onClick={()=>{this.setState({toogle: 'seller'})}} class="ui inverted basic dimdom3 button">Seller</button>
-                                        <button onClick={()=>{this.setState({toogle: 'history'})}} class="ui inverted basic dimdom3 button">History</button>
+                                        <button onClick={()=>{this.setState({toogle: 'buyer'})}} class="ui inverted basic dimdom3 button">Beli</button>
+                                        <button onClick={()=>{this.setState({toogle: 'seller'})}} class="ui inverted basic dimdom3 button">Jual</button>
+                                        <button onClick={()=>{this.setState({toogle: 'history'})}} class="ui inverted basic dimdom3 button">Riwayat</button>
                                     </div>
                                 </div>
                             </div>
@@ -734,9 +804,8 @@ class Notification extends Component {
         return(   
             <AbsoluteWrapper>
                 <Navbar/>
-                <div className='row dim-height-addproduct text-light'> 
-                    <Sidebar/>
-                    <div className='col-9 mt-3'>
+                <div className='row dim-wrapper text-light'> 
+                    <div className='col-11 mx-auto mt-3'>
                         {this.renderList()}
                     </div>
                 </div>

@@ -41,7 +41,7 @@
 .ui.inverted.dimdom.basic.buttons .button,
 .ui.inverted.dimdom.buttons .basic.button,
 .ui.inverted.dimdom.basic.button {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-weight: 700;
   background-color: transparent;
   -webkit-box-shadow: 0px 0px 0px 4px rgb(255, 255, 255) inset !important;
@@ -56,7 +56,7 @@
 .ui.inverted.dimdom.basic.buttons .button:hover,
 .ui.inverted.dimdom.buttons .basic.button:hover,
 .ui.inverted.dimdom.basic.button:hover {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-weight: 700;
   background-color: transparent;
   -webkit-box-shadow: 0px 0px 0px 0px rgba(255, 31, 210, 0) inset !important;
@@ -73,7 +73,7 @@
 .ui.inverted.dimdom.basic.buttons .button:focus,
 .ui.inverted.dimdom.basic.button:focus {
   
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-weight: 700;
   background-color: transparent;
   -webkit-box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
@@ -88,7 +88,7 @@
 .ui.inverted.dimdom.basic.buttons .active.button,
 .ui.inverted.dimdom.buttons .basic.active.button,
 .ui.inverted.dimdom.basic.active.button {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-weight: 700;
   background-color: transparent;
   -webkit-box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
@@ -103,7 +103,7 @@
 .ui.inverted.dimdom.basic.buttons .button:active,
 .ui.inverted.dimdom.buttons .basic.button:active,
 .ui.inverted.dimdom.basic.button:active {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-weight: 700;
   background-color: transparent;
   -webkit-box-shadow: 0px 0px 0px 0px rgb(255, 31, 210) inset !important;
@@ -128,14 +128,16 @@
   background-color: transparent;
   -webkit-box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
   box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
-  color: rgb(255, 255, 255) !important;
+  color: rgb(255, 31, 210) !important;
   border-radius: 25px;
-
 }
 
 .ui.inverted.dimdom3.basic.buttons .button:hover,
 .ui.inverted.dimdom3.buttons .basic.button:hover,
-.ui.inverted.dimdom3.basic.button:hover {
+.ui.inverted.dimdom3.basic.button:hover,
+.ui.inverted.dimdom3.basic.buttons .button:focus,
+.ui.inverted.dimdom3.basic.buttons .button:focus,
+.ui.inverted.dimdom3.basic.button:focus {
   font-family: 'Quicksand', sans-serif;
   font-weight: 700;
   background-color: rgb(255, 31, 210) !important;
@@ -143,19 +145,6 @@
   box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
   color: rgb(255, 255, 255) !important;
   transition: 0.3s; 
-
-}
-
-.ui.inverted.dimdom3.basic.buttons .button:focus,
-.ui.inverted.dimdom3.basic.buttons .button:focus,
-.ui.inverted.dimdom3.basic.button:focus {
-  
-  font-family: 'Quicksand', sans-serif;
-  background-color: rgb(255, 31, 210);
-  -webkit-box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
-  box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
-  color: rgb(255, 255, 255) !important;
-  
 }
 
 .ui.inverted.dimdom3.basic.buttons .active.button,
@@ -177,7 +166,57 @@
   -webkit-box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0,5) inset !important;
   box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
   color: rgb(255, 255, 255) !important;
+}
+
+/* --------------------------------------------------------------------------- */
+
+.ui.inverted.small.basic.buttons .button,
+.ui.inverted.small.buttons .basic.button,
+.ui.inverted.small.basic.button {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 9pt;
+  background-color: transparent;
+  -webkit-box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
+  box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
+  color: rgb(255, 31, 210) !important;
+  border-radius: 25px;
+}
+
+.ui.inverted.small.basic.buttons .button:hover,
+.ui.inverted.small.buttons .basic.button:hover,
+.ui.inverted.small.basic.button:hover,
+.ui.inverted.small.basic.buttons .button:focus,
+.ui.inverted.small.basic.buttons .button:focus,
+.ui.inverted.small.basic.button:focus {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  background-color: rgb(255, 31, 210) !important;
+  -webkit-box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
+  box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
+  color: rgb(255, 255, 255) !important;
+  transition: 0.3s; 
+}
+
+.ui.inverted.dimdom3.basic.buttons .active.button,
+.ui.inverted.dimdom3.buttons .basic.active.button,
+.ui.inverted.dimdom3.basic.active.button {
+  font-family: 'Quicksand', sans-serif;
+  background-color: rgb(255, 31, 210);
+  -webkit-box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0,5) inset !important;
+  box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
+  color: rgb(255, 255, 255) !important;
  
+}
+
+.ui.inverted.dimdom3.basic.buttons .button:active,
+.ui.inverted.dimdom3.buttons .basic.button:active,
+.ui.inverted.dimdom3.basic.button:active {
+  font-family: 'Quicksand', sans-serif;
+  background-color: rgb(255, 31, 210);
+  -webkit-box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0,5) inset !important;
+  box-shadow: 0px 0px 0px 2px rgb(255, 31, 210) inset !important;
+  color: rgb(255, 255, 255) !important;
 }
 
 /*---------------------------BUTTON SIDEBAR------------------------*/
@@ -195,6 +234,8 @@
   margin: 4px 2px;
   transition: 0.3s; 
 }
+
+
 
 .ui.inverted.dimdom4.basic.buttons .button:hover,
 .ui.inverted.dimdom4.buttons .basic.button:hover,
@@ -268,11 +309,11 @@
 .ui.toggle.buttons .active.button,
 .ui.buttons .button.toggle.active,
 .ui.button.toggle.active {
-  background-color: rgb(255, 31, 210)!important;
+  background-color: rgb(255, 255, 255)!important;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
   text-shadow: none;
-  color: #FFFFFF !important;
+  color: rgb(255, 255, 255)!important;
 }
 
 .ui.buttons .or {
@@ -391,13 +432,13 @@
   .dimdom-pink {
     font-family: 'Quicksand', sans-serif;
     font-weight: 700;
-    color: rgb(255, 255, 255);
+    color: rgb(255, 31, 210);
   }
 
   .dimdom-pink:hover {
-    font-family: 'Quicksand', sans-serif;
     color: rgb(255, 31, 210);
     transition: 0.5s;
+    text-decoration-line: underline;
   }
 
   .dimdom-pink-quic {
@@ -416,19 +457,37 @@
   }
 
 
+/* ------------------------------NAVBAR------------------------------ */
 
+  .dim-nav{
+    box-shadow: 0 5px 10px -2px rgba(0,0,0,.2) ;
+  }
 
   .dimdom-pink-logo {
-    font-family:  'Mansalva', cursive;
-    font-weight: 900;
+    font-family:  'QUicksand';
+    font-weight: 700;
     color: rgb(255, 255, 255);
   }
 
   .dimdom-pink-logo:hover {
-    font-family:  'Mansalva', cursive;
+    font-family:  'QUicksand';
     color: rgb(255, 31, 210) !important;
-    transition: 0.5s;
+    transition: 1s;
   }
+  .dimdom-pink-logo2 {
+    font-family:  'QUicksand';
+    font-weight: 700;
+    /* text-shadow: -4px 3px 2px rgb(255, 147, 232) ; */
+    color: rgb(51, 51, 51);
+  }
+
+  .dimdom-pink-logo2:hover {
+    font-family:  'QUicksand';
+    color: rgb(255, 31, 210) !important;
+    transition: 0.4s;
+  }
+
+
 
 
 /*-------------------------------------------------------------------------------*/
@@ -448,11 +507,18 @@
 
 .dimdom-bg {
   height: 15px;
-  background: linear-gradient(to right,rgba(0, 0, 0, 0) 0%, rgb(255, 31, 210) 10%,  rgba(0, 0, 0, 0) 22%);
+  background: linear-gradient(to right,rgb(0, 0, 0) 0%, rgb(255, 31, 210) 10%,  rgb(0, 0, 0) 22%);
 }
 .dimdom-bg-bottom {
-  height: 115px;
-  background: linear-gradient(to right, rgb(255, 255, 255) 0%,  rgb(0, 0, 0) 35%, rgb(0, 0, 0) 65%, rgb(255, 255, 255) 100%);
+  height: 70px;
+  background: rgb(66, 66, 66);
+  color: rgb(255, 255, 255);
+}
+
+a{
+    text-decoration: none; 
+    color: black; 
+    background-color: #fff;
 }
 
 
@@ -531,7 +597,7 @@ div.box-containe div {
 .quic700 {
   font-family: 'Quicksand', sans-serif;
   font-weight: 700;
-
+  color: rgb(71, 71, 71);
 }
 
 .dimdom-color{
@@ -548,11 +614,9 @@ div.box-containe div {
 
 .ss {color: rgb(178, 115, 187)}
 
-.dim-height-home {
-  height: 900px;
-}
+
 .dim-height {
-  height: 1000px;
+  min-height: 500px;
 }
 
 .dim-height-addproduct {
@@ -565,10 +629,19 @@ div.box-containe div {
 
 
 #bg-base {
-  height: 1200px;
-  background-image: url('./lib/pictures/bg-pic.png')!important;
-  background-repeat: no-repeat!important;
-  background-attachment: fixed!important;
+  height: 800px;
+  background-image: url('./lib/pictures/c.jpg')!important;
+  background-size: 100%!important;
+}
+
+#bg-base-login {
+  height: 800px;
+  background-image: url('./lib/pictures/e.png')!important;
+  background-size: 100%!important;
+}
+#bg-base-register {
+  min-height: 800px;
+  background-image: url('./lib/pictures/d.png')!important;
   background-size: 100%!important;
 }
 
@@ -589,6 +662,7 @@ div.box-containe div {
 .card {
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 20px;
+  box-shadow: 0 5px 10px -2px rgba(0,0,0,1);
 }
 
 .cardblack {
@@ -608,6 +682,7 @@ div.box-containe div {
 .cardwhite {
   background-color: rgb(255, 255, 255);
   border-radius: 20px;
+  box-shadow: 0 5px 10px -2px rgba(0,0,0,0.3);
 }
 .cardgrey {
   background-color: rgb(211, 211, 211);
@@ -641,10 +716,10 @@ div.box-containe div {
   padding: 0.5rem 0.75rem;
   margin-left: -1px;
   line-height: 1.25;
-  color: rgb(255, 255, 255);
+  color: rgb(255, 31, 210);
   font-family: 'Quicksand';
   background-color: rgba(0,0,0,0);
-  border: 3px solid rgb(255, 31, 210);
+  border: 3px solid rgba(78, 78, 78, 0);
 }
 
 .page-link:hover {
@@ -688,8 +763,8 @@ select.form-control[size], select.form-control[multiple] {
   font-family: 'Quicksand';
   background-color: rgba(0,0,0,0);
   background-clip: padding-box;
-  border: 1px solid rgb(74, 72, 100);
-  border-radius: 0.5rem;
+  border: 2px solid rgb(74, 72, 100);
+  border-radius: 20px;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
@@ -778,7 +853,7 @@ select.form-control[size], select.form-control[multiple] {
 
 
 /*--------------------
-        Inputs
+        Inputs DARK
 ---------------------*/
 
 .ui.input2 {
@@ -880,46 +955,125 @@ select.form-control[size], select.form-control[multiple] {
 .ui.input2.focus > input::-webkit-input-placeholder,
 .ui.input2 > input:focus::-webkit-input-placeholder {
   color: rgba(191, 191, 191, 0.87);
+
 }
 
 .ui.input2.focus > input::-moz-placeholder,
 .ui.input2 > input:focus::-moz-placeholder {
   color: rgba(191, 191, 191, 0.87);
+  
 }
 
 .ui.input2.focus > input:-ms-input-placeholder,
 .ui.input2 > input:focus:-ms-input-placeholder {
   color: rgba(191, 191, 191, 0.87);
 }
+/*--------------------
+        Inputs LIGHT
+---------------------*/
 
-
-.fade-in {
-  animation: fadeIn 6s; 
+.ui.input3 {
+  position: relative;
+  font-weight: normal;
+  font-style: normal;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  color: rgb(77, 77, 77);
 }
 
-.fade-out {
-  animation: fadeOut 6s; 
+.ui.input3 > input {
+  margin: 0em;
+  max-width: 100%;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  outline: none;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  text-align: left;
+  line-height: 1.21428571em;
+  font-family: 'Quicksand', sans-serif;
+  padding: 0em 1em;
+  padding-top: 0em;
+  background: rgba(255, 255, 255, 0);
+  border: 2px solid rgb(74, 72, 100);
+  color: rgb(77, 77, 77);
+  border-radius: 20px;
+  -webkit-transition: border-color 0.1s ease, -webkit-box-shadow 0.1s ease;
+  transition: border-color 0.1s ease, -webkit-box-shadow 0.1s ease;
+  transition: box-shadow 0.1s ease, border-color 0.1s ease;
+  transition: box-shadow 0.1s ease, border-color 0.1s ease, -webkit-box-shadow 0.1s ease;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  transition: 0.8s
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
+/*--------------------
+      Placeholder
+---------------------*/
 
-  to {
-    opacity: 1;
-  }
+/* browsers require these rules separate */
+
+.ui.input3 > input::-webkit-input-placeholder {
+  color: rgba(128, 128, 128, 0.87);
+
 }
 
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
+.ui.input3 > input::-moz-placeholder {
+  color: rgba(128, 128, 128, 0.87);
 
-  to {
-    opacity: 0;
-  }
 }
+
+.ui.input3 > input:-ms-input-placeholder {
+  color: rgba(128, 128, 128, 0.87);
+
+}
+
+
+/*--------------------
+        Active
+---------------------*/
+
+.ui.input3 > input:active,
+.ui.input3.down input {
+  border-color: rgb(255, 80, 220);
+  background: rgba(255, 255, 255, 0);
+  color: rgba(0, 0, 0, 0.87);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  
+}
+
+
+/*--------------------
+        Focus
+---------------------*/
+
+.ui.input3.focus > input,
+.ui.input3 > input:focus {
+  border-color: rgb(255, 80, 220);
+  background: rgba(255, 255, 255, 0);
+  color: rgb(77, 77, 77);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  transition: 0.4s
+}
+
+.ui.input3.focus > input::-webkit-input-placeholder,
+.ui.input3 > input:focus::-webkit-input-placeholder {
+  color: rgba(128, 128, 128, 0.87);
+}
+
+.ui.input3.focus > input::-moz-placeholder,
+.ui.input3 > input:focus::-moz-placeholder {
+  color: rgba(128, 128, 128, 0.87);
+}
+
+.ui.input2.focus > input:-ms-input-placeholder,
+.ui.input2 > input:focus:-ms-input-placeholder {
+  color: rgba(128, 128, 128, 0.87);
+}
+
 
 i.link.icon,
 i.link.icons {
@@ -991,36 +1145,149 @@ i.inverted.dimdom.icon {
 }
 
 
-/* ---------------------MODAL ------------------------- */
 
-.modal {
-  position: fixed;
-  top: 0;
+
+
+
+
+
+
+
+/* -----------------------------NEW CSS------------------------------------- */
+
+.navbar-fx {
+ position: sticky;
+}
+
+.badge-grey{
+  background-color: rgb(76, 76, 76);
+  color: whitesmoke;
+}
+
+.dimdom-pink-black{
+  color: rgb(80, 80, 80);
+  font-family: 'Quicksand';
+  font-weight: 700;
+}
+.dimdom-pink-black:hover{
+  color: rgb(255, 31, 210);
+  transition: 0.4s;
+}
+
+.badge-primary{
+  background-color: rgb(255, 31, 210);
+}
+
+.icon{
+  color: rgb(71, 71, 71);
+}
+
+.dim-wrapper{
+  min-height: 600px;
+}
+
+.btn-one {
+  font-family: 'Quicksand';
+  font-weight: 700;
+  color: rgb(71, 71, 71);
+  transition: all 0.3s;
+  position: relative;
+  cursor: pointer;
+}
+
+.btn-one span {
+  transition: all 0.3s;
+}
+
+.btn-one::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
   left: 0;
-  width:100%;
-  height: 1095px;
-  background: rgba(0, 0, 0, 0.6);
-  transition: 1s;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0;
+  transition: all 0.3s;
+  border-top-width: 3px;
+  border-bottom-width: 3px;
+  border-top-style: solid;
+  border-bottom-style: solid;
+  border-top-color: rgb(71, 71, 71);
+  border-bottom-color: rgb(70, 70, 70);
+  transform: scale(0.1, 1);
 }
 
-  .modal-main {
-    position:fixed;
-    background: rgba(0, 0, 0, 0);
-    width: 100%;
-    height: auto;
-    left:50%;
-    transform: translate(-50%,-50%);
-    margin-top: 450px;
-  }
-
-
-.display-block {
-  display: block;
+.btn:focus, .btn.focus {
+  outline: 0;
+  box-shadow: 0 0 0 0;
 }
 
-.display-none {
-  display: none;
+.btn-one:hover::before {
+  opacity: 1; 
+  transform: scale(1, 1); 
 }
 
+.search{
+  color: rgb(71, 71, 71);
+}
 
+.latar{
+  position: relative;
+  left: 500px;
+  background-color: rgb(211, 211, 211);
+  padding-top: 22px;
+  padding-left: 6px;
+  width: 100px;
+  height: 100px;
+  border-radius: 60pt;
+}
 
+.dino{
+  width: 15%;
+  animation-name: walk;
+  animation-duration: 2s;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+}
+
+.diplo{
+  width: 20%;
+  animation-name: walk;
+  animation-duration: 2s;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+}
+
+.pig{
+  width: 12%;
+  animation-name: walk;
+  animation-duration: 2s;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+}
+
+.diamond{
+  position: relative;
+  top: 2%;
+  left: 10%;
+  width: 70%;
+}
+.magnify{
+  position: relative;
+  top: 20%;
+  left: 10%;
+  width: 120%;
+}
+
+@keyframes walk{
+  from{ transform: translateX(-650px)}
+  to{ transform: translateX(-250px);}
+}
+
+.pedal{
+  width:10%;
+  position: relative;
+  right: 20%;
+  animation: shake 1.5s infinite;
+}

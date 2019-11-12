@@ -6,6 +6,7 @@ import {Line, Doughnut, Pie} from 'react-chartjs-2'
 import axios from 'axios'
 import moment from 'moment'
 import Navbar from './Navbar'
+import Footer from './Footer'
 
 
 
@@ -33,6 +34,7 @@ class DashboardAdmin extends Component {
     }
 
     getAllChart = () => {
+        let token = 
         axios.get(urlApi+'getuserschart')
         .then(res=>{
             this.setState({userChart: res.data})
@@ -562,16 +564,7 @@ class DashboardAdmin extends Component {
         return(   
             <AbsoluteWrapper>
                 <Navbar/>
-                <div className='row dim-height-addproduct text-light'> 
-                    <div className='col-3 mt-3'>
-                        <div className='card-nav p-3 dim-height-nav'>
-                            <div className='card-title'>
-                                <NavLink to='/verifier' className='ui inverted basic dimdom4 button mt-5'>Verifikasi</NavLink>   
-                                <NavLink to='/dashboardadmin' className='ui inverted basic dimdom4 button mt-5'>Dashboard</NavLink>   
-                            </div>
-                        </div>
-                </div>
-                    <div className='col-9 mt-3'>
+                    <div className='col-11 mx-auto mt-3'>
                         <div className='row align-items-center text-light quic700 mr-4'>
                             <div className='col-12 mx-auto cardblack'>
                                 <div className='card-body'>
@@ -580,7 +573,7 @@ class DashboardAdmin extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
+                    <Footer />
             </AbsoluteWrapper>
         )
         } else {

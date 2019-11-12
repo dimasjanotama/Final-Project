@@ -13,17 +13,18 @@ class Home extends Component {
         if (!this.props.user_name){
         return(   
             <AbsoluteWrapper>
+            <div id='bg-base'>   
                 <Navbar/>
                 <div className='text-light dim-height'>
                     <div className='row mx-auto align-items-center w-75 text-center' style={{height:'180px'}}>
-                        <div className='col monalt900 dimdom-color' style={{fontSize:'80pt'}}>Fxpedia.</div> 
+                        <div className='col quic700p dimdom-color' style={{fontSize:'90pt',fontWeight:'bold'}}>fxpedia</div> 
                     </div>
                     <div className='mx-auto align-items-center text-center' style={{height:'100px'}}>
-                        <h1 className='m-0 mon700' style={{fontSize:'30pt'}}>- Market Place -</h1>
+                        <h1 className='m-0 quic700b' style={{fontSize:'30pt'}}>- Portal Jual Beli -</h1>
                         <div className='row align-items-center'>
-                            <h1 className='col m-0 text-right mon700' style={{fontSize:'30pt'}}>Untuk</h1>
-                            <h1 className='col-3 m-0 mon700 dimdom-color ' style={{fontSize:'30pt'}}>Pecinta Efek</h1>
-                            <h1 className='col m-0 text-left mon700' style={{fontSize:'30pt'}}>Stompbox</h1>
+                            <h1 className='col m-0 quic700b' style={{fontSize:'30pt',left:'16%'}}>Untuk</h1>
+                            <h1 className='col-3 m-0 quic700p dimdom-color ' style={{fontSize:'30pt'}}>Pecinta Efek</h1>
+                            <h1 className='col m-0 quic700b' style={{fontSize:'30pt',right:'13%'}}>Stompbox</h1>
                         </div>
                     </div>
                     <div className='row align-items-center' style={{height:'320px'}}>
@@ -35,7 +36,7 @@ class Home extends Component {
                         </div>
                     </div>
                 </div>
-                <Footer/>
+            </div>
             </AbsoluteWrapper>
         )
     } else {
