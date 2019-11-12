@@ -29,7 +29,12 @@ class Verifier extends Component {
     }
 
     getTransaction = () => {
-        axios.get(urlApi+'getunpaidverification')
+        let token = localStorage.getItem('token')
+        axios.get(urlApi+'getunpaidverification',{
+            headers : {
+                authorization : token
+            }
+        })
         .then(res=>{
             this.setState({
                 transactionsPay: res.data,
@@ -41,7 +46,12 @@ class Verifier extends Component {
     }
 
     getTransactionPengiriman = () => {
-        axios.get(urlApi+'getshippingverification')
+        let token = localStorage.getItem('token')
+        axios.get(urlApi+'getshippingverification',{
+            headers : {
+                authorization : token
+            }
+        })
         .then(res=>{
             this.setState({
                 transactionsShip: res.data,
@@ -53,7 +63,12 @@ class Verifier extends Component {
     }
 
     getTransactionPenerimaan = () => {
-        axios.get(urlApi+'getalltransactions')
+        let token = localStorage.getItem('token')
+        axios.get(urlApi+'getalltransactions',{
+            headers : {
+                authorization : token
+            }
+        })
         .then(res=>{
             this.setState({
                 transactionsReceive: res.data,
@@ -306,7 +321,7 @@ class Verifier extends Component {
         if(this.state.toogle=='pembayaran'){
             return (
                 <div className='row align-items-center text-light quic700'>
-                    <div className='col-11 mx-auto card'>
+                    <div className='col-11 mx-auto cardwhite'>
                         <div className='card-body'>
                             <div className='col card-title text-right'>
                                 <div class="ui inverted basic dimdom3 buttons">
@@ -318,7 +333,7 @@ class Verifier extends Component {
                             <div className='row card-title'>
                                 <div className='col card-title'>
                                 <div class="table-responsive">
-                                <table class="table table-striped table-dark">
+                                <table class="table table-striped">
                                     <thead>
                                         <tr>
                                         <th scope="col">ID</th>
@@ -348,7 +363,7 @@ class Verifier extends Component {
         } else if (this.state.toogle=='pengiriman'){
             return (
                 <div className='row align-items-center text-light quic700'>
-                    <div className='col-11 mx-auto card'>
+                    <div className='col-11 mx-auto cardwhite'>
                         <div className='card-body'>
                             <div className='col card-title text-right'>
                                 <div class="ui inverted basic dimdom3 buttons">
@@ -360,7 +375,7 @@ class Verifier extends Component {
                             <div className='row card-title'>
                                 <div className='col card-title'>
                                 <div class="table-responsive">
-                                <table class="table table-striped table-dark">
+                                <table class="table table-striped">
                                     <thead>
                                         <tr>
                                         <th scope="col">ID</th>
@@ -388,7 +403,7 @@ class Verifier extends Component {
         } else {
             return (
                 <div className='row align-items-center text-light quic700'>
-                    <div className='col-11 mx-auto card'>
+                    <div className='col-11 mx-auto cardwhite'>
                         <div className='card-body'>
                             <div className='col card-title text-right'>
                                 <div class="ui inverted basic dimdom3 buttons">
@@ -400,7 +415,7 @@ class Verifier extends Component {
                             <div className='row card-title'>
                                 <div className='col card-title'>
                                 <div class="table-responsive">
-                                <table class="table table-striped table-dark">
+                                <table class="table table-striped">
                                     <thead>
                                         <tr>
                                         <th scope="col">ID</th>

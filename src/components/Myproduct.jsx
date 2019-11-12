@@ -318,18 +318,20 @@ class Myproduct extends Component {
                 )
             }
         } else if(this.state.display == 'detail'){
+            let berat = this.state.product.berat/1000
             return (
             <div className='container'>
-            <div className='card col-10 mx-auto my-3 pb-3 quic700'>
+            <div className='card col-10 mx-auto text-light my-3 pb-3 quic700'>
                 <div className='col text-right mt-4 pr-1'>
-                    <i className='times link icon' onClick={()=>this.setState({display: 'group'})}></i>
+                    <i className='times link icon text-light' onClick={()=>this.setState({display: 'group'})}></i>
                 </div>
                 <div className='row card-body pb-1'>
                     <div className='col-5 text-center'>
                         <img className='card-img-top mb-3' src={`http://localhost:7777/files/${this.state.product.fotoProduk}`} style={{width:'300px', borderRadius:'20pt'}} alt=""/>
                     </div>
                     <div className='col-7'>
-                        <h2 className='quic700'><b>{this.state.product.namaProduk}</b></h2>
+                        <h2 className='quic700 text-light'><b>{this.state.product.namaProduk}</b>
+                            <span className='badge badge-primary ml-3'>{this.state.product.kategori}</span></h2>
                         <div className='dimdom-bottom'></div>
                         <p style={{fontSize:'22pt'}} className='quic700p mt-3'>Rp. {this.state.product.harga.toLocaleString('id')}</p>
                         <div className='row'>
@@ -337,7 +339,7 @@ class Myproduct extends Component {
                                 Pengiriman
                             </div>
                             <div className='col-1 text-right'>
-                                <i className='shipping fast icon'></i>
+                                <i className='shipping fast icon text-light'></i>
                             </div>
                             <div className='col-8 pl-0 text-left'>
                                 JNE Reguler
@@ -349,6 +351,12 @@ class Myproduct extends Component {
                             <div className='col-4'></div>
                             <div className='col-8 pl-0 text-left'>
                                 Antar Pulau Rp 50.000 - Rp.160.000
+                            </div>
+                            <div className='col-3 pt-4 mt-2'>
+                                Berat
+                            </div>
+                            <div className='col-9 pt-4 mt-2 text-left ui input2'>
+                                {berat} kg                         
                             </div>
                             <div className='col-3 pt-4 mt-2'>
                                 Kuantitas
@@ -372,17 +380,21 @@ class Myproduct extends Component {
         )
         } else {
             return (
-                <div className='row align-items-center text-light quic700'>
-                    
-                <div className='col-8 mx-auto card'>
+                <div className='row text-light quic700'>
+                <div className='col-2'>
+                    <img className='pedal2' src={require('../lib/pictures/ADDPRODUCT.png')} alt=""/>
+                </div>
+                <div className='col-8 mx-auto card pt-2 pl-4 pr-4 pb-4'>
                     <div className='col text-right mt-4 pr-1'>
-                        <i className='times link icon' onClick={()=>this.setState({display: 'group'})}></i>
+                        <i className='times link icon text-light' onClick={()=>this.setState({display: 'group'})}></i>
                     </div>
                     <div className='card-body'>
-                    <div className='card-title subjudul'>
-                        Edit Produk
+                    <div className='row cardwhite ml-3 mr-3 mb-4 pr-4 pl-4 justify-content-center'>
+                        <div className='col-12 cardgrey ml-4 mr-4 mt-4 mb-4 pt-4 pb-4 pr-3 pl-5 text-dark' style={{fontSize:'16pt'}}>
+                            Perbarui Produk
+                        </div>
                     </div>
-                    <div className='card-title pt-4'>
+                    <div className='card-title pt-1'>
                         Informasi &#38; Detail Produk
                     </div>
                     <div className='dimdom-bottom'></div>
@@ -441,7 +453,7 @@ class Myproduct extends Component {
                         <div className='col card-title pt-4 mb-2'>Kondisi Barang</div>
                         <div class="w-100"></div>
                         <div class="col ui input2">
-                            <select className='form-control' onChange={(e) => this.setState({kondisi: e.target.value})} name="" id="">
+                            <select className='form-control2' onChange={(e) => this.setState({kondisi: e.target.value})} name="" id="">
                                 <option selected disabled>Kondisi Barang</option>
                                 <option value="Baru">Baru</option>
                                 <option value="Bekas">Bekas</option>
@@ -452,11 +464,11 @@ class Myproduct extends Component {
                         Deskripsi Produk
                     </div>
                     <div className='dimdom-bottom'></div>           
-                    <div className='row'>
+                    <div className='row mt-4'>
                         <div class=" col ui form">
                             <div class="field">
-                                <label>Text</label>
-                                <textarea rows='4' onChange={(e) => this.setState({deskripsi: e.target.value})} type="text" placeholder="Tulis deskripsi efek anda">
+                                <textarea style={{borderRadius:'15px'}} className='form-control' rows='4' 
+                                onChange={(e) => this.setState({deskripsi: e.target.value})} placeholder="Tulis deskripsi efek anda">
                                 </textarea>
                             </div>
                         </div>                               
@@ -464,13 +476,13 @@ class Myproduct extends Component {
                     <div className='row'>
                         <div className='col pt-3'>
                             <input type="file" ref='fileBtn' onChange={(e) => this.setState({selectedFile : e.target.files[0]})} className='d-none'/>
-                            <input type='button' onClick={() => this.refs.fileBtn.click()} className='ui inverted basic dimdom3 button' value='Unggah foto'/>
+                            <input type='button' onClick={() => this.refs.fileBtn.click()} className='ui inverted basic small button' value='Unggah foto'/>
                             {this.displayfilename()}
                         </div>
                     </div>
                     <div className='row text-center pt-5'>
                         <div className='col mx-auto'>
-                            <button onClick={this.onSubmitEdit} className='ui inverted basic dimdom3 button '>Edit</button>
+                            <button onClick={this.onSubmitEdit} className='ui inverted basic dimdom3 button '>Perbarui</button>
                             {this.notification()}
                         </div>
                         <div class="w-100"></div>

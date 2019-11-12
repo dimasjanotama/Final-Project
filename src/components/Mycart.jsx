@@ -101,16 +101,17 @@ class Mycart extends Component {
     }
 
     renderCart = () => {
-        console.log(this.props.kode_unik);
-        this.subtotal = 0
+        this.totalSemua = 0
         let hasil = this.state.carts.map((product)=>{
+            let totalSemua = 0
             let { id, namaProduk, harga, orderQty, fotoProduk, pulauBuyer, pulauSeller } = product 
             let berat = (product.berat/1000)*orderQty
             if(pulauBuyer==pulauSeller){
                 var ongkir = 50000*berat
             } else { var ongkir = 160000*berat}
             let totalHarga = (parseInt(harga)*parseInt(orderQty))+ongkir
-            this.subtotal = totalHarga + parseInt(this.props.kode_unik)
+            this.totalSemua += totalHarga
+            // this.subtotal = totalSemua + parseInt(this.props.kode_unik)
             return (
                 <>
                     <div className='col-1 card-title pt-3 pb-1'>
@@ -127,6 +128,7 @@ class Mycart extends Component {
                 </>
             )
         })
+        this.subtotal = this.totalSemua + parseInt(this.props.kode_unik)
         return hasil
     }
 

@@ -263,7 +263,7 @@ class Register extends Component {
                                 <div className='col-5 card-title pt-4 mb-2'>Tulis ulang Password</div>
                                 <div class="w-100"></div>
                                 <div class=" col-2 ui input2">
-                                    <select style={{backgroundColor:'rgb(0,0,0,0)'}} onChange={(e)=>{this.setState({pulau: e.target.value})}} className='form-control custom-select' name="" id="">
+                                    <select style={{backgroundColor:'rgb(0,0,0,0)'}} onChange={(e)=>{this.setState({pulau: e.target.value})}} className='form-control2 custom-select' name="" id="">
                                         <option selected disabled>Pulau</option>
                                         <option value="Sumatera">Sumatera</option>
                                         <option value="Jawa">Jawa</option>

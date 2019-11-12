@@ -131,12 +131,17 @@ class Addproduct extends Component {
 
     renderList = () => {
         return (
-            <div className='row mt-3 align-items-center text-light quic700'>
-                <div className='col-10 mx-auto card'>
+            <div className='row mt-3 text-light quic700'>
+                <div className='col-2'>
+                    <img className='pedal2' src={require('../lib/pictures/ADDPRODUCT.png')} alt=""/>
+                </div>
+                <div className='col-8 mx-auto card pt-4 pl-4 pr-4 pb-4'>
                     <div className='card-body'>
-                    <div className='card-title subjudul mt-3'>
-                        Tambah Produk
-                    </div>
+                    <div className='row cardwhite ml-3 mr-3 mb-4 pr-4 pl-4 justify-content-center'>
+                            <div className='col-12 cardgrey ml-4 mr-4 mt-4 mb-4 pt-4 pb-4 pr-3 pl-5 text-dark' style={{fontSize:'16pt'}}>
+                                Tambah Produk
+                            </div>
+                        </div>
                     <div className='card-title pt-4'>
                         Informasi &#38; Detail Produk
                     </div>
@@ -192,7 +197,7 @@ class Addproduct extends Component {
                                         this.setState({berat:e.target.value})
                                     }}} style={{backgroundColor:'transparent', borderColor:'rgb(74, 72, 100)', color:'white'}} type="text" placeholder="Berat"/>
                             <div class="ui basic label">
-                                gram
+                                gr
                             </div> 
                         </div>                            
                     </div>
@@ -201,7 +206,7 @@ class Addproduct extends Component {
                     
                         <div class="w-100"></div>
                         <div class="col ui input2">
-                            <select className='form-control custom-select' onChange={(e) => this.setState({kondisi: e.target.value})} name="" id="">
+                            <select className='form-control2 custom-select' onChange={(e) => this.setState({kondisi: e.target.value})} name="" id="">
                                 <option selected disabled>Kondisi Barang</option>
                                 <option value="Baru">Baru</option>
                                 <option value="Bekas">Bekas</option>
@@ -212,11 +217,10 @@ class Addproduct extends Component {
                         Deskripsi Produk
                     </div>
                     <div className='dimdom-bottom'></div>           
-                    <div className='row'>
+                    <div className='row mt-4'>
                         <div class=" col ui form">
                             <div class="field">
-                                <label>Text</label>
-                                <textarea style={{backgroundColor:'transparent', borderColor:'rgb(178, 115, 187)', color:'white'}} className='form-control' rows='4' 
+                                <textarea style={{borderRadius:'15px'}} className='form-control' rows='4' 
                                 onChange={(e) => this.setState({deskripsi: e.target.value})} placeholder="Tulis deskripsi efek anda">
                                 </textarea>
                             </div>
@@ -229,7 +233,7 @@ class Addproduct extends Component {
                     <div className='row'>
                         <div className='col pt-3'>
                             <input type="file" ref='fileBtn' onChange={(e) => this.setState({selectedFile : e.target.files[0]})} className='d-none'/>
-                            <input type='button' onClick={() => this.refs.fileBtn.click()} className='ui inverted basic dimdom3 button' value='Unggah foto'/>
+                            <input type='button' onClick={() => this.refs.fileBtn.click()} className='ui inverted basic small button' value='Unggah foto'/>
                             {this.displayfilename()}
                         </div>
                     </div>
@@ -254,8 +258,8 @@ class Addproduct extends Component {
         return(   
             <AbsoluteWrapper>
                 <Navbar/>
-                <div className='row dim-height-addproduct text-light'> 
-                    <div className='col-12'>
+                <div className='row text-light'> 
+                    <div className='col-11 mx-auto'>
                         {this.renderList()}
                     </div>
                 </div>

@@ -6,6 +6,7 @@ const urlApi = 'http://localhost:7777/auth/'
 
 export const onLoginUser = (inputId, inputUsername) => { 
     return (dispatch)=>{
+        
         localStorage.setItem(
             'userData',
             JSON.stringify({id: inputId, username: inputUsername}) // --> property dan nama data sama maka bisa dipersingkat dg --> {id,username}

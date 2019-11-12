@@ -203,16 +203,16 @@ class Myprofile extends Component {
         var tglGabung = tglDaftar
         return (
             <div>
-                <div className='card-title subjudul'>
+                <div className='col-11 cardgrey ml-5 mr-4 mt-4 mb-4 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
                     Profil
                 </div>
-                <div className='dimdom-bottom'></div>
-                 <div className='row card-title pt-4'>
+                 <div className='row text-light'>
                  <div class="w-100"></div> 
-                 <div className='dimdom-bottom'></div>
-                 <div className='row w-100'>
+                 <div className='col-10 mx-auto'>
+                    <div className='row'>                    
                     <div className='col-4'>
-                        <div className='row text-center'> 
+                        <div className='card pb-3'>
+                        <div className='row mt-5 text-center'> 
                             <img className="rounded-circle mx-auto"  style={{width:'200px'}} 
                             src={fotoProfil ? `http://localhost:7777/files/${fotoProfil}` : require('../lib/pictures/user.jpg')}></img>
                         </div>
@@ -221,18 +221,16 @@ class Myprofile extends Component {
                                 {username}
                             </div>
                         </div>
-                        <div className='row card-title pb-1 pl-0 quic700 text-center'>
+                        <div className='row card-title pb-1 pl-0 text-center'>
                             <div className='col'>
                                 <p>{kabupaten}, {propinsi}</p>
                             </div>
                         </div> 
-
-                        <div className='col card-title pt-4'>
-                            <div class="ui inverted basic dimdom3 buttons">
-                                <input type='button' onClick={() => this.refs.fileBtn2.click()} className='ui inverted basic dimdom3 button' value='Unggah foto profile'/>
-                                <input type='button' onClick={this.updateFoto} className='ui inverted basic dimdom3 button' value='Submit'/>
-                            </div>
-                                <input type="file" ref='fileBtn2' onChange={(e) => this.setState({selectedFile : e.target.files[0]})} className='d-none'/>
+                        </div>
+                        <div className='col pt-4 ml-2'>
+                            <input type='button' onClick={() => this.refs.fileBtn2.click()} className='ui inverted basic small button' value='Unggah foto profile'/>
+                            <input type='button' onClick={this.updateFoto} className='ui inverted basic small button' value='Submit'/>
+                            <input type="file" ref='fileBtn2' onChange={(e) => this.setState({selectedFile : e.target.files[0]})} className='d-none'/>
                         </div>
                         <div class="w-100"></div>  
                         <div className='col card-title'>
@@ -241,20 +239,26 @@ class Myprofile extends Component {
                         <div class="w-100"></div> 
                         <div className='pt-3'></div> 
                     </div>
-                    <div className='col-8'>
-                        <div className='row card-title pb-1 pl-0 quic700'>
+                    <div className='ml-4 p-5 col-7 cardwhite quic700'>
+                        <div className='row card-title pb-1 pl-0'>
                             <div className='col'>
-                                <p>Nama Lengkap : {namaDepan} {namaBelakang}</p>
-                                <p>Email : {email}</p>
-                                <p>No. Telepon : {noTelp}</p>
-                                <p>Alamat Lengkap : {alamat}, {kelurahan}, {kecamatan}, {kabupaten}, {propinsi}</p>
-                                <p>Bergabung sejak : {moment(tglGabung).format('LL')}</p>
+                                <p><span className='badge badge-grey' style={{fontSize:'10pt'}}>Nama Lengkap</span></p>
+                                <p className='mt-n3 ml-4' style={{fontSize:'15pt'}}>{namaDepan} {namaBelakang}</p>
+                                <p className='mt-n3'><span className='badge badge-grey' style={{fontSize:'10pt'}}>Email</span></p>
+                                <p className='mt-n3 ml-4' style={{fontSize:'15pt'}}>{email}</p>
+                                <p className='mt-n3'><span className='badge badge-grey' style={{fontSize:'10pt'}}>No. Telepon</span></p>
+                                <p className='mt-n3 ml-4' style={{fontSize:'15pt'}}>{noTelp}</p>
+                                <p className='mt-n3'><span className='badge badge-grey' style={{fontSize:'10pt'}}>Alamat Lengkap</span></p>
+                                <p className='mt-n3 ml-4' style={{fontSize:'15pt'}}>{alamat}, {kelurahan}, {kecamatan}, {kabupaten}, {propinsi}</p>
+                                <p className='mt-n3'><span className='badge badge-grey' style={{fontSize:'10pt'}}>Bergabung Sejak</span></p>
+                                <p className='mt-n3 ml-4' style={{fontSize:'15pt'}}>{moment(tglGabung).format('LL')}</p>
                             </div>
                             <div className='col-2'>
-                                <input type="button" onClick={()=>{this.setState({toogle: 'edit'})}} className='ui inverted basic dimdom3 button' value='Edit'/>
+                                <input type="button" onClick={()=>{this.setState({toogle: 'edit'})}} className='ui inverted basic small button' value='Edit'/>
                                 </div> 
                         </div> 
 
+                    </div>
                     </div>
                 </div>
                 </div>
@@ -343,11 +347,12 @@ class Myprofile extends Component {
         }
         return (
             <div>
-                <div className='card-title subjudul'>
-                    Dashboard
+                <div className='col-11 cardgrey ml-5 mr-4 mt-4 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
+                    Statistik
                 </div>
-                <div className='dimdom-bottom'></div>
-                <div className='row cardblack pt-4 pb-5 pl-3 pr-3 text-light justify-content-center'>
+                <div className='row'>
+                <div className='col-11 mx-auto'>
+                <div className='row pt-4 pb-5 pl-3 pr-3 text-light justify-content-center'>
                     <div className='col cardblue mr-4'>
                         <div className='mt-3' style={{fontSize:'10pt', color:'rgb(255, 92, 222)'}}>Total Penjualan</div>
                         <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>{totSell} IDR</div>
@@ -448,54 +453,74 @@ class Myprofile extends Component {
                                 />
                         </div>
                     </div>
+                    </div>
                 </div>
-                <div className='card-title subjudul'>
-                   Penjualan
                 </div>
-                <div className='dimdom-bottom'></div>
+                <div className='col-11 cardgrey ml-5 mr-4 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
+                    Penjualan
+                </div>
                 <div className='row justify-content-center'>
-                <div className='col-11 pb-5'>
-                    <div className='row mt-4' style={{fontSize:'12pt'}}>
-                        <div className='col text-right'><i className='child icon large'></i></div>
-                        <div className='col-3 pl-0'>Kepuasan Pembeli</div>
-                        <div className='col-1 pl-0'>{pembeliPuas}%</div>
-                        <div className='col text-right'><i className='thumbs up outline icon large'></i></div>
-                        <div className='col-3 pl-0'>Jumlah Feedback</div>
-                        <div className='col-1'>{totalFeedback}</div>
-                    </div>
-                    <div className='row mt-4' style={{fontSize:'12pt'}}>
-                        <div className='col text-right'><i className='heart outline icon large'></i></div>
-                        <div className='col-4 pl-0'>Produk terlaris</div>
-                        <div className='col text-right'><i className='medkit icon large'></i></div>
-                        <div className='col-3 pl-0'>Total transaksi</div>
-                        <div className='col-1'>{totalTransaksi}</div>
-                    </div>
-                    <div className='row' style={{fontSize:'12pt'}}>
-                        <div className='col-6 pl-0 text-right'>{terlaris}</div>
-                        <div className='col text-right'></div>
-                        <div className='col-3 pl-0'></div>
-                        <div className='col-1'></div>
-                    </div>
-                    <div className='row mt-4' style={{fontSize:'12pt'}}>
-                        <div className='col text-right'><i className='cube icon large'></i></div>
-                        <div className='col-3 pl-0'>Produk dijual</div>
-                        <div className='col-1 pl-0'>{this.state.totalProdukDijual}</div>
-                        <div className='col text-right'><i className='money bill alternate outline icon large'></i></div>
-                        <div className='col-3 pl-0'>Total produk terjual</div>
-                        <div className='col-1'>{this.state.totalProdukTerjual}</div>
+                <div className='col-9 mb-5'>
+                    <div className='row mt-5 justify-content-between'>
+                        <div className='col-3 pb-5 cardwhite text-center'>
+                            <div><i className='big child icon mt-5 mb-4'></i></div>
+                            <div className='w-100'></div>
+                            <div className='quic700p' style={{fontSize:'30pt'}}>{pembeliPuas}%</div>
+                            <div className='w-100'></div>
+                            <div className='mt-4'>Kepuasan Pembeli</div>
+                        </div>
+                        <div className='col-3 pb-5 cardwhite text-center'>
+                            <div><i className='big thumbs up outline icon mt-5 mb-4'></i></div>
+                            <div className='w-100'></div>
+                            <div className='quic700p' style={{fontSize:'30pt'}}>{totalFeedback}</div>
+                            <div className='w-100'></div>
+                            <div className='mt-4'>Jumlah Feedback</div>
+                        </div>
+                        <div className='col-3 pb-5 cardwhite text-center'>
+                            <div><i className='big medkit icon mt-5 mb-4'></i></div>
+                            <div className='w-100'></div>
+                            <div className='quic700p' style={{fontSize:'30pt'}}>{totalTransaksi}</div>
+                            <div className='w-100'></div>
+                            <div className='mt-4'>Total Transaksi</div>
+                        </div>
+                        <div className='w-100 mb-5'></div>
+                        <div className='col-3 pb-5 cardwhite text-center'>
+                            <div><i className='big cube icon mt-5 mb-4'></i></div>
+                            <div className='w-100'></div>
+                            <div className='quic700p' style={{fontSize:'30pt'}}>{this.state.totalProdukDijual}</div>
+                            <div className='w-100'></div>
+                            <div className='mt-4'>Produk Yang Dijual</div>
+                        </div>
+                        <div className='col-3 pb-5 cardwhite text-center'>
+                            <div><i className='big money bill alternate outline icon mt-5 mb-4'></i></div>
+                            <div className='w-100'></div>
+                            <div className='quic700p' style={{fontSize:'30pt'}}>{this.state.totalProdukTerjual}</div>
+                            <div className='w-100'></div>
+                            <div className='mt-4'>Total Produk Terjual</div>
+                        </div>
+                        <div className='col-3 pb-5 cardwhite text-center'>
+                            <div><i className='big heart outline icon mt-5 mb-4'></i></div>
+                            <div className='w-100'></div>
+                            <div className='quic700p' style={{fontSize:'18pt'}}>{this.state.produkTerlaris}</div>
+                            <div className='w-100'></div>
+                            <div className='mt-4'>Produk terlaris</div>
+                        </div>
                     </div>
                 </div>
                 </div>
-                <div className='card-title subjudul'>
+                <div className='col-11 cardgrey ml-5 mr-4 mt-4 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
                     Pembelian
                 </div>
-                <div className='dimdom-bottom'></div>
                 <div className='row justify-content-center'>
-                <div className='col-11 pb-5'>
-                    <div className='row mt-4 justify-content-center' style={{fontSize:'12pt'}}>
-                        <div className='col-1'><i className='medkit icon large'></i></div>
-                        <div className='col-4 pl-0 mt-1'>Total transaksi Pembelian</div>
-                        <div className='col-3 mt-1'>{this.state.totalTransaksiBeli} transaksi</div>
+                <div className='col-9 pb-5'>
+                    <div className='row mt-5 justify-content-center'>
+                        <div className='col-3 pb-5 cardwhite text-center'>
+                            <div><i className='big medkit icon mt-5 mb-4'></i></div>
+                            <div className='w-100'></div>
+                            <div className='quic700p' style={{fontSize:'30pt'}}>{this.state.totalTransaksiBeli}</div>
+                            <div className='w-100'></div>
+                            <div className='mt-4'>Total Transaksi Pembelian</div>
+                        </div>
                     </div>
                 </div>
                 </div>
@@ -626,8 +651,8 @@ class Myprofile extends Component {
     renderList = () => {
         if(this.state.toogle==='profile'){
         return (
-            <div className='row align-items-center text-light quic700'>
-                <div className='col-11 mx-auto card'>
+            <div className='row align-items-center quic700'>
+                <div className='col-11 mx-auto cardwhite pb-5'>
                     <div className='card-body'>
                         <div className='row card-title'>
                             <div className='col card-title text-right'>
@@ -643,8 +668,8 @@ class Myprofile extends Component {
             </div>
         )} else if (this.state.toogle==='dashboard'){
             return (
-                <div className='row align-items-center text-light quic700'>
-                    <div className='col-11 mx-auto card'>
+                <div className='row align-items-center quic700'>
+                    <div className='col-11 mx-auto cardwhite'>
                         <div className='card-body'>
                             <div className='row card-title'>
                                 <div className='col card-title text-right'>
@@ -660,15 +685,16 @@ class Myprofile extends Component {
                 </div>
         )} else {
             return (
-            <div className='row align-items-center text-light mon500'>
-                    
-                <div className='col-8 mx-auto card'>
+            <div className='row align-items-center text-light quic700'>
+                <div className='col-9 mx-auto card pl-5 pr-5 pb-4'>
                     <div className='col text-right mt-4 pr-1'>
-                        <i className='times link icon' onClick={()=>this.setState({toogle: 'profile'})}></i>
+                        <i className='times link icon text-light' onClick={()=>this.setState({toogle: 'profile'})}></i>
                     </div>
                     <div className='card-body'>
-                        <div className='card-title subjudul'>
-                            Edit Profile
+                        <div className='row cardwhite ml-3 mr-3 mb-4 pr-4 pl-4 justify-content-center'>
+                            <div className='col-12 cardgrey ml-4 mr-4 mt-4 mb-4 pt-4 pb-4 pr-3 pl-5 text-dark' style={{fontSize:'16pt'}}>
+                                Ubah Profil
+                            </div>
                         </div>
                         <div className='row'>
                             <div className='col card-title pt-4 mb-2'>Username</div>
@@ -744,7 +770,7 @@ class Myprofile extends Component {
                             <div className='col-5 card-title pt-4 mb-2'>Tulis ulang Password Baru</div>
                             <div class="w-100"></div>
                             <div class=" col-2 ui input2">
-                                <select onChange={(e)=>{this.setState({pulau: e.target.value})}} className='form-control custom-select' name="" id="">
+                                <select onChange={(e)=>{this.setState({pulau: e.target.value})}} className='form-control2 custom-select' name="" id="">
                                     <option selected disabled>Pulau</option>
                                     <option value="Sumatera">Sumatera</option>
                                     <option value="Jawa">Jawa</option>
@@ -783,8 +809,8 @@ class Myprofile extends Component {
         return(   
             <AbsoluteWrapper>
                 <Navbar/>
-                <div className='row dim-height-addproduct text-light'> 
-                    <div className='col-12 mt-3'>
+                <div className='row  text-light'> 
+                    <div className='col-11 mt-3 mx-auto'>
                         {this.renderList()}
                     </div>
                 </div>

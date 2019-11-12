@@ -264,11 +264,11 @@ class DashboardAdmin extends Component {
         }
         return (
             <div>
-                <div className='card-title subjudul'>
-                    Dashboard
+                <div className='col-11 cardgrey ml-5 mr-4 mt-4 mb-5 pt-4 pb-4 pr-3 pl-5 text-dark' style={{fontSize:'16pt'}}>
+                    Dashboard Admin
                 </div>
-                <div className='dimdom-bottom'></div>
-                <div className='row cardblack pt-4 pb-5 text-light justify-content-center'>
+                <div className='col-11 pl-0 mx-auto'>
+                <div className='row pb-5 text-light justify-content-center'>
                     <div className='col-4 pr-0'>
                     <div className='cardblue card-body'>
                         <div style={{fontSize:'10pt', color:'rgb(255, 92, 222)'}}>Total Jumlah Users</div>
@@ -426,7 +426,7 @@ class DashboardAdmin extends Component {
                         </div>
                     </div>
                 </div>
-                <div className='row cardblack pb-5 text-light justify-content-center'>
+                <div className='row pb-5 text-light justify-content-center'>
                     <div className='col-4 pr-0'>
                     <div className='cardblue card-body'>
                         <div style={{fontSize:'10pt', color:'rgb(255, 92, 222)'}}>Transaksi Hingga Saat Ini</div>
@@ -541,13 +541,28 @@ class DashboardAdmin extends Component {
                         </div>
                     </div>
                 </div>
-                <div style={{fontSize:'10pt', color:'rgb(255, 92, 222)'}}>Penjual teraktif</div>
-                <div className='mt-2' style={{fontSize:'19pt'}}>{this.state.activeSeller[0].namaSeller}</div>
-                <div className='pb-5 mt-1' style={{fontSize:'10pt', color:'rgb(192,192,192)'}}>{this.state.activeSeller[0].totalTransaksi} transaksi</div>
-                <div style={{fontSize:'10pt', color:'rgb(255, 92, 222)'}}>Pembeli teraktif</div>
-                <div className='mt-2' style={{fontSize:'19pt'}}>{this.state.activeBuyer[0].namaBuyer}</div>
-                <div className='pb-5 mt-1' style={{fontSize:'10pt', color:'rgb(192,192,192)'}}>{this.state.activeBuyer[0].totalTransaksi} transaksi</div>
+                <div className='row justify-content-between w-75 mx-auto'>
+                    <div className='col-4 pb-5 cardblue text-center mx-auto'>
+                        <div><i className='big trophy icon mt-5 mb-4 text-light'></i></div>
+                        <div className='w-100'></div>
+                        <div className='quic700p' style={{fontSize:'30pt'}}>{this.state.activeSeller[0].namaSeller}</div>
+                        <div className='w-100'></div>
+                        <div className='mt-4'>Penjual teraktif</div>
+                        <div className='w-100'></div>
+                        <div className='mt-1' style={{fontSize:'10pt', color:'rgb(192,192,192)'}}>{this.state.activeSeller[0].totalTransaksi} transaksi</div>
+                    </div>
+                    <div className='col-4 pb-5 cardblue text-center mx-auto'>
+                        <div><i className='big flag icon mt-5 mb-4 text-light'></i></div>
+                        <div className='w-100'></div>
+                        <div className='quic700p' style={{fontSize:'30pt'}}>{this.state.activeBuyer[0].namaBuyer}</div>
+                        <div className='w-100'></div>
+                        <div className='mt-4'>Pembeli teraktif</div>
+                        <div className='w-100'></div>
+                        <div className='mt-1' style={{fontSize:'10pt', color:'rgb(192,192,192)'}}>{this.state.activeBuyer[0].totalTransaksi} transaksi</div>
+                    </div>
                 <div className='pt-3'></div> 
+                </div>
+                </div>
             </div>
         )
         } else {
@@ -566,7 +581,7 @@ class DashboardAdmin extends Component {
                 <Navbar/>
                     <div className='col-11 mx-auto mt-3'>
                         <div className='row align-items-center text-light quic700 mr-4'>
-                            <div className='col-12 mx-auto cardblack'>
+                            <div className='col-12 mx-auto cardwhite pb-5'>
                                 <div className='card-body'>
                                     {this.renderList()}
                                 </div>

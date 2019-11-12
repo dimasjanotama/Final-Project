@@ -329,9 +329,9 @@ class Search extends Component {
                                     <div className='col-6 pt-4 mt-2 pl-0 text-left'>
                                         <p>Tersisa {this.state.product.qty} buah</p>
                                     </div>
-                                    <div className='col-4 pt-3 mt-2'>
+                                    <div className='col-8 pt-3 mt-2'>
                                         <div class="ui inverted basic dimdom3 buttons">
-                                            <button className='ui inverted basic dimdom3 button mb-1 btn-block' onClick={()=>{this.onClickAtc(this.state.product.id, this.state.product)}}>Add to Cart</button>                            
+                                            <button className='ui inverted basic dimdom3 button mb-1 btn-block' onClick={()=>{this.onClickAtc(this.state.product.id, this.state.product)}}>Tambahkan ke Dalam Keranjang</button>                            
                                         </div> 
                                     </div>
                                 </div>

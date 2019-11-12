@@ -161,6 +161,7 @@ class Notification extends Component {
     
 
     onPaymentConf = (idTransaction) => {
+        if(this.state.noRek && this.state.namaRek && this.state.selectedFile){
         let today = new Date()
         let year = today.getFullYear()
         let month = today.getMonth()+1
@@ -185,9 +186,13 @@ class Notification extends Component {
         }).catch(err=>{
             console.log(err)
         })
+    } else {
+        alertify.alert('Keterangan','Mohon lengkapi no.Rekening, Nama Rekening, dan bukti transfer')
+    }
     } 
 
     onShippingConf = ()=>{
+        if(this.state.idSellTransaction && this.state.noResi && this.state.hakSeller && this.state.noRekSeller && this.state.namaRekSeller && this.state.selectedFile2){
         let today = new Date()
         let year = today.getFullYear()
         let month = today.getMonth()+1
@@ -212,6 +217,9 @@ class Notification extends Component {
         }).catch(err=>{
             console.log(err)
         })
+    } else {
+        alertify.alert('Keterangan','Mohon lengkapi transaksi ID, No Resi, Total Harga+ongkir, No Rekening, Nama Rekening, Bukti Pengiriman ')
+    }
     }
 
     onReceiveConf = (transaction) =>{
@@ -229,8 +237,7 @@ class Notification extends Component {
             alertify.message('Done')})
         alertify.confirm('We need your feedback!','Apakah anda puas bertransaksi dengan Seller ini?',
             function(){
-                axios.put(urlApi+'feedbackpositif',
-                {
+                axios.put(urlApi+'feedbackpositif',{
                     idSeller: transaction.idSeller
                 }).then(res=>{
                     alertify.success('Terimakasih atas feedback anda');
@@ -289,64 +296,95 @@ class Notification extends Component {
                     })
             }, 1000);
             return (
-                <div>
+                <div className='quic700'>
                     <div className='col-11 cardgrey ml-5 mr-4 mt-4 mb-5 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
                         Mohon selesaikan pembayaran berikut
                     </div>      
-                    <div className='row'>
-                        <div className='col card-title pt-4 mb-2'>Total Tagihan</div>
-                        <div className='col card-title pt-4 mb-2'>Beli Dari</div>
-                        <div className='col-6 card-title pt-4 mb-2'>Batas waktu pembayaran</div>
-                        <div class="w-100"></div>    
-                        <div className='col card-title pt-4 mb-2 quic700p'>
-                            <Link to='/detailtransaksi' onClick={()=>{this.props.detailTransaksi(transaction.id)}} 
-                                className="dimdom-pink-quic col mt-2">Rp. {transaction.nilaiTransaksi.toLocaleString('id')}</Link>
+                    <div className='row text-center'>
+                        <div className='col-4 mb-4 mx-auto' style={{fontSize:'20pt'}}>Total Tagihan</div>
+                        <div className='w-100'></div>
+                        <div className='col-4 mx-auto mb-2' style={{fontSize:'25pt'}}>
+                        <Link to='/detailtransaksi' onClick={()=>{this.props.detailTransaksi(transaction.id)}}><span 
+                            className="dimdom-pink-quic col mt-2">Rp {transaction.nilaiTransaksi.toLocaleString('id')}</span></Link>
+                        <Link to='/otherprofile' onClick={()=>{this.props.clickSeller(transaction.idSeller)}}><span className="badge badge-primary"
+                            style={{fontSize:'12pt',verticalAlign:'top'}}>{transaction.namaSeller}</span></Link>
                         </div>
-                        <div className='col card-title pt-4 mb-2'>
-                            <Link to='/otherprofile' onClick={()=>{this.props.clickSeller(transaction.idSeller)}} className="badge badge-primary mt-n2"
-                            style={{fontSize:'14pt'}}>{transaction.namaSeller}</Link>
-                        </div>
-                        <div className='col-6 card-title pt-4 mb-2 quic700p'><div className='badge badge-primary mt-n3' style={{fontSize: '18pt'}}>
-                        {this.state.hour} jam {this.state.minute} menit {this.state.second} detik</div></div>    
-                        <div class="w-100"></div>          
-                        <div className='col card-title pt-4 mb-2'>Rekening Pembayaran</div>
-                        <div className='col card-title pt-4 mb-2'>Status Pembayaran</div>
-                        <div class="w-100"></div>   
-                        <div className='col card-title pt-4 mb-2 quic700p'>
-                            CIMB Niaga 123456789 an. Fxpedia 
-                        </div>
-                        <div className='col card-title pt-4 mb-2 quic700p'>{transaction.statusNow}</div>   
-                    </div>
-                    <div className='dimdom-bottom pt-4'></div>
-                    <div className='card-title subjudul pt-4'>
-                        Konfirmasi pembayaran
-                    </div>
-                    <div class="row">  
-                        <div className='col card-title pt-4 mb-2'>Masukkan No.rekening yang digunakan saat pembayaran</div>
-                        <div className='col card-title pt-4 mb-2'>Masukkan Nama di No.Rekening</div>
-                        <div class="w-100"></div>    
-                        <div className='col ui input2 pt-4 mb-2'>
-                            <input onChange={(e) => this.setState({noRek: e.target.value})} type="text" placeholder="Masukkan No. Rekening"/>
-                        </div>
-                        <div className='col ui input2 pt-4 mb-2'>
-                            <input onChange={(e) => this.setState({namaRek: e.target.value})} type="text" placeholder="Masukkan Nama di No.Rekening"/>
+                        <div className='w-100'></div>
+                        <div className='col-5 mx-auto mb-2 mt-3' style={{fontSize:'20pt'}}>Batas waktu pembayaran</div>
+                        <div className='w-100'></div>
+                        <div className='col-5 mx-auto mt-2'> 
+                            <span className='badge badge-primary' style={{fontSize: '18pt'}}>
+                            {this.state.hour} jam {this.state.minute} menit {this.state.second} detik</span>
                         </div>
                         <div class="w-100"></div>    
-                        <div className='col card-title pt-4'>
-                            <div class="ui inverted basic dimdom3 buttons">
-                                <input type='button' onClick={() => this.refs.fileBtn.click()} className='ui inverted basic dimdom3 button' value='Unggah bukti pembayaran'/>
-                                <input onClick={()=>{this.onPaymentConf(transaction.id)}} type="button" className="ui inverted basic dimdom3 button" value="Submit konfirmasi"/>
-                            </div>
-                                <input type="file" ref='fileBtn' onChange={(e) => this.setState({selectedFile : e.target.files[0]})} className='d-none'/>
-                        </div>
+                        <div className='col-6 card-title pt-4 mb-2 quic700p'></div>    
                         <div class="w-100"></div>  
-                        <div className='col card-title'>
-                            {this.displayfilename()}
+                        <div className='col-4 cardwhite' style={{right:'-10%'}}>        
+                            <div className='col pt-4 mb-2'>Rekening Pembayaran</div>
+                            <div className='col card-title mb-2 quic700p'>
+                                CIMB Niaga 123456789 an. Fxpedia 
+                            </div>      
                         </div>
-                        <div class="w-100"></div> 
-                        <div className='pt-3'>
+                        <div className='cardwhite col-4' style={{right:'-20%'}}>
+                            <div className='col pt-4 mb-2'>Status Pembayaran</div>
+                            <div className='col card-title mb-2 quic700p'>{transaction.statusNow}</div>  
+                        </div>
+                        <div class="w-100"></div>    
+                        <div className='col-2 pt-2 mt-5 ml-5 pr-0 text-right'>
+                            <img className='exclamation' src={require('../lib/pictures/EXCLAMATION.png')} alt=""/>
                         </div> 
+                        <div className='col-7 pl-5 mt-5 pt-4 text-left'>
+                            <div className='col-12 mb-3' style={{fontSize:'21pt'}}>
+                                Terimakasih sudah berbelanja di fxpedia.
+                            </div>
+                            <div className='col-12'>
+                                Untuk kenyamanan berbelanja mohon :
+                            </div>
+                            <div className='col-12'>
+                                1. Pastikan nilai transfer kamu sesuai sampai 3 digit terakhir nilai transaksi 
+                            </div>
+                            <div className='col-12'>
+                                2. Setelah transfer mohon konfirmasi pembayaran dan unggah bukti transfer
+                            </div>
+                        </div>
+                    </div>
+                    <div className='col-11 cardgrey ml-5 mr-4 mt-4 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
+                        Konfirmasi Pembayaran
                     </div> 
+                    <div className='col-11 mx-auto'>
+                        <div class="row mt-4">  
+                            <div className='col-5 cardwhite pb-2' style={{right:'-5%'}}>        
+                                <div className='col pt-4 mb-2'>Masukkan No.rekening saat pembayaran</div>
+                                <div className='col card-title ui input3 quic700p'>
+                                <input value={this.state.noRek} 
+                                onChange={(e) => {
+                                    if (isNaN(e.target.value)){
+                                        this.setState({noRek: ''})
+                                    } else {
+                                        this.setState({noRek:e.target.value})
+                                    }}} type="text" placeholder="Masukkan No. Rekening"/>
+                                </div>      
+                            </div>
+                            <div className='cardwhite col-5 pb-2' style={{right:'-10%'}}>
+                                <div className='col pt-4 mb-2'>Masukkan Nama di No.Rekening</div>
+                                <div className='col card-title ui input3 mb-2 quic700p'>
+                                    <input onChange={(e) => this.setState({namaRek: e.target.value})} type="text" placeholder="Masukkan Nama di No.Rekening"/>
+                                </div>  
+                            </div>
+                            <div class="w-100"></div>    
+                            <div className='col-6 text-center card-title mt-4'>
+                                <input type='button' onClick={() => this.refs.fileBtn.click()} className='ui inverted basic small button' value='Unggah bukti pembayaran'/>
+                                <input onClick={()=>{this.onPaymentConf(transaction.id)}} type="button" className="ui inverted basic small button" value="Submit konfirmasi"/>
+                    
+                                <input type="file" ref='fileBtn' onChange={(e) => this.setState({selectedFile : e.target.files[0]})} className='d-none'/>
+                            </div>
+                            <div class="w-100"></div>  
+                            <div className='col-6 card-title' style={{left:'7%'}}>
+                                {this.displayfilename()}
+                            </div>
+                            <div className='pt-5'></div> 
+                        </div> 
+                    </div>
                 </div>
             )
         } else {
@@ -405,13 +443,13 @@ class Notification extends Component {
             let hasil = this.state.paid.map((transaction)=>{
                 let tglPembayaran = `${transaction.tglPembayaran}`
                 let tglBayar = tglPembayaran.substr(0,10)
-                if(transaction.statusNow!=='Transaksi selesai'){
+                if(transaction.statusNow!=='Transaksi selesai' && transaction.statusNow!=='Sudah diterima'){
                     return (
                         <>
-                        <div className='card-title subjudul'>
+                        <div className='col-11 cardgrey ml-5 mr-4 mt-4 mb-5 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
                             Status Order
                         </div>
-                        <table class="table table-striped table-dark">
+                        <table class="table table-striped col-11 mx-auto">
                         <thead>
                             <tr>
                             <th scope="col">ID Transaksi</th>    
@@ -467,13 +505,17 @@ class Notification extends Component {
                 return (
                     <tr>
                         <th scope="col">{order.idTransaction}</th>    
-                        <th scope="col">{order.namaBuyer}</th>    
+                        <th scope="col">
+                            <Link to='/otherprofile' onClick={()=>{this.props.clickSeller(order.idBuyer)}}><span className="badge badge-primary"
+                            style={{fontSize:'10pt',verticalAlign:'top'}}>{order.namaBuyer}</span></Link>
+                        </th>    
                         <th scope="col">{this.state.orders[0].alamat}, {this.state.orders[0].kelurahan}, {this.state.orders[0].kecamatan}, 
                         {this.state.orders[0].kabupaten}, {this.state.orders[0].propinsi} {this.state.orders[0].kodepos}</th>    
                         <th scope="col"><img style={{width: '50px'}} src={`http://localhost:7777/files/${order.fotoProduk}`} alt="fotoproduk"/></th>
                         <th scope="col">{order.namaProduk}</th>
                         <th scope="col">{order.orderQty}</th>
-                        <th scope="col">{statusPengiriman}</th>
+                        <th scope="col"><span className="badge badge-primary"
+                            style={{fontSize:'10pt',verticalAlign:'top'}}>{statusPengiriman}</span></th>
                         <th scope="col">{order.harga.toLocaleString('id')}</th>
                     </tr>
                 )
@@ -488,19 +530,11 @@ class Notification extends Component {
         if(this.state.orderTransactions[0] && this.state.loading==false){
         return (
             <div>
-                <div className='card-title subjudul'>
-                    Status Pesanan
-                    </div>
-                    <div className='row card-title pt-4'>
-                        <div className='col-1 card-title pt-3 pb-1'>
-                            <i className='big info icon text-right' style={{color: 'rgb(255, 31, 210)'}}></i>
-                        </div>
-                        <div className='col-8 card-title pt-4 pb-1 pl-0 quic700p text-left'>
-                            Silahkan kirim produk berikut sesuai ID Transaksi
-                        </div>   
-                    </div>
-                    <div className='dimdom-bottom'></div>
-                    <table class="table table-striped table-dark mt-3">
+                <div className='col-11 cardgrey ml-5 mr-4 mt-4 mb-5 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
+                    Status pesanan
+                </div>
+                <div className='mt-3 col-11 mx-auto'> 
+                    <table className="table table-striped">
                     <thead>
                         <tr>
                         <th scope="col">ID Transaksi</th>    
@@ -517,48 +551,70 @@ class Notification extends Component {
                     {this.renderOrderlist()}
                     </tbody>
                     </table>
-                <div className='dimdom-bottom pt-4'></div>
-                <div className='card-title subjudul pt-4'>
-                    Konfirmasi pengiriman
-                </div>
-                <div class="row">  
-                    <div className='col-2 card-title pt-4 mb-2'>ID Transaksi</div>
-                    <div className='col-3 card-title pt-4 mb-2'>No.resi pengiriman</div>
-                    <div className='col-2 card-title pt-4 mb-2'>Total harga + biaya pengiriman</div>
-                    <div className='col-2 card-title pt-4 mb-2'>No.Rek (Untuk pencairan dana)</div>
-                    <div className='col-3 card-title pt-4 mb-2'>Nama di Rekening</div>
-                    <div class="w-100"></div>   
-                    <div className='col-2 ui input2 pt-4 mb-2'>
-                        <input onChange={(e) => this.setState({idSellTransaction: e.target.value})} type="text" placeholder="ID Transaksi"/>
-                    </div> 
-                    <div className='col-3 ui input2 pt-4 mb-2'>
-                        <input onChange={(e) => this.setState({noResi: e.target.value})} type="text" placeholder="Masukkan No. Resi"/>
-                    </div>
-                    <div className='col-2 ui input2 pt-4 mb-2'>
-                        <input onChange={(e) => this.setState({hakSeller: e.target.value})} type="text" placeholder="Masukkan total harga + ongkir"/>
-                    </div>
-                    <div className='col-2 ui input2 pt-4 mb-2'>
-                        <input onChange={(e) => this.setState({noRekSeller: e.target.value})} type="text" placeholder="Masukkan no.Rek"/>
-                    </div>
-                    <div className='col-3 ui input2 pt-4 mb-2'>
-                        <input onChange={(e) => this.setState({namaRekSeller: e.target.value})} type="text" placeholder="Masukkan nama di Rekenening"/>
-                    </div>
-                    <div class="w-100"></div>    
-                    <div className='col card-title pt-4'>
-                        <div class="ui inverted basic dimdom3 buttons">
-                            <input type='button' onClick={() => this.refs.fileBtn2.click()} className='ui inverted basic dimdom3 button' value='Unggah bukti pengiriman'/>
-                            <input onClick={this.onShippingConf} type="button" className="ui inverted basic dimdom3 button" value="Submit konfirmasi"/>
-                        </div>
-                            <input type="file" ref='fileBtn2' onChange={(e) => this.setState({selectedFile2 : e.target.files[0]})} className='d-none'/>
-                    </div>
-                    <div class="w-100"></div>  
-                    <div className='col card-title'>
-                        {this.displayfilename2()}
-                    </div>
-                    <div class="w-100"></div> 
-                    <div className='pt-3'>
-                    </div> 
                 </div> 
+                <div class="w-100"></div>    
+                <div className='row'>
+                    <div className='col-2 pt-2 mt-5 ml-5 pr-0 text-right'>
+                        <img className='exclamation' src={require('../lib/pictures/EXCLAMATION.png')} alt=""/>
+                    </div> 
+                    <div className='col-7 pl-5 mt-5 pt-4 text-left'>
+                        <div className='col-12 mb-3' style={{fontSize:'21pt'}}>
+                            Ayo, segera proses pesanan produkmu.
+                        </div>
+                        <div className='col-12'>
+                            Untuk kemudahan transaksi mohon :
+                        </div>
+                        <div className='col-12'>
+                            1. Masukkan no.Resi sesuai ID transaksi yang kamu pilih 
+                        </div>
+                        <div className='col-12'>
+                            2. Lengkapi kolom total harga berdasarkan harga produk ditambah biaya pengiriman yang sudah kamu lakukan
+                        </div>
+                    </div>
+                </div>
+                <div className='col-11 cardgrey ml-5 mr-4 mt-4 mb-5 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
+                    Konfirmasi pengiriman
+                </div> 
+                <div className='row'>
+                    <div class="col-11 cardwhite mx-auto">  
+                        <div className='row'>
+                        <div className='col-2 text-center pt-4'>ID Transaksi</div>
+                        <div className='col-3 text-center pt-4'>No.resi pengiriman</div>
+                        <div className='col-2 text-center pt-4'>Total harga + biaya pengiriman</div>
+                        <div className='col-2 text-center pt-4'>No.Rek (Untuk pencairan dana)</div>
+                        <div className='col-3 text-center pt-4'>Nama di Rekening</div>
+                    </div>
+                        <div class="w-100"></div>   
+                        <div className='col-2 ui input3 pt-2 mb-2 quic700p'>
+                            <input onChange={(e) => this.setState({idSellTransaction: e.target.value})} type="text" placeholder="ID Transaksi"/>
+                        </div> 
+                        <div className='col-3 ui input3 pt-2 mb-2 quic700p'>
+                            <input onChange={(e) => this.setState({noResi: e.target.value})} type="text" placeholder="No. Resi"/>
+                        </div>
+                        <div className='col-2 ui input3 pt-2 mb-2 quic700p'>
+                            <input onChange={(e) => this.setState({hakSeller: e.target.value})} type="text" placeholder="Total harga + ongkir"/>
+                        </div>
+                        <div className='col-2 ui input3 pt-2 mb-2 quic700p'>
+                            <input onChange={(e) => this.setState({noRekSeller: e.target.value})} type="text" placeholder="No.Rek"/>
+                        </div>
+                        <div className='col-3 ui input3 pt-2 mb-2 quic700p'>
+                            <input onChange={(e) => this.setState({namaRekSeller: e.target.value})} type="text" placeholder="Nama Rekenening"/>
+                        </div>
+                        <div class="w-100"></div>    
+                        <div className='col card-title pt-2'>
+                            <input type='button' onClick={() => this.refs.fileBtn2.click()} className='ui inverted basic small button' value='Unggah bukti pengiriman'/>
+                            <input onClick={this.onShippingConf} type="button" className="ui inverted basic small button" value="Submit konfirmasi"/>
+                            <input type="file" ref='fileBtn2' onChange={(e) => this.setState({selectedFile2 : e.target.files[0]})} className='d-none'/>
+                        </div>
+                        <div class="w-100"></div>  
+                        <div className='col card-title'>
+                            {this.displayfilename2()}
+                        </div>
+                        <div class="w-100"></div> 
+                        <div className='pt-3'>
+                        </div> 
+                    </div> 
+                </div>
             </div>  
         )} else {
             return (
@@ -761,8 +817,8 @@ class Notification extends Component {
             </div>
         )} else if(this.state.toogle=='seller'){
             return (
-                <div className='row align-items-center text-light quic700'>
-                    <div className='col-11 mx-auto cardwhite'>
+                <div className='row align-items-center quic700'>
+                    <div className='col-11 mx-auto cardwhite pb-5'>
                         <div className='card-body'>
                             <div className='row card-title'>
                                 <div className='col card-title text-right'>
