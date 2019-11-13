@@ -18,6 +18,7 @@ const urlApi = 'http://localhost:7777/auth/'
 class OtherProfile extends Component {
 
     state = {
+        loading: true,
         otherProfile: [],
         transactionSell: [],
         totalSold : 0,
@@ -28,8 +29,6 @@ class OtherProfile extends Component {
 
     componentDidMount(){
         this.getProfile()
-        this.getOrdersData()
-        this.getProductsData()
     }
 
     getProfile = () => {
@@ -38,13 +37,16 @@ class OtherProfile extends Component {
                 userid:  this.props.other_id
             }
         }).then(res=>{
+            console.log('line 39');
             this.setState({ otherProfile: res.data[0] })
             axios.get(urlApi+'getdataseller',{
                 params : {
                     idSeller:  this.props.other_id
                 }
             }).then(res=>{
+                console.log('line 46');
                 this.setState({ dataSeller: res.data[0]})
+                this.getOrdersData()
             }).catch(err=>{
                 console.log(err);
             })
@@ -59,13 +61,16 @@ class OtherProfile extends Component {
                 idSeller:  this.props.user_id
             }
         }).then(res=>{
+            console.log('line 63');
             this.setState({ totalSold: res.data[0].qtyTerjual })
             axios.get(urlApi+'gettotalproduct',{
                 params : {
                     idSeller:  this.props.other_id
                 }
             }).then(res=>{
+                console.log('line 70');
                 this.setState({totalProduct: res.data[0].totalProduct})
+                this.getProductsData()
             }).catch(err=>{
                 console.log(err);
             })
@@ -81,7 +86,9 @@ class OtherProfile extends Component {
                 userId: this.props.other_id
             }
         }).then(res=>{
-            this.setState({products: res.data})
+            console.log('line 88');
+            this.setState({products: res.data, loading: false})
+
         }).catch(err=>{
             console.log(err);
         })
@@ -90,13 +97,13 @@ class OtherProfile extends Component {
     otherProfile = () => {
         let tglDaftar = moment(this.state.otherProfile.tglDaftar).format('D MMMM YYYY')
         var { username, kabupaten, propinsi, fotoProfil } = this.state.otherProfile
-        var { waktuLogout, totalPuas, totalFeedback, totalTransaksi } = this.state.dataSeller        
+        var pembeliPuas = 0
+        var totalFeedback = 0
+        var totalTransaksi = 0
         if(!totalPuas && !totalFeedback && !totalTransaksi){
-            var pembeliPuas = 0
-            var totalFeedback = 0
-            var totalTransaksi = 0
         } else {
             var pembeliPuas = (totalPuas/totalFeedback)*100
+            var { waktuLogout, totalPuas, totalFeedback, totalTransaksi } = this.state.dataSeller        
         }
         let keterangan = moment(waktuLogout).startOf('hour').fromNow()
 
@@ -216,6 +223,7 @@ class OtherProfile extends Component {
     }
 
     renderList = () => {
+        if(this.state.loading==false){
         return (
             <div className='row align-items-center quic700'>
                 <div className='col-11 mx-auto cardwhite pb-4'>
@@ -226,6 +234,13 @@ class OtherProfile extends Component {
                 </div>
             </div>
         )
+        } else {
+            return (
+                <div>
+                    <h1>Loading...</h1>
+                </div>
+            )
+        }
     }
 
     render() {
@@ -233,7 +248,7 @@ class OtherProfile extends Component {
         return(   
             <AbsoluteWrapper>
                 <Navbar/>
-                <div className='row text-light'> 
+                <div className='row'> 
                     <div className='col-11 mt-3 mx-auto'>
                         {this.renderList()}
                     </div>

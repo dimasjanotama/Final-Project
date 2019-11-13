@@ -787,7 +787,7 @@ select.form-control[size], select.form-control[multiple] {
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #495057;
+  color: #f0f0f0;
   font-family: 'Quicksand';
   background-color: rgba(0,0,0,0);
   background-clip: padding-box;
@@ -797,7 +797,7 @@ select.form-control[size], select.form-control[multiple] {
 }
 
 .form-control2:focus {
-  color: #495057;
+  color: #ffffff;
   background-color: rgba(0,0,0,0);
   border-color: rgb(255, 31, 210);
   font-family: 'Quicksand';

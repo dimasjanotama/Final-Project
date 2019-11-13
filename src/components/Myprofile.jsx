@@ -17,6 +17,8 @@ const urlApi = 'http://localhost:7777/auth/'
 class Myprofile extends Component {
 
     state = {
+        loadingProfile: true,
+        loadingDashboard: true,
         sellChart: [],
         buyChart: [],
         profile: [],
@@ -64,7 +66,10 @@ class Myprofile extends Component {
                     idSeller:  this.props.user_id
                 }
             }).then(res=>{
-                this.setState({ dataSeller: res.data[0] })
+                if(res.data[0]){
+                    this.setState({ dataSeller: res.data[0]})
+                }
+                this.setState({loadingProfile: false})
                 this.getStats()
             }).catch(err=>{
                 console.log(err);
@@ -80,27 +85,45 @@ class Myprofile extends Component {
                 userId: this.props.user_id
             }
         }).then(res=>{
-            this.setState({totalTransaksiBeli: res.data[0].totalTransaksi})
+            console.log('line 88');
+            if(res.data[0].totalTransaksi){
+                this.setState({totalTransaksiBeli: res.data[0].totalTransaksi})
+            } else {
+                this.setState({totalTransaksiBeli: 0})
+            }
             axios.get(urlApi+'totalproductnow',{
                 params: {
                     userId: this.props.user_id
                 }
             }).then(res=>{
-                this.setState({totalProdukDijual: res.data[0].totalProduk})
+                console.log('line 99');
+                if(res.data[0].totalProduk){
+                    this.setState({totalProdukDijual: res.data[0].totalProduk})
+                } else {
+                    this.setState({totalProdukDijual: 0})
+                }
                 axios.get(urlApi+'totalproductsold',{
                     params: {
                         userId: this.props.user_id
                     }
                 }).then(res=>{
-                    this.setState({totalProdukTerjual: res.data[0].totalProduk})
+                    console.log('line 110');
+                    if(res.data[0].totalProduk){
+                        this.setState({totalProdukTerjual: res.data[0].totalProduk})
+                    } else {
+                        this.setState({totalProdukTerjual: 0})
+                    }
                     axios.get(urlApi+'mostwantedproduct',{
                         params: {
                             userId: this.props.user_id
                         }
                     }).then(res=>{
+                        console.log('line 121');
                         if(res.data[0]){
                         this.setState({produkTerlaris: res.data[0].namaProduk})
-                        } else {}
+                        } else {
+                            this.setState({produkTerlaris: 'Belum ada'})
+                        }
                         this.getChart()
                     }).catch(err=>{
                         console.log(err);
@@ -122,25 +145,30 @@ class Myprofile extends Component {
                 idSeller: this.props.user_id
             }
         }).then(res=>{
+            console.log('line 148');
+            if(res.data){
             this.setState({sellChart: res.data})
+            }
             axios.get(urlApi+'getbuychart',{
                 params: {
                     idBuyer: this.props.user_id
                 }
             }).then(res=>{
+                console.log('line 155');
                 this.setState({buyChart: res.data})
                 axios.get(urlApi+'gettotalsell',{
                     params: {
                         idSeller: this.props.user_id
                     }
                 }).then(res=>{
+                    console.log('line 162');
                     this.setState({totalSell: res.data[0].totalSell})
                     axios.get(urlApi+'gettotalbuy',{
                         params: {
                             idBuyer: this.props.user_id
                         }
                     }).then(res=>{
-                        this.setState({totalBuy: res.data[0].totalBuy})
+                        this.setState({totalBuy: res.data[0].totalBuy, loadingDashboard:false})
                     }).catch(err=>{
                         console.log(err);
                     })
@@ -199,6 +227,7 @@ class Myprofile extends Component {
     }
 
     profile = () => {
+        if(this.state.loadingProfile==false){
         var { username, email, namaDepan, namaBelakang, noTelp, alamat, kelurahan, kecamatan, kabupaten, propinsi, tglDaftar, fotoProfil } = this.state.profile
         var tglGabung = tglDaftar
         return (
@@ -264,19 +293,27 @@ class Myprofile extends Component {
                 </div>
             </div>
         )
+    } else {
+        return (
+            <div>
+                <h1>Loading...</h1>
+            </div>
+        )
     }
+}
 
     dashboard = () => {
-        if(this.state.totalSell){
-            var totSell = this.state.totalSell.toLocaleString('id')
-        } else {
-            var totSell = 0
-        }
-        if(this.state.totalBuy){
-            var totBuy = this.state.totalBuy.toLocaleString('id')
-        } else {
-            var totBuy = 0
-        }
+        if(this.state.loadingDashboard==false){
+            if(this.state.totalSell){
+                var totSell = this.state.totalSell.toLocaleString('id')
+            } else {
+                var totSell = 0
+            }
+            if(this.state.totalBuy){
+                var totBuy = this.state.totalBuy.toLocaleString('id')
+            } else {
+                var totBuy = 0
+            }
         let bulanIni = (moment().format('M'))
         this.buy1 = 0
         this.buy2 = 0
@@ -334,16 +371,14 @@ class Myprofile extends Component {
         } else if(bulanIni==12){
             var chartBulan = ['SEP','OKT','NOV','DES']  
         }
-
-        var terlaris = this.state.produkTerlaris
-        var { totalPuas, totalFeedback, totalTransaksi } = this.state.dataSeller        
-        if(!totalPuas && !totalFeedback && !totalTransaksi && !terlaris){
-            var pembeliPuas = 0
-            var totalFeedback = 0
-            var totalTransaksi = 0
-            var terlaris = 'Belum ada'
+        var pembeliPuas = 0
+        var totalFeedback = 0
+        var totalTransaksi = 0
+        if(!totalPuas && !totalFeedback && !totalTransaksi && !terlaris){   
         } else {
             var pembeliPuas = (totalPuas/totalFeedback)*100
+            var { totalPuas, totalFeedback, totalTransaksi } = this.state.dataSeller        
+            var terlaris = this.state.produkTerlaris
         }
         return (
             <div>
@@ -528,7 +563,13 @@ class Myprofile extends Component {
                 <div className='pt-3'></div> 
             </div>
             )
-    } 
+    } else {
+        return(
+            <div>
+                <h1>Loading...</h1>
+            </div>
+        )
+    }}
 
     onUpdateClick = ()=>{
         axios.get(urlApi + 'getuser',
@@ -650,23 +691,24 @@ class Myprofile extends Component {
 
     renderList = () => {
         if(this.state.toogle==='profile'){
-        return (
-            <div className='row align-items-center quic700'>
-                <div className='col-11 mx-auto cardwhite pb-5'>
-                    <div className='card-body'>
-                        <div className='row card-title'>
-                            <div className='col card-title text-right'>
-                                <div class="ui inverted basic dimdom3 buttons">
-                                    <button onClick={()=>{this.setState({toogle: 'profile'})}} class="ui inverted basic dimdom3 button">Profile</button>
-                                    <button onClick={()=>{this.setState({toogle: 'dashboard'})}} class="ui inverted basic dimdom3 button">Dashboard</button>
+            return (
+                <div className='row align-items-center quic700'>
+                    <div className='col-11 mx-auto cardwhite pb-5'>
+                        <div className='card-body'>
+                            <div className='row card-title'>
+                                <div className='col card-title text-right'>
+                                    <div class="ui inverted basic dimdom3 buttons">
+                                        <button onClick={()=>{this.setState({toogle: 'profile'})}} class="ui inverted basic dimdom3 button">Profile</button>
+                                        <button onClick={()=>{this.setState({toogle: 'dashboard'})}} class="ui inverted basic dimdom3 button">Dashboard</button>
+                                    </div>
                                 </div>
                             </div>
+                            {this.profile()}
                         </div>
-                        {this.profile()}
                     </div>
                 </div>
-            </div>
-        )} else if (this.state.toogle==='dashboard'){
+            ) 
+    } else if (this.state.toogle==='dashboard'){
             return (
                 <div className='row align-items-center quic700'>
                     <div className='col-11 mx-auto cardwhite'>
@@ -683,7 +725,8 @@ class Myprofile extends Component {
                         </div>
                     </div>
                 </div>
-        )} else {
+            )
+        } else {
             return (
             <div className='row align-items-center text-light quic700'>
                 <div className='col-9 mx-auto card pl-5 pr-5 pb-4'>

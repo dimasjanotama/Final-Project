@@ -21,6 +21,8 @@ class DashboardAdmin extends Component {
         totUsers: '',
         totTransdone: '',
         totTransvalue: '',
+        totFeedback: 0,
+        totalPuas: '',
         transStatusChart: [],
         satisfactionChart: [],
         productsChart: [],
@@ -37,22 +39,40 @@ class DashboardAdmin extends Component {
         let token = 
         axios.get(urlApi+'getuserschart')
         .then(res=>{
-            this.setState({userChart: res.data})
+            console.log('line 40');
+            if(res.data[0]){
+                this.setState({userChart: res.data})
+            }
             axios.get(urlApi+'gettotalusers')
             .then(res=>{
-                this.setState({totUsers: res.data[0].totalUsers})
+                console.log('line 46');
+                if(res.data[0]){
+                    this.setState({totUsers: res.data[0].totalUsers})
+                }
                 axios.get(urlApi+'transactiondonechart')
                 .then(res=>{
-                    this.setState({transdoneChart: res.data})
+                    console.log('line 50');
+                    if(res.data[0]){
+                        this.setState({transdoneChart: res.data})
+                    }
                     axios.get(urlApi+'totaltransactiondone')
                     .then(res=>{
-                        this.setState({totTransdone: res.data[0].totalTransactions})
+                        console.log('line 58');
+                        if(res.data[0]){
+                            this.setState({totTransdone: res.data[0].totalTransactions})
+                        }
                         axios.get(urlApi+'transactionvaluechart')
                         .then(res=>{
-                            this.setState({transvalueChart: res.data})
+                            console.log('line 65');
+                            if(res.data[0]){
+                                this.setState({transvalueChart: res.data})
+                            }
                             axios.get(urlApi+'totaltransactionvalue')
                             .then(res=>{
-                                this.setState({totTransvalue: res.data[0].transactionsValue})
+                                console.log('line 68');
+                                if(res.data[0]){
+                                    this.setState({totTransvalue: res.data[0].transactionsValue})
+                                }
                                 this.getAllDiagram()    
                             }).catch(err=>{
                                 console.log(err);
@@ -77,22 +97,41 @@ class DashboardAdmin extends Component {
     getAllDiagram = () => {
         axios.get(urlApi+'transactionstatuschart')
         .then(res=>{
-            this.setState({transStatusChart: res.data})
+            console.log('line 98');
+            if(res.data[0]){
+                this.setState({transStatusChart: res.data})
+            }
             axios.get(urlApi+'custsatisfactionchart')
             .then(res=>{
-                this.setState({satisfactionChart: res.data})
+                console.log('line 104');
+                if(res.data[0].totalFeedback){
+                    this.setState({satisfactionChart: res.data, totFeedback: res.data[0].totalFeedback, totalPuas: res.data[0].totalPuas})
+                } else {this.setState({totFeedback: 0})}
                 axios.get(urlApi+'productschart')
                 .then(res=>{
-                    this.setState({productsChart: res.data})
+                    console.log('line 110');
+                    if(res.data[0]){
+                        this.setState({productsChart: res.data})
+                    }
                     axios.get(urlApi+'activeseller')
                     .then(res=>{
-                        this.setState({activeSeller: res.data})
+                        console.log('line 116');
+                        if(res.data[0]){
+                            this.setState({activeSeller: res.data[0].namaSeller})
+                        } else {
+                            this.setState({activeSeller: 'Belum Ada'})
+                        }
                         axios.get(urlApi+'activebuyer')
                         .then(res=>{
-                            this.setState({
-                                activeBuyer: res.data,
-                                loading: false
-                            })
+                            console.log('line 122');
+                            if(res.data[0]){
+                                this.setState({
+                                    activeBuyer: res.data[0].namaBuyer,
+                                })
+                            } else {
+                                this.setState({activeBuyer: 'Belum Ada'})
+                            }
+                            this.condition()
                         }).catch(err=>{
                             console.log(err);
                         })
@@ -108,6 +147,21 @@ class DashboardAdmin extends Component {
         }).catch(err=>{
             console.log(err);
         })
+    }
+
+    condition = () => {
+        if(!this.state.totUsers){
+            this.setState({totUsers: 0})
+        }
+        if(!this.state.totTransdone){
+            this.setState({totTransdone: 0})
+        }
+        if(!this.state.totTransvalue){
+            this.setState({
+                totTransvalue: 0,
+                loading: false
+            })
+        }
     }
 
     getTransaction3 = () => {
@@ -144,8 +198,9 @@ class DashboardAdmin extends Component {
         this.totalJmlTransaksi = allTransaction
         
         // DIAGRAM KEPUASAN
-        this.totalTidakPuas = (this.state.satisfactionChart[0].totalFeedback)-(this.state.satisfactionChart[0].totalPuas)
-        
+        if(this.state.totFeedback){
+            this.totalTidakPuas = (this.state.satisfactionChart[0].totalFeedback)-(this.state.satisfactionChart[0].totalPuas)
+        }
         // DIAGRAM TOTAL PRODUK DAN KATEGORI
         this.distortion = 0
         this.dynamics = 0
@@ -464,14 +519,14 @@ class DashboardAdmin extends Component {
                     <div className='col-4 pr-0'>
                     <div className='text-center cardblue card-body'>
                         <div style={{fontSize:'10pt', color:'rgb(78, 154, 255)'}}>Total Feedback</div>
-                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>{this.state.satisfactionChart[0].totalFeedback} Feedback</div>
+                        <div className='mt-2 pb-3' style={{fontSize:'19pt'}}>{this.state.totFeedback} Feedback</div>
                         <div className='chart mt-3 mb-3' >
                         <Pie
                                 data={{
                                     labels: ['Puas','Tidak Puas'],
                                     datasets : [{
                                         data: [
-                                            this.state.satisfactionChart[0].totalPuas,
+                                            this.state.totalPuas,
                                             this.totalTidakPuas
                                         ],
                                         backgroundColor:['rgb(255, 92, 222)','rgb(91, 226, 215)'],
@@ -545,20 +600,20 @@ class DashboardAdmin extends Component {
                     <div className='col-4 pb-5 cardblue text-center mx-auto'>
                         <div><i className='big trophy icon mt-5 mb-4 text-light'></i></div>
                         <div className='w-100'></div>
-                        <div className='quic700p' style={{fontSize:'30pt'}}>{this.state.activeSeller[0].namaSeller}</div>
+                        <div className='quic700p' style={{fontSize:'30pt'}}>{this.state.activeSeller}</div>
                         <div className='w-100'></div>
                         <div className='mt-4'>Penjual teraktif</div>
                         <div className='w-100'></div>
-                        <div className='mt-1' style={{fontSize:'10pt', color:'rgb(192,192,192)'}}>{this.state.activeSeller[0].totalTransaksi} transaksi</div>
+                        <div className='mt-1' style={{fontSize:'10pt', color:'rgb(192,192,192)'}}>{this.state.activeSeller} transaksi</div>
                     </div>
                     <div className='col-4 pb-5 cardblue text-center mx-auto'>
                         <div><i className='big flag icon mt-5 mb-4 text-light'></i></div>
                         <div className='w-100'></div>
-                        <div className='quic700p' style={{fontSize:'30pt'}}>{this.state.activeBuyer[0].namaBuyer}</div>
+                        <div className='quic700p' style={{fontSize:'30pt'}}>{this.state.activeBuyer}</div>
                         <div className='w-100'></div>
                         <div className='mt-4'>Pembeli teraktif</div>
                         <div className='w-100'></div>
-                        <div className='mt-1' style={{fontSize:'10pt', color:'rgb(192,192,192)'}}>{this.state.activeBuyer[0].totalTransaksi} transaksi</div>
+                        <div className='mt-1' style={{fontSize:'10pt', color:'rgb(192,192,192)'}}>{this.state.activeBuyer} transaksi</div>
                     </div>
                 <div className='pt-3'></div> 
                 </div>

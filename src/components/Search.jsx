@@ -32,7 +32,9 @@ class Search extends Component {
         orderQty: '',
         pulauUser: '',
         user: [],
-        idCart: ''
+        idCart: '',
+        buyerCartQty: [],
+        stockQty : ''
     }
 
     componentDidMount(){
@@ -357,20 +359,43 @@ class Search extends Component {
         } else if (this.state.orderQty > parseInt(product.qty)){
             alertify.alert('Keterangan', 'Stok produk tidak mencukupi')
         } else {
-            this.cekQty(idProduct, product)
+            axios.get(urlApi+'getbuyercartqty',{
+                params: {
+                    idBuyer: this.props.user_id,
+                    idProduct: idProduct
+                }
+            }).then(res=>{
+                console.log('line 368');
+                console.log(res.data);
+                if(res.data){
+                    let totalOrder = 0
+                    for(let i=0;i<res.data.length;i++){
+                        console.log(res.data[i]);
+                        totalOrder+= res.data[i].orderQty 
+                    }
+                    console.log(totalOrder);
+                    if(totalOrder+this.state.orderQty > product.qty){
+                        alertify.alert('Keterangan','Maaf stok product tidak mencukupi')
+                    } else {
+                        this.cekQty(idProduct, product)
+                    }
+                } else {
+                    console.log('line 381');
+                    this.cekQty(idProduct, product)
+                }
+            }).catch(err=>{
+                console.log(err);
+            })
         } 
     }
 
     cekQty = (idProduct, product)=>{
-        let token = localStorage.getItem('token')
+        
         axios.get(urlApi+'cekqty',{
             params : {
                 idProduct : idProduct,
                 idBuyer: this.props.user_id
-            },
-            headers : {
-                authorization : token
-            }  
+            }
         }).then(res=>{
             if(res.data[0].sudahada>0){
                 let orderQtyNow = parseInt(res.data[0].orderQty) + parseInt(this.state.orderQty)
@@ -379,7 +404,9 @@ class Search extends Component {
                     orderQty: this.state.orderQty,
                     idProduct: idProduct,
                     qty: this.state.qty,
-                    pulauSeller:this.state.product.pulauUser            
+                    pulauSeller:this.state.product.pulauUser,
+                    idBuyer: this.props.user_id,
+                    namaBuyer: this.props.user_name,
                 }).then(res=>{
                     alertify.alert('Keterangan', 'Success! Berhasil menambah ke keranjang')
                     this.setState({redirect:true})
@@ -391,6 +418,7 @@ class Search extends Component {
                 {
                     idProduct: idProduct,
                     idBuyer: this.props.user_id,
+                    namaBuyer: this.props.user_name,
                     idSeller: product.idUser,
                     namaSeller: product.namaSeller,      
                     pulauBuyer: this.state.pulauUser,               
@@ -475,6 +503,7 @@ class Search extends Component {
                                 <div class="col-4 ui input3 mr-3">
                                     <select className='form-control custom-select mb-1' onChange={(e) => this.setState({kondisi: e.target.value})} name="" id="">
                                         <option selected disabled>Kondisi Barang</option>
+                                        <option value="">All</option>
                                         <option value="baru">Baru</option>
                                         <option value="bekas">Bekas</option>
                                     </select>
@@ -484,13 +513,14 @@ class Search extends Component {
                                 <div class=" col-4 ui input3 mr-3">
                                     <select onChange={(e) => this.setState({kategori: e.target.value})} className='form-control custom-select' name="" id="">
                                         <option selected disabled>Kategori</option>
+                                        <option value="">All</option>
                                         <option value="Distortion">Distortion</option>
                                         <option value="Dynamics">Dynamics</option>
                                         <option value="Filter">Filter</option>
                                         <option value="Modulation">Modulation</option>
                                         <option value="Pitch">Pitch</option>
                                         <option value="Time">Time</option>
-                                        <option value="Preamp/Cabsim">Preamp/Cabsim</option>
+                                        <option value="Preamp">Preamp/Cabsim</option>
                                         <option value="Multi Effect">Multi Effect</option>
                                         <option value="Bass FX">Bass FX</option>
                                     </select>  

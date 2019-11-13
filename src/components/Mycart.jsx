@@ -105,7 +105,7 @@ class Mycart extends Component {
         let hasil = this.state.carts.map((product)=>{
             let totalSemua = 0
             let { id, namaProduk, harga, orderQty, fotoProduk, pulauBuyer, pulauSeller } = product 
-            let berat = (product.berat/1000)*orderQty
+            let berat = (Math.ceil(product.berat/1000))*orderQty
             if(pulauBuyer==pulauSeller){
                 var ongkir = 50000*berat
             } else { var ongkir = 160000*berat}

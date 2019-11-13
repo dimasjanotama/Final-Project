@@ -22,7 +22,6 @@ class Addproduct extends Component {
         redirect: false,
         namaProduk: '',
         kategori: '',
-        subKategori: '',
         harga: '',
         qty: '',
         berat: '',
@@ -81,7 +80,7 @@ class Addproduct extends Component {
             () => {this.setState({error: ''})},
             3000
         )} else if (
-            this.state.namaProduk && this.state.kategori && this.state.subKategori && 
+            this.state.namaProduk && this.state.kategori && 
             this.state.harga && this.state.berat && this.state.kondisi && this.state.deskripsi && this.state.selectedFile &&
             this.state.qty){
                 var fd = new FormData()
@@ -89,8 +88,7 @@ class Addproduct extends Component {
                     idUser: this.props.user_id,
                     namaSeller: this.state.namaSeller,
                     namaProduk: this.state.namaProduk,
-                    kategori: this.state.kategori,
-                    subKategori: this.state.subKategori,                     
+                    kategori: this.state.kategori,                 
                     harga: this.state.harga,
                     berat: this.state.berat,
                     kondisi: this.state.kondisi,
@@ -156,14 +154,21 @@ class Addproduct extends Component {
                     </div>
                     <div className='row'>
                         <div className='col card-title pt-4 mb-2'>Kategori Efek</div>
-                        <div className='col card-title pt-4 mb-2'>Sub-Kategori Efek</div>
                         <div class="w-100"></div>
                         <div class=" col ui input2">
-                            <input onChange={(e) => this.setState({kategori: e.target.value})} type="text" placeholder="Kategori"/>
-                        </div>                 
-                        <div class=" col ui input2">
-                            <input onChange={(e) => this.setState({subKategori: e.target.value})} type="text" placeholder="Sub Kategori"/>
-                        </div>                 
+                            <select className='form-control2 custom-select' onChange={(e) => this.setState({kategori: e.target.value})} name="" id="">
+                                <option selected disabled>Kategori</option>
+                                <option value="Distortion">Distortion</option>
+                                <option value="Dynamics">Dynamics</option>
+                                <option value="Filter">Filter</option>
+                                <option value="Modulation">Modulation</option>
+                                <option value="Pitch">Pitch</option>
+                                <option value="Time">Time</option>
+                                <option value="Preamp">Preamp/Cabsim</option>
+                                <option value="Multi Effect">Multi Effect</option>
+                                <option value="Bass FX">Bass FX</option>
+                            </select>
+                        </div>                               
                     </div>
                     <div className='row'>
                         <div className='col-6 card-title pt-4 mb-2'>Harga (Harga harus kelipatan 1000)</div>

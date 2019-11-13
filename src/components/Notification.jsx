@@ -162,11 +162,7 @@ class Notification extends Component {
 
     onPaymentConf = (idTransaction) => {
         if(this.state.noRek && this.state.namaRek && this.state.selectedFile){
-        let today = new Date()
-        let year = today.getFullYear()
-        let month = today.getMonth()+1
-        let date = today.getDate()
-        var tglPembayaran = `${year}-${month}-${date}`
+        var tglPembayaran = moment().format('YYYY-MM-DD')+' '+ moment().format('HH:mm:ss');
         let fd = new FormData()
         let data = {   
             idBuyTransaction: idTransaction,
@@ -192,12 +188,9 @@ class Notification extends Component {
     } 
 
     onShippingConf = ()=>{
-        if(this.state.idSellTransaction && this.state.noResi && this.state.hakSeller && this.state.noRekSeller && this.state.namaRekSeller && this.state.selectedFile2){
-        let today = new Date()
-        let year = today.getFullYear()
-        let month = today.getMonth()+1
-        let date = today.getDate()
-        var tglPengiriman = `${year}-${month}-${date}`
+        if(this.state.idSellTransaction && this.state.noResi && this.state.hakSeller && this.state.noRekSeller && 
+            this.state.namaRekSeller && this.state.selectedFile2){
+        var tglPengiriman = moment().format('YYYY-MM-DD')+' '+ moment().format('HH:mm:ss');
         let fd = new FormData()
         let data = {   
             idSellTransaction: this.state.idSellTransaction,
@@ -223,11 +216,7 @@ class Notification extends Component {
     }
 
     onReceiveConf = (transaction) =>{
-        var today = new Date()
-        var year = today.getFullYear()
-        var month = today.getMonth()+1
-        var date = today.getDate()
-        var tglTerima = `${year}-${month}-${date}`
+        var tglTerima = moment().format('YYYY-MM-DD')+' '+ moment().format('HH:mm:ss');
         axios.put(urlApi + 'receivepacket',{
             id: transaction.id,
             tglPenerimaan: tglTerima
@@ -279,7 +268,6 @@ class Notification extends Component {
             let x = setInterval(() => {
                     let now = new Date().getTime()
                     let t = batasWaktu - now
-                    console.log(t)
                     // let days = Math.floor((t % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24)); 
                     let hours = Math.floor((t % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); 
                     let minutes = Math.floor((t % (1000 * 60 * 60)) / (1000 * 60)); 
@@ -856,7 +844,7 @@ class Notification extends Component {
     }
 
     render() {
-        if(this.props.user_name){
+        if(this.props.user_name && this.props.user_name!=='Admin'){
         return(   
             <AbsoluteWrapper>
                 <Navbar/>
@@ -868,6 +856,8 @@ class Notification extends Component {
                 <Footer />
             </AbsoluteWrapper>
         )
+        } else if (this.props.user_name && this.props.user_name=='Admin'){
+            return <Redirect to='/verifier'/>
         } else {
             return <Redirect to='/'/>
         }
