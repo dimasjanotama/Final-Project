@@ -46,7 +46,10 @@ class Myprofile extends Component {
         pulau: '',
         newPassword: '',
         repeatNewPassword: '',
-        selectedFile: ''
+        selectedFile: '',
+        pembeliPuas: 0,
+        totalFeedback: 0,
+        totalTransaksi: 0
     }
 
     componentDidMount(){
@@ -67,7 +70,12 @@ class Myprofile extends Component {
                 }
             }).then(res=>{
                 if(res.data[0]){
-                    this.setState({ dataSeller: res.data[0]})
+                    this.setState({ 
+                        dataSeller: res.data[0],
+                        pembeliPuas: (res.data[0].totalPuas/res.data[0].totalFeedback)*100,
+                        totalFeedback: res.data[0].totalFeedback,
+                        totalTransaksi: res.data[0].totalTransaksi
+                    })
                 }
                 this.setState({loadingProfile: false})
                 this.getStats()
@@ -85,7 +93,7 @@ class Myprofile extends Component {
                 userId: this.props.user_id
             }
         }).then(res=>{
-            console.log('line 88');
+            console.log('line 91');
             if(res.data[0].totalTransaksi){
                 this.setState({totalTransaksiBeli: res.data[0].totalTransaksi})
             } else {
@@ -96,7 +104,7 @@ class Myprofile extends Component {
                     userId: this.props.user_id
                 }
             }).then(res=>{
-                console.log('line 99');
+                console.log('line 102');
                 if(res.data[0].totalProduk){
                     this.setState({totalProdukDijual: res.data[0].totalProduk})
                 } else {
@@ -107,7 +115,7 @@ class Myprofile extends Component {
                         userId: this.props.user_id
                     }
                 }).then(res=>{
-                    console.log('line 110');
+                    console.log('line 113');
                     if(res.data[0].totalProduk){
                         this.setState({totalProdukTerjual: res.data[0].totalProduk})
                     } else {
@@ -118,7 +126,7 @@ class Myprofile extends Component {
                             userId: this.props.user_id
                         }
                     }).then(res=>{
-                        console.log('line 121');
+                        console.log('line 124');
                         if(res.data[0]){
                         this.setState({produkTerlaris: res.data[0].namaProduk})
                         } else {
@@ -145,7 +153,7 @@ class Myprofile extends Component {
                 idSeller: this.props.user_id
             }
         }).then(res=>{
-            console.log('line 148');
+            console.log('line 151');
             if(res.data){
             this.setState({sellChart: res.data})
             }
@@ -154,14 +162,14 @@ class Myprofile extends Component {
                     idBuyer: this.props.user_id
                 }
             }).then(res=>{
-                console.log('line 155');
+                console.log('line 160');
                 this.setState({buyChart: res.data})
                 axios.get(urlApi+'gettotalsell',{
                     params: {
                         idSeller: this.props.user_id
                     }
                 }).then(res=>{
-                    console.log('line 162');
+                    console.log('line 167');
                     this.setState({totalSell: res.data[0].totalSell})
                     axios.get(urlApi+'gettotalbuy',{
                         params: {
@@ -371,13 +379,9 @@ class Myprofile extends Component {
         } else if(bulanIni==12){
             var chartBulan = ['SEP','OKT','NOV','DES']  
         }
-        var pembeliPuas = 0
-        var totalFeedback = 0
-        var totalTransaksi = 0
         if(!totalPuas && !totalFeedback && !totalTransaksi && !terlaris){   
         } else {
-            var pembeliPuas = (totalPuas/totalFeedback)*100
-            var { totalPuas, totalFeedback, totalTransaksi } = this.state.dataSeller        
+            var { totalPuas, totalFeedback, totalTransaksi } = this.state.dataSeller   
             var terlaris = this.state.produkTerlaris
         }
         return (
@@ -500,21 +504,21 @@ class Myprofile extends Component {
                         <div className='col-3 pb-5 cardwhite text-center'>
                             <div><i className='big child icon mt-5 mb-4'></i></div>
                             <div className='w-100'></div>
-                            <div className='quic700p' style={{fontSize:'30pt'}}>{pembeliPuas}%</div>
+                            <div className='quic700p' style={{fontSize:'30pt'}}>{this.state.pembeliPuas}%</div>
                             <div className='w-100'></div>
                             <div className='mt-4'>Kepuasan Pembeli</div>
                         </div>
                         <div className='col-3 pb-5 cardwhite text-center'>
                             <div><i className='big thumbs up outline icon mt-5 mb-4'></i></div>
                             <div className='w-100'></div>
-                            <div className='quic700p' style={{fontSize:'30pt'}}>{totalFeedback}</div>
+                            <div className='quic700p' style={{fontSize:'30pt'}}>{this.state.totalFeedback}</div>
                             <div className='w-100'></div>
                             <div className='mt-4'>Jumlah Feedback</div>
                         </div>
                         <div className='col-3 pb-5 cardwhite text-center'>
                             <div><i className='big medkit icon mt-5 mb-4'></i></div>
                             <div className='w-100'></div>
-                            <div className='quic700p' style={{fontSize:'30pt'}}>{totalTransaksi}</div>
+                            <div className='quic700p' style={{fontSize:'30pt'}}>{this.state.totalTransaksi}</div>
                             <div className='w-100'></div>
                             <div className='mt-4'>Total Transaksi</div>
                         </div>

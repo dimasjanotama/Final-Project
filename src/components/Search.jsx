@@ -377,11 +377,11 @@ class Search extends Component {
                     if(totalOrder+this.state.orderQty > product.qty){
                         alertify.alert('Keterangan','Maaf stok product tidak mencukupi')
                     } else {
-                        this.cekQty(idProduct, product)
+                        this.cekSeller(idProduct, product)
                     }
                 } else {
                     console.log('line 381');
-                    this.cekQty(idProduct, product)
+                    this.cekSeller(idProduct, product)
                 }
             }).catch(err=>{
                 console.log(err);
@@ -389,78 +389,98 @@ class Search extends Component {
         } 
     }
 
-    cekQty = (idProduct, product)=>{
-        
-        axios.get(urlApi+'cekqty',{
-            params : {
-                idProduct : idProduct,
+    cekSeller = (idProduct, product)=>{
+        axios.get(urlApi+'cekseller',{
+            params: {
                 idBuyer: this.props.user_id
             }
         }).then(res=>{
-            if(res.data[0].sudahada>0){
-                let orderQtyNow = parseInt(res.data[0].orderQty) + parseInt(this.state.orderQty)
-                axios.put(urlApi+'addqty',{
-                    orderQtyNow: orderQtyNow,
-                    orderQty: this.state.orderQty,
-                    idProduct: idProduct,
-                    qty: this.state.qty,
-                    pulauSeller:this.state.product.pulauUser,
-                    idBuyer: this.props.user_id,
-                    namaBuyer: this.props.user_name,
-                }).then(res=>{
-                    alertify.alert('Keterangan', 'Success! Berhasil menambah ke keranjang')
-                    this.setState({redirect:true})
-                }).catch(err=>{
-                    console.log(err);
-                })
+           console.log('line 399');
+           if(!res.data[0]){
+               this.cekQty(idProduct, product)
+           } else {
+               if(product.idUser!==res.data[0].idSeller){
+                alertify.alert('Keterangan','Mohon maaf, untuk saat ini belum bisa menambah keranjang dari Penjual yang berbeda, silahkan cekout terlebih dahulu dan pilih produk kembali')
             } else {
-                axios.post(urlApi + 'addtocart',
-                {
-                    idProduct: idProduct,
-                    idBuyer: this.props.user_id,
-                    namaBuyer: this.props.user_name,
-                    idSeller: product.idUser,
-                    namaSeller: product.namaSeller,      
-                    pulauBuyer: this.state.pulauUser,               
-                    pulauSeller: product.pulauUser,               
-                    namaProduk: product.namaProduk,
-                    harga: product.harga,
-                    berat: product.berat,
-                    qty: parseInt(product.qty),
-                    orderQty: parseInt(this.state.orderQty),
-                    fotoProduk: product.fotoProduk
-                }).then((res)=>{
-                    axios.post(urlApi+'addorder',{
-                        idBuyer: this.props.user_id,
-                        namaBuyer: this.state.user.namaDepan +' '+ this.state.user.namaBelakang,
-                        idSeller: product.idUser,  
-                        namaSeller: product.namaSeller,
-                        pulauBuyer: this.state.pulauUser,               
-                        pulauSeller: product.pulauUser, 
-                        alamat: this.state.user.alamat,
-                        kelurahan: this.state.user.kelurahan,
-                        kecamatan: this.state.user.kecamatan,
-                        kabupaten: this.state.user.kabupaten,
-                        propinsi: this.state.user.propinsi,
-                        kodepos: this.state.user.kodepos,
-                        idProduct: idProduct,
-                        namaProduk: product.namaProduk,
-                        orderQty: parseInt(this.state.orderQty),
-                        harga: product.harga,
-                        berat: product.berat,
-                        fotoProduk: product.fotoProduk
-                    }
-                    ).then(res=>{
-                        alertify.alert('Keterangan', 'Sukses! Berhasil ditambahkan ke keranjang')
-                        this.setState({redirect:true})
-                    }).catch(err=>{
-                        console.log(err);
-                    })    
-            })
+                this.cekQty(idProduct, product)
             }
+           }
         }).catch(err=>{
             console.log(err);
         })
+    }
+           
+    cekQty = (idProduct, product)=>{
+           axios.get(urlApi+'cekqty',{
+               params : {
+                   idProduct : idProduct,
+                   idBuyer: this.props.user_id
+               }
+           }).then(res=>{
+               if(res.data[0].sudahada>0){
+                   let orderQtyNow = parseInt(res.data[0].orderQty) + parseInt(this.state.orderQty)
+                   axios.put(urlApi+'addqty',{
+                       orderQtyNow: orderQtyNow,
+                       orderQty: this.state.orderQty,
+                       idProduct: idProduct,
+                       qty: this.state.qty,
+                       pulauSeller:this.state.product.pulauUser,
+                       idBuyer: this.props.user_id,
+                       namaBuyer: this.props.user_name,
+                   }).then(res=>{
+                       alertify.alert('Keterangan', 'Success! Berhasil menambah ke keranjang')
+                       this.setState({redirect:true})
+                   }).catch(err=>{
+                       console.log(err);
+                   })
+               } else {
+                   axios.post(urlApi + 'addtocart',
+                   {
+                       idProduct: idProduct,
+                       idBuyer: this.props.user_id,
+                       namaBuyer: this.props.user_name,
+                       idSeller: product.idUser,
+                       namaSeller: product.namaSeller,      
+                       pulauBuyer: this.state.pulauUser,               
+                       pulauSeller: product.pulauUser,               
+                       namaProduk: product.namaProduk,
+                       harga: product.harga,
+                       berat: product.berat,
+                       qty: parseInt(product.qty),
+                       orderQty: parseInt(this.state.orderQty),
+                       fotoProduk: product.fotoProduk
+                   }).then((res)=>{
+                       axios.post(urlApi+'addorder',{
+                           idBuyer: this.props.user_id,
+                           namaBuyer: this.state.user.namaDepan +' '+ this.state.user.namaBelakang,
+                           idSeller: product.idUser,  
+                           namaSeller: product.namaSeller,
+                           pulauBuyer: this.state.pulauUser,               
+                           pulauSeller: product.pulauUser, 
+                           alamat: this.state.user.alamat,
+                           kelurahan: this.state.user.kelurahan,
+                           kecamatan: this.state.user.kecamatan,
+                           kabupaten: this.state.user.kabupaten,
+                           propinsi: this.state.user.propinsi,
+                           kodepos: this.state.user.kodepos,
+                           idProduct: idProduct,
+                           namaProduk: product.namaProduk,
+                           orderQty: parseInt(this.state.orderQty),
+                           harga: product.harga,
+                           berat: product.berat,
+                           fotoProduk: product.fotoProduk
+                       }
+                       ).then(res=>{
+                           alertify.alert('Keterangan', 'Sukses! Berhasil ditambahkan ke keranjang')
+                           this.setState({redirect:true})
+                       }).catch(err=>{
+                           console.log(err);
+                       })    
+               })
+               }
+           }).catch(err=>{
+               console.log(err);
+           })
     }
 
     render() {

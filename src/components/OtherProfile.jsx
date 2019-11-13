@@ -24,7 +24,10 @@ class OtherProfile extends Component {
         totalSold : 0,
         totalProduct : 0,
         dataSeller: [],
-        products: []
+        products: [],
+        pembeliPuas: 0,
+        totalFeedback: 0,
+        totalTransaksi: 0
     }
 
     componentDidMount(){
@@ -37,15 +40,22 @@ class OtherProfile extends Component {
                 userid:  this.props.other_id
             }
         }).then(res=>{
-            console.log('line 39');
+            console.log('line 40');
             this.setState({ otherProfile: res.data[0] })
             axios.get(urlApi+'getdataseller',{
                 params : {
                     idSeller:  this.props.other_id
                 }
             }).then(res=>{
-                console.log('line 46');
-                this.setState({ dataSeller: res.data[0]})
+                console.log('line 47');
+                if(res.data[0]){
+                    this.setState({ 
+                        dataSeller: res.data[0],
+                        pembeliPuas: (res.data[0].totalPuas/res.data[0].totalFeedback)*100,
+                        totalFeedback: res.data[0].totalFeedback,
+                        totalTransaksi: res.data[0].totalTransaksi
+                    })
+                }
                 this.getOrdersData()
             }).catch(err=>{
                 console.log(err);
@@ -61,14 +71,14 @@ class OtherProfile extends Component {
                 idSeller:  this.props.user_id
             }
         }).then(res=>{
-            console.log('line 63');
+            console.log('line 64');
             this.setState({ totalSold: res.data[0].qtyTerjual })
             axios.get(urlApi+'gettotalproduct',{
                 params : {
                     idSeller:  this.props.other_id
                 }
             }).then(res=>{
-                console.log('line 70');
+                console.log('line 71');
                 this.setState({totalProduct: res.data[0].totalProduct})
                 this.getProductsData()
             }).catch(err=>{
@@ -86,9 +96,8 @@ class OtherProfile extends Component {
                 userId: this.props.other_id
             }
         }).then(res=>{
-            console.log('line 88');
+            console.log('line 89');
             this.setState({products: res.data, loading: false})
-
         }).catch(err=>{
             console.log(err);
         })
@@ -97,9 +106,6 @@ class OtherProfile extends Component {
     otherProfile = () => {
         let tglDaftar = moment(this.state.otherProfile.tglDaftar).format('D MMMM YYYY')
         var { username, kabupaten, propinsi, fotoProfil } = this.state.otherProfile
-        var pembeliPuas = 0
-        var totalFeedback = 0
-        var totalTransaksi = 0
         if(!totalPuas && !totalFeedback && !totalTransaksi){
         } else {
             var pembeliPuas = (totalPuas/totalFeedback)*100
@@ -141,14 +147,14 @@ class OtherProfile extends Component {
                                     <div className='col-3 pb-5 mr-3 cardwhite text-center'>
                                         <div><i className='big child icon mt-5 mb-4'></i></div>
                                         <div className='w-100'></div>
-                                        <div style={{fontSize:'30pt'}}>{pembeliPuas}%</div>
+                                        <div style={{fontSize:'30pt'}}>{this.state.pembeliPuas}%</div>
                                         <div className='w-100'></div>
                                         <div className='mt-4'>Kepuasan Pembeli</div>
                                     </div>
                                     <div className='col-3 pb-5 mr-3 cardwhite text-center'>
                                         <div><i className='big thumbs up outline icon mt-5 mb-4'></i></div>
                                         <div className='w-100'></div>
-                                        <div style={{fontSize:'30pt'}}>{totalFeedback}</div>
+                                        <div style={{fontSize:'30pt'}}>{this.state.totalFeedback}</div>
                                         <div className='w-100'></div>
                                         <div className='mt-4'>Jumlah Feedback</div>
                                     </div>
@@ -170,7 +176,7 @@ class OtherProfile extends Component {
                                     <div className='col-3 pb-5 mr-3 cardwhite text-center'>
                                         <div><i className='big money bill alternate outline icon mt-5 mb-4'></i></div>
                                         <div className='w-100'></div>
-                                        <div style={{fontSize:'30pt'}}>{totalTransaksi}</div>
+                                        <div style={{fontSize:'30pt'}}>{this.state.totalTransaksi}</div>
                                         <div className='w-100'></div>
                                         <div className='mt-4'>Produk terjual</div>
                                     </div>
