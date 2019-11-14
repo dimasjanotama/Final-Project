@@ -487,7 +487,7 @@ class Search extends Component {
         if(this.state.redirect){
             return <Redirect to='/mycart'/>
         }
-        if(this.props.user_name){
+        if(this.props.user_name && this.props.user_name!=='Admin'){
         return(   
             <AbsoluteWrapper>
                 <Navbar/>
@@ -562,6 +562,8 @@ class Search extends Component {
                 <Footer />
             </AbsoluteWrapper>
         )
+        } else if (this.props.user_name && this.props.user_name=='Admin'){
+            return <Redirect to='/verifier'/>
         } else {
             return <Redirect to='/'/>
         }

@@ -14,7 +14,6 @@ import Search from './components/Search'
 import Myprofile from './components/Myprofile'
 import OtherProfile from './components/OtherProfile'
 import DetailTransaksi from './components/DetailTransaksi'
-import Navbar from './components/Navbar'
 
 
 

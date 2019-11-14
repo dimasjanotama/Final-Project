@@ -179,7 +179,8 @@ class Verifier extends Component {
 
     selesai = (transaction)=>{
         axios.put(urlApi + 'transactiondone',{
-            id: transaction.id
+            id: transaction.id,
+            idBuyer: transaction.idBuyer
         })
         .then((res)=>{
             axios.post(urlApi + 'addhistory',{

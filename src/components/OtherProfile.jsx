@@ -49,12 +49,21 @@ class OtherProfile extends Component {
             }).then(res=>{
                 console.log('line 47');
                 if(res.data[0]){
-                    this.setState({ 
-                        dataSeller: res.data[0],
-                        pembeliPuas: (res.data[0].totalPuas/res.data[0].totalFeedback)*100,
-                        totalFeedback: res.data[0].totalFeedback,
-                        totalTransaksi: res.data[0].totalTransaksi
-                    })
+                    if(res.data[0].totalFeedback==0){
+                        this.setState({ 
+                            dataSeller: res.data[0],
+                            pembeliPuas: 0,
+                            totalFeedback: res.data[0].totalFeedback,
+                            totalTransaksi: res.data[0].totalTransaksi
+                        })
+                    } else { 
+                        this.setState({ 
+                            dataSeller: res.data[0],
+                            pembeliPuas: (res.data[0].totalPuas/res.data[0].totalFeedback)*100,
+                            totalFeedback: res.data[0].totalFeedback,
+                            totalTransaksi: res.data[0].totalTransaksi
+                        })
+                    }
                 }
                 this.getOrdersData()
             }).catch(err=>{
@@ -250,7 +259,7 @@ class OtherProfile extends Component {
     }
 
     render() {
-        if(this.props.user_name){
+        if(this.props.user_name && this.props.user_name!=='Admin'){
         return(   
             <AbsoluteWrapper>
                 <Navbar/>
@@ -262,6 +271,8 @@ class OtherProfile extends Component {
                 <Footer />
             </AbsoluteWrapper>
         )
+        } else if (this.props.user_name && this.props.user_name=='Admin'){
+            return <Redirect to='/verifier'/>
         } else {
             return <Redirect to='/'/>
         }

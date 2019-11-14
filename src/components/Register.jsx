@@ -301,8 +301,10 @@ class Register extends Component {
                 </div>
             </AbsoluteWrapper>
         ) //-----------------------------> kurung tutup return
+    } else if (this.props.user_name && this.props.user_name!=='Admin'){
+        return <Redirect to='/'/>
     } else {
-        return <Redirect to='/dashboard'/>
+        return <Redirect to='/verifier'/>
     }
     }
 }

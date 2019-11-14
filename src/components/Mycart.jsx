@@ -277,7 +277,7 @@ class Mycart extends Component {
         if(this.state.redirect){
             return <Redirect to='/notification'/>
         }
-        if(this.props.user_name){
+        if(this.props.user_name  && this.props.user_name!=='Admin'){
         return(   
             <AbsoluteWrapper>
                 <Navbar/>
@@ -289,6 +289,8 @@ class Mycart extends Component {
                 <Footer />
             </AbsoluteWrapper>
         )
+        } else if (this.props.user_name && this.props.user_name=='Admin'){
+            return <Redirect to='/verifier'/>
         } else {
             return <Redirect to='/'/>
         }

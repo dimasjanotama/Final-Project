@@ -291,7 +291,7 @@ class Notification extends Component {
                     <div className='row text-center'>
                         <div className='col-4 mb-4 mx-auto' style={{fontSize:'20pt'}}>Total Tagihan</div>
                         <div className='w-100'></div>
-                        <div className='col-4 mx-auto mb-2' style={{fontSize:'25pt'}}>
+                        <div className='col-5 mx-auto mb-2' style={{fontSize:'25pt'}}>
                         <Link to='/detailtransaksi' onClick={()=>{this.props.detailTransaksi(transaction.id)}}><span 
                             className="dimdom-pink-quic col mt-2">Rp {transaction.nilaiTransaksi.toLocaleString('id')}</span></Link>
                         <Link to='/otherprofile' onClick={()=>{this.props.clickSeller(transaction.idSeller)}}><span className="badge badge-primary"
@@ -377,9 +377,26 @@ class Notification extends Component {
             )
         } else {
             return (
-                <div className='card-title subjudul'>
+                <>
+                <div className='col-11 cardgrey ml-5 mr-4 mt-4 mb-5 pt-4 pb-4 pr-3 pl-5 text-black-50' style={{fontSize:'16pt'}}>
                     Belum ada pembelian
                 </div>
+                <div className='row text-center'>
+                    <div className='latar'>
+                        <i className='info circle huge icon' style={{color:'black',backgroundColor:'transparent'}}></i>
+                    </div>
+                    <div className='w-100'></div>
+                    <div className='col text-center text-black-50 pt-4' style={{fontSize:'12pt'}}>
+                        <p>Kamu belum membeli produk apapun, yuk! cari produk yang kamu mau <NavLink to='search' className='dimdom-pink'>disini</NavLink></p>
+                    </div>
+                </div>
+                <div className='row text-right'>
+                    <div className='col'>
+                        <img className='dino' src={require('../lib/pictures/dino2.png')} alt=""/>
+                        <img className='pedal' src={require('../lib/pictures/pedal2.jpg')} alt=""/>
+                    </div>
+                </div>
+                </>
             )
         }
         })

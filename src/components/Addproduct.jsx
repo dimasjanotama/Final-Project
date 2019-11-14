@@ -5,7 +5,6 @@ import {connect} from 'react-redux'
 import axios from 'axios'
 import alertify from 'alertifyjs';
 import moment from 'moment'
-import DeskripsiProduk from './DeskripsiProduk'
 
 
 import Footer from './Footer'
@@ -259,7 +258,7 @@ class Addproduct extends Component {
         if(this.state.redirect){
             return <Redirect to='/myproduct'/>
         }
-        if(this.props.user_name){
+        if(this.props.user_name  && this.props.user_name!=='Admin'){
         return(   
             <AbsoluteWrapper>
                 <Navbar/>
@@ -271,6 +270,8 @@ class Addproduct extends Component {
                 <Footer />
             </AbsoluteWrapper>
         )
+        } else if (this.props.user_name && this.props.user_name=='Admin'){
+            return <Redirect to='/verifier'/>
         } else {
             return <Redirect to='/'/>
         }

@@ -236,10 +236,10 @@ class DashboardAdmin extends Component {
             } else if(perkategori.kategori=='Time'){
                 this.time = perkategori.totalProduct
                 totProduct+= perkategori.totalProduct
-            } else if(perkategori.kategori=='Preamp Cabsim'){
+            } else if(perkategori.kategori=='Preamp'){
                 this.preamp = perkategori.totalProduct
                 totProduct+= perkategori.totalProduct
-            } else if(perkategori.kategori=='Multi FX'){
+            } else if(perkategori.kategori=='Multi Effect'){
                 this.multi = perkategori.totalProduct
                 totProduct+= perkategori.totalProduct
             } else if(perkategori.kategori=='Bass FX'){
@@ -605,7 +605,7 @@ class DashboardAdmin extends Component {
                     <div className='col-4 pb-5 cardblue text-center mx-auto'>
                         <div><i className='big trophy icon mt-5 mb-4 text-light'></i></div>
                         <div className='w-100'></div>
-                        <div className='quic700p' style={{fontSize:'30pt'}}>{this.state.activeSeller}</div>
+                        <div className='quic700p' style={{fontSize:'22pt'}}>{this.state.activeSeller}</div>
                         <div className='w-100'></div>
                         <div className='mt-4 text-light'>Penjual teraktif</div>
                         <div className='w-100'></div>
@@ -614,7 +614,7 @@ class DashboardAdmin extends Component {
                     <div className='col-4 pb-5 cardblue text-center mx-auto'>
                         <div><i className='big flag icon mt-5 mb-4 text-light'></i></div>
                         <div className='w-100'></div>
-                        <div className='quic700p' style={{fontSize:'30pt'}}>{this.state.activeBuyer}</div>
+                        <div className='quic700p' style={{fontSize:'22pt'}}>{this.state.activeBuyer}</div>
                         <div className='w-100'></div>
                         <div className='mt-4 text-light'>Pembeli teraktif</div>
                         <div className='w-100'></div>

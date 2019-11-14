@@ -114,13 +114,11 @@ class Login extends Component {
             </AbsoluteWrapper>
             
         ) //----------------------------> kurung tutup return
+    }  else if (this.props.user_name && this.props.user_name!=='Admin'){
+        return <Redirect to='/'/>
     } else {
-        if (this.props.user_name == 'Admin') {
-            return <Redirect to='/verifier'/>
-        } else {
-        return <Redirect to='/notification'/>
-        }
-    } 
+        return <Redirect to='/verifier'/>
+    }
     }
 }
 
