@@ -80,7 +80,7 @@ class Myprofile extends Component {
                     } else { 
                         this.setState({ 
                             dataSeller: res.data[0],
-                            pembeliPuas: (res.data[0].totalPuas/res.data[0].totalFeedback)*100,
+                            pembeliPuas: Math.round((res.data[0].totalPuas/res.data[0].totalFeedback)*100),
                             totalFeedback: res.data[0].totalFeedback,
                             totalTransaksi: res.data[0].totalTransaksi
                         })
