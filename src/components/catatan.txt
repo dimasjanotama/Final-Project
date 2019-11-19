@@ -15,8 +15,8 @@ HASIL TEST :
 - Transaksi buyer beli 2 produk dari 1 seller QTY masing2 produk 3 dan 1, feedback positif      - OK
 - Transaksi buyer beli 3 produk dari 1 seller QTY masing2 produk 3, 2, dan 1, feedback positif  - OK
 - Transaksi buyer beli 1 produk, dari 1 seller, QTY=1, feedback negatif                         - OK
-- Transaksi buyer beli 2 produk, dari 1 seller, QTY masing2 produk 1, feedback negatif          - BELUM
-- Transaksi buyer beli 2 produk dari 1 seller QTY masing2 produk 3 dan 1, feedback negatif      - BELUM
+- Transaksi buyer beli 2 produk, dari 1 seller, QTY masing2 produk 1, feedback negatif          - OK
+- Transaksi buyer beli 2 produk dari 1 seller QTY masing2 produk 3 dan 1, feedback negatif      - OK
 - Transaksi buyer beli 3 produk dari 1 seller QTY masing2 produk 3, 2, dan 1, feedback negatif  - BELUM
 - Transaksi buyer beli 1 produk dari 1 seller QTY 1 lalu cancel, order lagi                             - BELUM
 - Transaksi buyer beli 2 produk dari 1 seller QTY masing2 produk 2 dan 1 lalu cancel, order lagi        - BELUM
