@@ -221,9 +221,9 @@ class Search extends Component {
                     </div>
                     <div className='row ml-2 mr-2'>
                         {this.state.products.map((product)=>{
-                            let {id, idUser, namaSeller, namaProduk, kategori, kondisi, fotoProduk} = product
+                            let {id, idUser, namaSeller, namaProduk, kategori, kondisi, fotoProduk, qty} = product
                             let harga = parseInt(product.harga)
-                            if(id !== this.state.selectedId){
+                            if(qty>=0){
                                 return (
                                     <div class="cardwhite ml-2 mr-2 mt-5" style={{width: "12rem"}}>
                                         <img class="card-img-top" src={`http://localhost:7777/files/${fotoProduk}`} alt="fotoproduk"/>
@@ -250,17 +250,7 @@ class Search extends Component {
                                     </div>
                                 ) 
                             } else {
-                                return (
-                                    <div className='mt-3 ml-2 mr-2 mb-4 col-2 card' >
-                                        <button className='btn mt-3 ml-n2' onClick={()=>{this.onDetailClick(id)}}>
-                                            <img style={{width: '120px'}} src={`http://localhost:7777/files/${fotoProduk}`} alt="fotoproduk"/>
-                                        </button>
-                                        <div className='card-body p-0 pb-3'>
-                                            <button className='btn dimdom-pink mb-2' onClick={()=>{this.onDetailClick(id)}}>{namaProduk}</button>
-                                            <p className='card-text text-center'>Rp. {harga.toLocaleString('id')}</p>
-                                        </div>
-                                    </div>
-                                ) 
+                                return null
                             }
                         })}
                         <div class="w-100"></div>
@@ -365,22 +355,21 @@ class Search extends Component {
                     idProduct: idProduct
                 }
             }).then(res=>{
-                console.log('line 368');
-                console.log(res.data);
+                console.log('line 358');
+                // console.log(res.data);
                 if(res.data){
                     let totalOrder = 0
                     for(let i=0;i<res.data.length;i++){
-                        console.log(res.data[i]);
+                        // console.log(res.data[i]);
                         totalOrder+= res.data[i].orderQty 
                     }
-                    console.log(totalOrder);
-                    if(totalOrder+this.state.orderQty > product.qty){
+                    if(parseInt(totalOrder)+parseInt(this.state.orderQty) > product.qty){
                         alertify.alert('Keterangan','Maaf stok product tidak mencukupi')
                     } else {
                         this.cekSeller(idProduct, product)
                     }
                 } else {
-                    console.log('line 381');
+                    console.log('line 372');
                     this.cekSeller(idProduct, product)
                 }
             }).catch(err=>{
