@@ -415,7 +415,7 @@ class Search extends Component {
                        qty: this.state.qty,
                        pulauSeller:this.state.product.pulauUser,
                        idBuyer: this.props.user_id,
-                       namaBuyer: this.props.user_name,
+                       namaBuyer: this.props.user_name
                    }).then(res=>{
                        alertify.alert('Keterangan', 'Success! Berhasil menambah ke keranjang')
                        this.setState({redirect:true})
