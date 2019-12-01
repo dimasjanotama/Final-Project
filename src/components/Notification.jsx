@@ -796,7 +796,39 @@ class Notification extends Component {
                     </>
                 )
             } else {
+                if(transaction.statusNow=='Barang tidak dikirim'){
+                    return (
+                        <>
+                        <div className='row mt-4 cardgrey'>
+                            <div className='col-1'>
+                                <i className='times big icon'></i>
+                            </div>
+                            <div className='col mt-1' style={{fontSize:'15pt'}}>{moment(tanggal).format('LL')}</div>
+                        </div>
+                        <div className='row mt-1'>
+                            <div className='col-1'></div>
+                            <div className='col' style={{fontSize:'14pt'}}>Transaksi dengan <Link to='/otherprofile' onClick={()=>{this.props.clickSeller(transaction.idBuyer)}}> 
+                            <span className='badge badge-primary'>{transaction.namaBuyer}</span></Link></div>
+                        </div>
+                        <div className='row mt-1'>
+                            <div className='col-1'></div>
+                            <div className='col'>Nilai Transaksi Penjualan</div>
+                            <div className='col-3 text-right'>
+                                <span className='badge badge-warning' style={{fontSize:'11pt'}}>Rp {transaction.nilaiTransaksi.toLocaleString('id')}</span>
+                            </div>
+                        </div>
+                        <div className='row mt-1'>
+                            <div className='col-1'></div>
+                            <div className='col'>Transaksi Gagal/Dibatalkan</div>
+                            <div className='col-5 text-right'>
+                                <span className='badge badge-warning' style={{fontSize:'11pt'}}>{transaction.statusNow}</span>
+                            </div>
+                        </div>
+                        </>
+                    )
+                } else {
                 return null
+                }
             }
         })
         return hasil

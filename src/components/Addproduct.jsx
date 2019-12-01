@@ -95,7 +95,7 @@ class Addproduct extends Component {
                     qty: this.state.qty,
                     pulauUser: this.state.pulauUser
                 }
-                console.log(this.state.selectedFile, this.state.selectedFile.name);
+                // console.log(this.state.selectedFile, this.state.selectedFile.name);
                 fd.append('aneh', this.state.selectedFile, this.state.selectedFile.name)
                 fd.append('data', JSON.stringify(data))
                 axios.post(urlApi+'uploadproduct', fd)

@@ -355,7 +355,7 @@ class Search extends Component {
                     idProduct: idProduct
                 }
             }).then(res=>{
-                console.log('line 358');
+                // console.log('line 358');
                 // console.log(res.data);
                 if(res.data){
                     let totalOrder = 0
@@ -369,7 +369,7 @@ class Search extends Component {
                         this.cekSeller(idProduct, product)
                     }
                 } else {
-                    console.log('line 372');
+                    // console.log('line 372');
                     this.cekSeller(idProduct, product)
                 }
             }).catch(err=>{
@@ -384,7 +384,7 @@ class Search extends Component {
                 idBuyer: this.props.user_id
             }
         }).then(res=>{
-           console.log('line 399');
+        //    console.log('line 387');
            if(!res.data[0]){
                this.cekQty(idProduct, product)
            } else {
@@ -400,6 +400,7 @@ class Search extends Component {
     }
            
     cekQty = (idProduct, product)=>{
+        // console.log('line 403');
            axios.get(urlApi+'cekqty',{
                params : {
                    idProduct : idProduct,
@@ -407,6 +408,7 @@ class Search extends Component {
                }
            }).then(res=>{
                if(res.data[0].sudahada>0){
+                // console.log('line 411');
                    let orderQtyNow = parseInt(res.data[0].orderQty) + parseInt(this.state.orderQty)
                    axios.put(urlApi+'addqty',{
                        orderQtyNow: orderQtyNow,
@@ -423,6 +425,7 @@ class Search extends Component {
                        console.log(err);
                    })
                } else {
+                // console.log('line 428');
                    axios.post(urlApi + 'addtocart',
                    {
                        idProduct: idProduct,
@@ -439,6 +442,7 @@ class Search extends Component {
                        orderQty: parseInt(this.state.orderQty),
                        fotoProduk: product.fotoProduk
                    }).then((res)=>{
+                    // console.log('line 445');
                        axios.post(urlApi+'addorder',{
                            idBuyer: this.props.user_id,
                            namaBuyer: this.state.user.namaDepan +' '+ this.state.user.namaBelakang,
