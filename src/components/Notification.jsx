@@ -796,7 +796,7 @@ class Notification extends Component {
                     </>
                 )
             } else {
-                if(transaction.statusNow=='Barang tidak dikirim'){
+                if(transaction.statusNow=='Barang tidak dikirim' || transaction.statusNow=='Transaksi Tidak Sah'){
                     return (
                         <>
                         <div className='row mt-4 cardgrey'>

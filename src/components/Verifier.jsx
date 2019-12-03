@@ -156,7 +156,7 @@ class Verifier extends Component {
         axios.put(urlApi+'rejectquantity',{
             idTransaction: transaction.id
         }).then(res=>{
-            axios.put(urlApi + 'rejectverification',{
+            axios.put(urlApi + 'rejectauthentication',{
                 id: transaction.id,
                 tglDitolak: moment().format('YYYY-MM-DD'),
                 idBuyer: transaction.idBuyer,
