@@ -31,9 +31,9 @@ HASIL TEST :
 - Transaksi buyer beli 1 produk, sudah verifikasi pembayaran, sudah verifikasi pengiriman, sebelum konfirmasi penerimaan, tolak dari verifikator    - OK
 - Transaksi buyer beli 1 produk, sudah verifikasi pembayaran, sudah verifikasi pengiriman, sudah konfirmasi penerimaan, tolak dari verifikator      - OK
 - Transaksi buyer beli 3 produk, buat melebihi tanggal kadaluwarsa pembayaran                   - OK
-- Transaksi buyer beli 3 produk, sebelum konfirmasi pembayaran, tolak dari verifikator          - BELUM
-- Transaksi buyer beli 3 produk, sudah konfirmasi pembayaran, tolak dari verifikator            - BELUM
-- Transaksi buyer beli 3 produk, sudah verifikasi pembayaran, sebelum konfirmasi pengiriman, tolak dari verifikator - BELUM
+- Transaksi buyer beli 3 produk, sebelum konfirmasi pembayaran, tolak dari verifikator          - OK
+- Transaksi buyer beli 3 produk, sudah konfirmasi pembayaran, tolak dari verifikator            - OK
+- Transaksi buyer beli 3 produk, sudah verifikasi pembayaran, sebelum konfirmasi pengiriman, tolak dari verifikator - OK
 - Transaksi buyer beli 3 produk, sudah verifikasi pembayaran, sudah konfirmasi pengiriman, tolak dari verifikator   - BELUM
 - Transaksi buyer beli 3 produk, sudah verifikasi pembayaran, sudah verifikasi pengiriman, sebelum konfirmasi penerimaan, tolak dari verifikator    - BELUM
 - Transaksi buyer beli 3 produk, sudah verifikasi pembayaran, sudah verifikasi pengiriman, sudah konfirmasi penerimaan, tolak dari verifikator      - BELUM
