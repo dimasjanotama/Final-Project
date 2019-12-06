@@ -134,19 +134,25 @@ class Verifier extends Component {
     }
 
     onTolakPengiriman = (transaction) => {
-        axios.put(urlApi + 'rejectshippingverification',{
-            id: transaction.id,
-            tglDitolak: moment().format('YYYY-MM-DD'),
-            idBuyer: transaction.idBuyer,
-            namaBuyer: transaction.namaBuyer,
-            idSeller: transaction.idSeller,
-            namaSeller: transaction.namaSeller,
-            nilaiTransaksi: transaction.nilaiTransaksi
-        })
-        .then((res)=>{
-        alertify.alert('Keterangan', 'Transaksi Ditolak', function(){ 
-            alertify.message(`Transaction ID ${transaction.id} is REJECTED`)})
-        this.getTransactionPengiriman()
+        axios.put(urlApi+'rejectquantity',{
+            idTransaction: transaction.id
+        }).then(res=>{
+            axios.put(urlApi + 'rejectshippingverification',{
+                id: transaction.id,
+                tglDitolak: moment().format('YYYY-MM-DD'),
+                idBuyer: transaction.idBuyer,
+                namaBuyer: transaction.namaBuyer,
+                idSeller: transaction.idSeller,
+                namaSeller: transaction.namaSeller,
+                nilaiTransaksi: transaction.nilaiTransaksi
+            })
+            .then((res)=>{
+            alertify.alert('Keterangan', 'Transaksi Ditolak', function(){ 
+                alertify.message(`Transaction ID ${transaction.id} is REJECTED`)})
+            this.getTransactionPengiriman()
+            }).catch(err=>{
+                console.log(err);
+            })
         }).catch(err=>{
             console.log(err);
         })
