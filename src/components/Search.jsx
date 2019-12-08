@@ -389,7 +389,7 @@ class Search extends Component {
                this.cekQty(idProduct, product)
            } else {
                if(product.idUser!==res.data[0].idSeller){
-                alertify.alert('Keterangan','Mohon maaf, untuk saat ini belum bisa menambah keranjang dari Penjual yang berbeda, silahkan cekout terlebih dahulu dan pilih produk kembali')
+                alertify.alert('Keterangan','Mohon maaf, untuk saat ini belum bisa menambah keranjang dari Penjual yang berbeda, silahkan cekout dan selesaikan terlebih dahulu orderan kamu')
             } else {
                 this.cekQty(idProduct, product)
             }
