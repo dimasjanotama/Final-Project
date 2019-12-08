@@ -499,6 +499,7 @@ class Notification extends Component {
 
     renderOrderlist=()=>{
         let hasil = this.state.orders.map((order)=>{
+            let totalHarga = (order.harga)*(order.orderQty)
             if(order.isDone<1){
                 if(order.isShipped==0) {
                     var statusPengiriman='Belum dikirim'
@@ -521,7 +522,7 @@ class Notification extends Component {
                         <th scope="col">{order.orderQty}</th>
                         <th scope="col"><span className="badge badge-primary"
                             style={{fontSize:'10pt',verticalAlign:'top'}}>{statusPengiriman}</span></th>
-                        <th scope="col">{order.harga.toLocaleString('id')}</th>
+                        <th scope="col">{totalHarga.toLocaleString('id')}</th>
                     </tr>
                 )
             } else {
@@ -549,7 +550,7 @@ class Notification extends Component {
                         <th scope="col">Produk</th>
                         <th scope="col">Order Qty</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Harga</th>
+                        <th scope="col">Total Harga</th>
                         </tr>
                     </thead>
                     <tbody>

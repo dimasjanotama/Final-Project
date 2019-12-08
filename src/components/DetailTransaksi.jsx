@@ -81,11 +81,11 @@ class DetailTransaksi extends Component {
                     <div className='row pt-4'>
                         <div className='col-11 cardwhite mx-auto'>
                             <div className='row'>
-                                <div className='col-4 card-title pt-4 mb-4 text-center'>Produk</div>
+                                <div className='col-5 card-title pt-4 mb-4 text-center'>Produk</div>
                                 <div className='col-2 card-title pt-4 mb-4'>Harga Satuan</div>
                                 <div className='col-1 card-title pt-4 mb-4'>Qty</div>
                                 <div className='col-1 card-title pt-4 mb-4'>Berat</div>
-                                <div className='col-4 card-title pt-4 mb-4'>Total Harga + Ongkir</div>
+                                <div className='col-3 card-title pt-4 mb-4'>Total Harga + Ongkir</div>
                                 <div class="w-100"></div>
                                 {this.renderCart()}
                             </div>

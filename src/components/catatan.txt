@@ -1,1 +1,16 @@
-Di menu penjual -> notifikasi -> dibuat kondisi jika memasukkan ID transaksi yang sudah dikirim akan ditolak
+
+
+1. Di menu penjual -> notifikasi -> dibuat kondisi jika memasukkan ID transaksi yang sudah dikirim akan ditolak
+2. Di verifier ditambah tgl kadaluwarsa pengiriman, semua data pembayaran yang sudah diverifikasi harus masuk ke tabel pengiriman beserta tgl kadaluwarsa
+
+
+
+
+
+
+HASIL TEST :
+
+- Transaksi buyer beli 1 produk, dari 1 seller, QTY=1, feedback positif                     - OK
+- Transaksi buyer beli 2 produk, dari 1 seller, QTY masing2 produk 1, feedback positif      - OK
+- Transaksi buyer beli 2 produk dari 1 seller QTY masing2 produk 3 dan 1, feedback positif  - OK
+- 
