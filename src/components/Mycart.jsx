@@ -134,7 +134,7 @@ class Mycart extends Component {
 
     checkOut = () => {
         if(this.state.unpaid[0]){
-            alertify.alert('Keterangan','Selesaikan terlebih dahulu pembayaran untuk orderan anda yang sebelumnya')
+            alertify.alert('Keterangan','Selesaikan terlebih dahulu orderan anda yang sebelumnya')
         } else {
             this.state.carts.map((product)=>{
                 axios.put(urlApi+'refreshquantity',{

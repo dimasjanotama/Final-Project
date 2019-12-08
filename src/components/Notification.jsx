@@ -782,8 +782,8 @@ class Notification extends Component {
                     </div>
                     <div className='row mt-1'>
                         <div className='col-1'></div>
-                        <div className='col' style={{fontSize:'14pt'}}>Transaksi dengan <Link to='/otherprofile' onClick={()=>{this.props.clickSeller(transaction.idSeller)}}> 
-                        <span className='badge badge-primary'>{transaction.namaSeller}</span></Link></div>
+                        <div className='col' style={{fontSize:'14pt'}}>Transaksi dengan <Link to='/otherprofile' onClick={()=>{this.props.clickSeller(transaction.idBuyer)}}> 
+                        <span className='badge badge-primary'>{transaction.namaBuyer}</span></Link></div>
                     </div>
                     <div className='row mt-1'>
                         <div className='col-1'></div>

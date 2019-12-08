@@ -320,7 +320,40 @@ class DashboardAdmin extends Component {
                 } else {}
             }) 
         } else if(bulanIni==12){
-            var chartBulan = ['SEP','OKT','NOV','DES']  
+            var chartBulan = ['SEP','OKT','NOV','DES']
+            this.state.userChart.map((perbulan)=>{
+                if(perbulan.bulan==9){
+                    this.user1 = perbulan.newUser
+                } else if (perbulan.bulan==10){
+                    this.user2 = perbulan.newUser
+                } else if (perbulan.bulan==11){
+                    this.user3 = perbulan.newUser
+                } else if (perbulan.bulan==12){
+                    this.user4 = perbulan.newUser
+                } else {}
+            })  
+            this.state.transdoneChart.map((perbulan)=>{
+                if(perbulan.bulan==9){
+                    this.transdone1 = perbulan.totalTransaksi
+                } else if (perbulan.bulan==10){
+                    this.transdone2 = perbulan.totalTransaksi
+                } else if (perbulan.bulan==11){
+                    this.transdone3 = perbulan.totalTransaksi
+                } else if (perbulan.bulan==12){
+                    this.transdone4 = perbulan.totalTransaksi
+                } else {}
+            }) 
+            this.state.transvalueChart.map((perbulan)=>{
+                if(perbulan.bulan==9){
+                    this.transvalue1 = perbulan.nilaiTransaksi
+                } else if (perbulan.bulan==10){
+                    this.transvalue2 = perbulan.nilaiTransaksi
+                } else if (perbulan.bulan==11){
+                    this.transvalue3 = perbulan.nilaiTransaksi
+                } else if (perbulan.bulan==12){
+                    this.transvalue4 = perbulan.nilaiTransaksi
+                } else {}
+            })  
         }
         return (
             <div>

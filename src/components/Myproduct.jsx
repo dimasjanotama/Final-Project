@@ -31,7 +31,7 @@ class Myproduct extends Component {
         totalitem : '',
         currentpage : '',
         totalpage : '',
-        propinsiUser : ''
+        pulauUser : ''
     }
 
     componentDidMount(){
@@ -48,7 +48,7 @@ class Myproduct extends Component {
                 authorization : token
             }
         }).then(res=>{
-            this.setState({propinsiUser: res.data[0].propinsi})
+            this.setState({pulauUser: res.data[0].pulau})
             this.renderProducts()
         }).catch(err=>{
             console.log(err);
@@ -83,9 +83,8 @@ class Myproduct extends Component {
             setTimeout(
             () => {this.setState({error: ''})},
             3000
-        )} else if (this.state.namaProduk && this.state.kategori && 
-            this.state.harga && this.state.berat && this.state.kondisi && this.state.deskripsi && this.state.selectedFile &&
-            this.state.qty){
+        )} else if (this.state.namaProduk && this.state.kategori && this.state.harga && this.state.berat && this.state.kondisi && 
+            this.state.deskripsi && this.state.selectedFile && this.state.qty && this.state.pulauUser){
                 var fd = new FormData()
                 var data = {
                     id: this.state.idproduct,   
@@ -97,7 +96,7 @@ class Myproduct extends Component {
                     kondisi: this.state.kondisi,
                     deskripsi: this.state.deskripsi,
                     qty: this.state.qty,
-                    propinsiUser: this.state.propinsiUser
+                    pulauUser: this.state.pulauUser
                 }
                 console.log(this.state.selectedFile, this.state.selectedFile.name);
                 fd.append('anehedit', this.state.selectedFile, this.state.selectedFile.name)

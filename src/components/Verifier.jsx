@@ -347,7 +347,7 @@ class Verifier extends Component {
                                         <th scope="col">ID</th>
                                         <th scope="col">ID Pembeli</th>
                                         <th scope="col">Tgl Pembelian</th>
-                                        <th scope="col">Tgl Expired</th>
+                                        <th scope="col">Tgl Kadaluwarsa</th>
                                         <th scope="col">Nilai Transaksi</th>
                                         <th scope="col">Tgl Pembayaran</th>
                                         <th scope="col">No.Rek</th>

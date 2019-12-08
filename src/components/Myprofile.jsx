@@ -387,7 +387,30 @@ class Myprofile extends Component {
             }) 
         } else if(bulanIni==12){
             var chartBulan = ['SEP','OKT','NOV','DES']  
+            this.state.sellChart.map((perbulan)=>{
+                if(perbulan.bulan==9){
+                    this.sell1 = perbulan.totalPenjualan
+                } else if (perbulan.bulan==10){
+                    this.sell2 = perbulan.totalPenjualan
+                } else if (perbulan.bulan==11){
+                    this.sell3 = perbulan.totalPenjualan
+                } else if (perbulan.bulan==12){
+                    this.sell4 = perbulan.totalPenjualan
+                } else {}
+            })  
+            this.state.buyChart.map((perbulan)=>{
+                if(perbulan.bulan==9){
+                    this.buy1 = perbulan.totalPembelian
+                } else if (perbulan.bulan==10){
+                    this.buy2 = perbulan.totalPembelian
+                } else if (perbulan.bulan==11){
+                    this.buy3 = perbulan.totalPembelian
+                } else if (perbulan.bulan==12){
+                    this.buy4 = perbulan.totalPembelian
+                } else {}
+            })
         }
+
         if(!totalPuas && !totalFeedback && !totalTransaksi && !terlaris){   
         } else {
             var { totalPuas, totalFeedback, totalTransaksi } = this.state.dataSeller   
