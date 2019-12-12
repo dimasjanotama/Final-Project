@@ -14,6 +14,7 @@ import Search from './components/Search'
 import Myprofile from './components/Myprofile'
 import OtherProfile from './components/OtherProfile'
 import DetailTransaksi from './components/DetailTransaksi'
+import Notfound from './components/Notfound'
 
 
 
@@ -46,7 +47,8 @@ const App = () => {
                                 <Route path='/mycart' component={Mycart}/>                                                                                              
                                 <Route path='/myprofile' component={Myprofile}/>                                                                                              
                                 <Route path='/otherprofile' component={OtherProfile}/>                                                                                              
-                                <Route path='/detailtransaksi' component={DetailTransaksi}/>                                                                                                                                                                                     
+                                <Route path='/detailtransaksi' component={DetailTransaksi}/>
+                                <Route component={Notfound} />                                                                                                                                                                                     
                             </Switch>
                         </animated.div>
                     ))}   
